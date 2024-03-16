@@ -1,5 +1,6 @@
+import ExerciseListCard from '@/components/ExerciseListCard';
 import { Exercise } from '@/lib/firebase';
-import { Link } from 'react-router-dom';
+import { Grid } from '@mui/material';
 
 type ExerciseListProps = {
   exercises: Exercise[];
@@ -9,12 +10,12 @@ export default function ExerciseList(props: ExerciseListProps) {
   const { exercises } = props;
 
   return (
-    <ul>
+    <Grid container spacing={2} sx={{ mt: 0 }}>
       {exercises.map((exercise) => (
-        <li key={exercise.eid}>
-          <Link to={`exercises/${exercise.eid}`}>{exercise.name || '(Unnamed)'}</Link>
-        </li>
+        <Grid item sm={12} md={6} lg={4} key={exercise.eid}>
+          <ExerciseListCard exercise={exercise} />
+        </Grid>
       ))}
-    </ul>
+    </Grid>
   );
 }
