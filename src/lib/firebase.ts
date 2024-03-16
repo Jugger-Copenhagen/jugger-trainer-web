@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { DocumentData, collection, doc, getDoc, getDocs, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDyVMCRC9Toba_G8dp5aweN9Z7Ap479sRw',
@@ -14,7 +14,78 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function getExercises() {
+// === EXERCISES === //
+
+export type FirebaseId = string;
+
+export type ExertionLevel = 'EASY' | 'MEDIUM' | 'HARD';
+
+export type ExerciseSearchParams = {
+  name?: string;
+  tagIDs: string[];
+  exertionLevel?: ExertionLevel;
+  playersMin?: number;
+  playersMax?: number;
+};
+
+export type Exercise = {
+  created: number;
+  createdByUID: FirebaseId;
+  eid: FirebaseId;
+  exertionLevel: ExertionLevel;
+  howToPlay: string;
+  name: string;
+  originCountry: string;
+  playersMin: number;
+  playersMax: number;
+  tagIDs: FirebaseId[];
+};
+
+function validateExercise(data: DocumentData): Exercise {
+  // TODO: actually validate this in some way
+  return data as Exercise;
+}
+
+export async function searchExercises(searchParams: ExerciseSearchParams): Promise<Exercise[]> {
   const querySnapshot = await getDocs(collection(db, 'exercises'));
+  return querySnapshot.docs.map((doc) => validateExercise(doc.data()));
+}
+
+export async function getExerciseById(eid: string) {
+  const docRef = doc(db, 'exercises', eid);
+  const docSnapshot = await getDoc(docRef);
+  const data = docSnapshot.data();
+
+  if (data === undefined) {
+    throw new Error(`No exercise found with ID ${eid}`);
+  }
+
+  return validateExercise(data);
+}
+
+export async function randomExercise(searchParams: ExerciseSearchParams) {
+  // TODO: this
+}
+
+export async function starExercise(eid: string) {
+  // TODO: this
+}
+
+export async function unstarExercise(eid: string) {
+  // TODO: this
+}
+
+export async function createExercise(/* type? */) {
+  // TODO: this
+}
+
+export async function editExercise(/* type? */) {
+  // TODO: this
+}
+
+// === TAGS === //
+
+export async function getTags() {
+  const querySnapshot = await getDocs(collection(db, 'tags'));
   return querySnapshot.docs.map((doc) => doc.data());
 }
