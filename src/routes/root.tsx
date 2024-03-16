@@ -2,8 +2,10 @@ import { Favorite, Home } from '@mui/icons-material';
 import {
   AppBar,
   Box,
+  Container,
   CssBaseline,
   IconButton,
+  List,
   ThemeProvider,
   Toolbar,
   Typography,
@@ -26,13 +28,14 @@ export default function Root() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box>
-        <CssBaseline />
-        <AppBar position="absolute">
-          <Toolbar>
-            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              Jugger Trainer
-            </Typography>
+      <CssBaseline />
+      <AppBar position="sticky" sx={{ width: '100vw' }}>
+        <Toolbar>
+          <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            <Link to="/">Jugger Trainer</Link>
+          </Typography>
+
+          <List component="nav">
             <IconButton color="inherit">
               <Link to="/">
                 <Home />
@@ -44,9 +47,14 @@ export default function Root() {
                 <Favorite />
               </Link>
             </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Outlet />
+          </List>
+        </Toolbar>
+      </AppBar>
+
+      <Box component="main">
+        <Container maxWidth={false}>
+          <Outlet />
+        </Container>
       </Box>
     </ThemeProvider>
   );
