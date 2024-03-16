@@ -23,8 +23,8 @@ const router = createBrowserRouter([
         loader: loaderExerciseView,
       },
       {
-        path: 'exercises/starred',
-        element: <div>Starred exercises</div>,
+        path: 'exercises/favorited',
+        element: <div>Favorited exercises</div>,
       },
       {
         path: 'exercises/random',

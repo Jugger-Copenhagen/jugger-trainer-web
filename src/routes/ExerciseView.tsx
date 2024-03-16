@@ -1,16 +1,9 @@
+import ExerciseDetails from '@/components/ExerciseDetails';
 import { loaderExerciseView } from '@/routes/loaders';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
-export default function ExerciseDetails() {
+export default function ExerciseView() {
   const exercise = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseView>>;
 
-  return (
-    <>
-      <h2>{exercise.name}</h2>
-      <Link to="/">Back to list</Link>
-      <pre>
-        <code>{JSON.stringify(exercise, null, 2)}</code>
-      </pre>
-    </>
-  );
+  return <ExerciseDetails exercise={exercise} />;
 }

@@ -51,7 +51,7 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
   return querySnapshot.docs.map((doc) => validateExercise(doc.data()));
 }
 
-export async function getExerciseById(eid: string) {
+export async function getExerciseById(eid: FirebaseId) {
   const docRef = doc(db, 'exercises', eid);
   const docSnapshot = await getDoc(docRef);
   const data = docSnapshot.data();
@@ -77,11 +77,11 @@ export async function editExercise(/* type? */) {
 
 // === FAVOURITES === //
 
-export async function starExercise(eid: string) {
+export async function favoriteExercise(eid: FirebaseId) {
   // TODO: this
 }
 
-export async function unstarExercise(eid: string) {
+export async function unfavoriteExercise(eid: FirebaseId) {
   // TODO: this
 }
 
