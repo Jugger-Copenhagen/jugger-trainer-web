@@ -1,6 +1,7 @@
 import '@/index.css';
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
+import { loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -14,10 +15,12 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <ExerciseSearch />,
+        loader: loaderExerciseSearch,
       },
       {
         path: 'exercises/:eid',
         element: <ExerciseView />,
+        loader: loaderExerciseView,
       },
       {
         path: 'exercises/starred',

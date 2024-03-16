@@ -1,19 +1,8 @@
-import { searchExercises } from '@/lib/firebase';
-import { DocumentData } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { loaderExerciseSearch } from '@/routes/loaders';
+import { Link, useLoaderData } from 'react-router-dom';
 
 export default function ExerciseSearch() {
-  const [exercises, setExercises] = useState([] as DocumentData[]);
-
-  useEffect(() => {
-    (async () => {
-      const exercisesFetched = await searchExercises({
-        tagIDs: [],
-      });
-      setExercises(exercisesFetched);
-    })();
-  }, []);
+  const exercises = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseSearch>>;
 
   return (
     <>

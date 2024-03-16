@@ -57,7 +57,7 @@ export async function getExerciseById(eid: string) {
   const data = docSnapshot.data();
 
   if (data === undefined) {
-    throw new Error(`No exercise found with ID ${eid}`);
+    return null;
   }
 
   return validateExercise(data);
@@ -67,19 +67,21 @@ export async function randomExercise(searchParams: ExerciseSearchParams) {
   // TODO: this
 }
 
-export async function starExercise(eid: string) {
-  // TODO: this
-}
-
-export async function unstarExercise(eid: string) {
-  // TODO: this
-}
-
 export async function createExercise(/* type? */) {
   // TODO: this
 }
 
 export async function editExercise(/* type? */) {
+  // TODO: this
+}
+
+// === FAVOURITES === //
+
+export async function starExercise(eid: string) {
+  // TODO: this
+}
+
+export async function unstarExercise(eid: string) {
   // TODO: this
 }
 
