@@ -8,12 +8,20 @@ import {
   linkWithCredential,
   signInWithPopup,
 } from 'firebase/auth';
-import { Form, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Form, Link, useNavigate } from 'react-router-dom';
 
 let pendingCredential: OAuthCredential | null = null;
 
 export default function Login() {
-  const setUser = useUserStore((state) => state.setUser);
+  const userStore = useUserStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userStore.user !== null) {
+      navigate('/');
+    }
+  }, [userStore.user]);
 
   async function signInWithGoogle() {
     auth.useDeviceLanguage();
@@ -29,7 +37,7 @@ export default function Login() {
         user = credentialLinked.user;
       }
 
-      setUser(user);
+      userStore.setUser(user);
     } catch (err) {
       if (!(err instanceof FirebaseError)) {
         throw err;

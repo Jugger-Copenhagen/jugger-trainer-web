@@ -18,10 +18,11 @@ import {
 import { green, pink } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Root() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const userStore = useUserStore();
 
   useEffect(() => {
@@ -29,6 +30,11 @@ export default function Root() {
       userStore.setUser(user);
     });
   }, []);
+
+  async function logout() {
+    await auth.signOut();
+    navigate('/login');
+  }
 
   const defaultTheme = createTheme({
     palette: {
@@ -66,7 +72,7 @@ export default function Root() {
                 </Button>
               </Link>
             ) : (
-              <Button variant="contained" onClick={() => auth.signOut()}>
+              <Button variant="contained" onClick={logout}>
                 Sign Out <Logout sx={{ ml: 0.5 }} />
               </Button>
             )}
