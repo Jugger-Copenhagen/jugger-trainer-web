@@ -1,9 +1,50 @@
 import { Box, Button, Divider, Grid, TextField } from '@mui/material';
+import { FirebaseError } from 'firebase/app';
+import {
+  GoogleAuthProvider,
+  OAuthCredential,
+  getAuth,
+  linkWithCredential,
+  signInWithPopup,
+} from 'firebase/auth';
 import { Form, Link } from 'react-router-dom';
 
+let pendingCredential: OAuthCredential | null = null;
+
 export default function Login() {
-  function signInWithGoogle() {
-    // TODO: Implement Google sign-in
+  async function signInWithGoogle() {
+    const auth = getAuth();
+    auth.useDeviceLanguage();
+
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+      let user = result.user;
+
+      if (pendingCredential !== null) {
+        const credentialLinked = await linkWithCredential(user, pendingCredential);
+        user = credentialLinked.user;
+      }
+
+      // TODO: something with user
+      console.log(credential, token, user);
+    } catch (err) {
+      if (!(err instanceof FirebaseError)) {
+        throw err;
+      }
+
+      if (err.code === 'auth/account-exists-with-different-credential') {
+        pendingCredential = GoogleAuthProvider.credentialFromError(err);
+
+        // TODO: prompt the user to sign in with the same provider they used to sign up
+      }
+
+      // TODO: handle this better
+    }
   }
 
   return (
