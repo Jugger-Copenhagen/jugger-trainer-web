@@ -1,3 +1,5 @@
+import { auth } from '@/lib/firebase';
+import { useUserStore } from '@/lib/store';
 import '@/routes/root.css';
 import { Favorite, FavoriteBorder, Login } from '@mui/icons-material';
 import {
@@ -14,10 +16,19 @@ import {
   createTheme,
 } from '@mui/material';
 import { green, pink } from '@mui/material/colors';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export default function Root() {
   const { pathname } = useLocation();
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user: User | null) => {
+      userStore.setUser(user);
+    });
+  }, []);
 
   const defaultTheme = createTheme({
     palette: {
@@ -48,12 +59,14 @@ export default function Root() {
               </IconButton>
             </Link>
 
-            <Link to="/login">
-              <Button variant="contained">
-                Sign In
-                <Login />
-              </Button>
-            </Link>
+            {userStore.user === null && (
+              <Link to="/login">
+                <Button variant="contained">
+                  Sign In
+                  <Login />
+                </Button>
+              </Link>
+            )}
           </List>
         </Toolbar>
       </AppBar>

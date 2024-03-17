@@ -1,7 +1,6 @@
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
 import Login from '@/routes/Login';
-import Register from '@/routes/Register';
 import { loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
@@ -34,10 +33,6 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
-      },
-      {
-        path: 'register',
-        element: <Register />,
       },
     ],
   },

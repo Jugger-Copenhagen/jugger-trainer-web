@@ -1,9 +1,10 @@
+import { auth } from '@/lib/firebase';
+import { useUserStore } from '@/lib/store';
 import { Box, Button, Divider, Grid, TextField } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
 import {
   GoogleAuthProvider,
   OAuthCredential,
-  getAuth,
   linkWithCredential,
   signInWithPopup,
 } from 'firebase/auth';
@@ -12,8 +13,9 @@ import { Form, Link } from 'react-router-dom';
 let pendingCredential: OAuthCredential | null = null;
 
 export default function Login() {
+  const setUser = useUserStore((state) => state.setUser);
+
   async function signInWithGoogle() {
-    const auth = getAuth();
     auth.useDeviceLanguage();
 
     const provider = new GoogleAuthProvider();
@@ -21,17 +23,13 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
 
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
       let user = result.user;
-
       if (pendingCredential !== null) {
         const credentialLinked = await linkWithCredential(user, pendingCredential);
         user = credentialLinked.user;
       }
 
-      // TODO: something with user
-      console.log(credential, token, user);
+      setUser(user);
     } catch (err) {
       if (!(err instanceof FirebaseError)) {
         throw err;
