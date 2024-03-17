@@ -1,6 +1,7 @@
-import '@/index.css';
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
+import Login from '@/routes/Login';
+import Register from '@/routes/Register';
 import { loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
       {
         path: 'exercises/random',
         element: <div>Random exercise</div>,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
       },
     ],
   },

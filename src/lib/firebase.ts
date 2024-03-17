@@ -64,7 +64,13 @@ export async function getExerciseById(eid: FirebaseId) {
 }
 
 export async function randomExercise(searchParams: ExerciseSearchParams) {
-  // TODO: this
+  const exercises = await searchExercises(searchParams);
+  if (exercises.length === 0) {
+    return null;
+  }
+
+  const i = Math.floor(Math.random() * exercises.length);
+  return exercises[i];
 }
 
 export async function createExercise(/* type? */) {

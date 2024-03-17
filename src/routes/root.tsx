@@ -1,7 +1,9 @@
-import { Favorite, Home } from '@mui/icons-material';
+import '@/routes/root.css';
+import { Favorite, FavoriteBorder, Login } from '@mui/icons-material';
 import {
   AppBar,
   Box,
+  Button,
   Container,
   CssBaseline,
   IconButton,
@@ -12,9 +14,11 @@ import {
   createTheme,
 } from '@mui/material';
 import { green, pink } from '@mui/material/colors';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export default function Root() {
+  const { pathname } = useLocation();
+
   const defaultTheme = createTheme({
     palette: {
       primary: {
@@ -31,22 +35,25 @@ export default function Root() {
       <CssBaseline />
       <AppBar position="sticky" sx={{ width: '100vw' }}>
         <Toolbar>
-          <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+          <Typography component="h1" variant="h6" color="inherit" noWrap>
             <Link to="/">Jugger Trainer</Link>
           </Typography>
 
-          <List component="nav">
-            <IconButton color="inherit">
-              <Link to="/">
-                <Home />
-              </Link>
-            </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
 
-            <IconButton color="inherit">
-              <Link to="/exercises/favorited">
-                <Favorite />
-              </Link>
-            </IconButton>
+          <List component="nav">
+            <Link to="/exercises/favorited">
+              <IconButton color="inherit" sx={{ mr: 1 }}>
+                {pathname === '/exercises/favorited' ? <Favorite /> : <FavoriteBorder />}
+              </IconButton>
+            </Link>
+
+            <Link to="/login">
+              <Button variant="contained">
+                Sign In
+                <Login />
+              </Button>
+            </Link>
           </List>
         </Toolbar>
       </AppBar>
