@@ -1,6 +1,7 @@
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
 import Login from '@/routes/Login';
+import { actionLogin } from '@/routes/actions';
 import { loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
+        action: actionLogin,
       },
     ],
   },

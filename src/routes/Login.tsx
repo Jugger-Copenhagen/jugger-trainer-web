@@ -1,5 +1,7 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
+import { FormErrors } from '@/routes/actions';
+import { Google } from '@mui/icons-material';
 import { Box, Button, Divider, Grid, TextField } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
 import {
@@ -9,11 +11,12 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Form, Link, useNavigate } from 'react-router-dom';
+import { Form, Link, useActionData, useNavigate } from 'react-router-dom';
 
 let pendingCredential: OAuthCredential | null = null;
 
 export default function Login() {
+  const actionData = useActionData() as FormErrors | null;
   const userStore = useUserStore();
   const navigate = useNavigate();
 
@@ -58,14 +61,23 @@ export default function Login() {
       <Grid item sm={12} md={8} lg={6}>
         <h2>Login</h2>
 
-        <Form>
-          <TextField name="email" label="Email" variant="outlined" fullWidth />
+        <Form method="post">
+          <TextField
+            name="email"
+            label="Email"
+            variant="outlined"
+            fullWidth
+            error={!!actionData?.fieldErrors?.email}
+            helperText={actionData?.fieldErrors?.email}
+          />
           <TextField
             type="password"
             name="password"
             label="Password"
             variant="outlined"
             fullWidth
+            error={!!actionData?.fieldErrors?.password}
+            helperText={actionData?.fieldErrors?.password}
             sx={{ mt: 2 }}
           />
 
@@ -78,7 +90,7 @@ export default function Login() {
 
         <Box sx={{ mb: 4 }}>
           <Button size="large" variant="outlined" onClick={signInWithGoogle}>
-            Sign in with Google
+            <Google sx={{ mr: 1 }} /> Sign in with Google
           </Button>
         </Box>
 
