@@ -1,7 +1,7 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import '@/routes/root.css';
-import { Favorite, FavoriteBorder, Login } from '@mui/icons-material';
+import { Favorite, FavoriteBorder, Login, Logout } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -59,13 +59,16 @@ export default function Root() {
               </IconButton>
             </Link>
 
-            {userStore.user === null && (
+            {userStore.user === null ? (
               <Link to="/login">
                 <Button variant="contained">
-                  Sign In
-                  <Login />
+                  Sign In <Login sx={{ ml: 0.5 }} />
                 </Button>
               </Link>
+            ) : (
+              <Button variant="contained" onClick={() => auth.signOut()}>
+                Sign Out <Logout sx={{ ml: 0.5 }} />
+              </Button>
             )}
           </List>
         </Toolbar>
