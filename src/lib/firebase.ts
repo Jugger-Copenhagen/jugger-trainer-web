@@ -1,6 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { DocumentData, collection, doc, getDoc, getDocs, getFirestore } from 'firebase/firestore';
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDyVMCRC9Toba_G8dp5aweN9Z7Ap479sRw',
@@ -16,6 +25,29 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const auth = getAuth(app);
+
+// === TAGS === //
+
+export type Tag = {
+  associatedExerciseIds: FirebaseId[];
+  tag: string;
+  tagID: FirebaseId;
+};
+
+function validateTag(data: DocumentData): Tag {
+  // TODO: actually validate this in some way
+  return data as Tag;
+}
+
+export async function getTags(): Promise<Tag[]> {
+  const querySnapshot = await getDocs(collection(db, 'tags'));
+  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
+}
+
+export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
+  const querySnapshot = await getDocs(query(collection(db, 'tags'), where('tagID', 'in', tagIDs)));
+  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
+}
 
 // === EXERCISES === //
 
@@ -41,17 +73,33 @@ export type Exercise = {
   originCountry: string;
   playersMin: number;
   playersMax: number;
-  tagIDs: FirebaseId[];
+  tags: Tag[];
 };
 
-function validateExercise(data: DocumentData): Exercise {
-  // TODO: actually validate this in some way
-  return data as Exercise;
+function validateExercise(data: DocumentData, tags: Tag[]): Exercise {
+  const exercise = data as Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] };
+
+  const tagsById = new Map(tags.map((tag) => [tag.tagID, tag]));
+  const { tagIDs = [] } = exercise;
+  const tagsForExercise: Tag[] = [];
+  for (const tagID of tagIDs) {
+    const tag = tagsById.get(tagID);
+    if (tag !== undefined) {
+      tagsForExercise.push(tag);
+    }
+  }
+
+  return {
+    ...exercise,
+    tags: tagsForExercise,
+  };
 }
 
 export async function searchExercises(searchParams: ExerciseSearchParams): Promise<Exercise[]> {
+  const tags = await getTags();
+
   const querySnapshot = await getDocs(collection(db, 'exercises'));
-  return querySnapshot.docs.map((doc) => validateExercise(doc.data()));
+  return querySnapshot.docs.map((doc) => validateExercise(doc.data(), tags));
 }
 
 export async function getExerciseById(eid: FirebaseId) {
@@ -63,7 +111,9 @@ export async function getExerciseById(eid: FirebaseId) {
     return null;
   }
 
-  return validateExercise(data);
+  const tags = await getTagsByIds(data.tagIDs);
+
+  return validateExercise(data, tags);
 }
 
 export async function randomExercise(searchParams: ExerciseSearchParams) {
@@ -92,11 +142,4 @@ export async function favoriteExercise(eid: FirebaseId) {
 
 export async function unfavoriteExercise(eid: FirebaseId) {
   // TODO: this
-}
-
-// === TAGS === //
-
-export async function getTags() {
-  const querySnapshot = await getDocs(collection(db, 'tags'));
-  return querySnapshot.docs.map((doc) => doc.data());
 }

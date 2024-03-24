@@ -1,3 +1,4 @@
+import ExerciseTagList from '@/components/ExerciseTagList';
 import { Exercise } from '@/lib/firebase';
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -31,6 +32,7 @@ export default function ExerciseListCard(props: ExerciseListCardProps) {
         >
           {exercise.howToPlay}
         </Typography>
+        <ExerciseTagList exercise={exercise} mt={2} />
         {/* TODO: tags */}
         {/* TODO: difficulty, number of players, favorites, etc. */}
       </CardContent>
