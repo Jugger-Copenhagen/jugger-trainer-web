@@ -10,3 +10,37 @@ export function numberOfPlayersHumanReadable(exercise: Exercise) {
   }
   return `${playersMin}\u2013${playersMax}`;
 }
+
+// TODO: we should *really* convert these in database to ISO 2-letter country codes
+export function countryFlag(exercise: Exercise): string | null {
+  switch (exercise.originCountry?.toUpperCase()) {
+    case 'AUSTRALIA':
+      return '🇦🇺';
+    case 'AUSTRIA':
+      return '🇦🇹';
+    case 'CANADA':
+      return '🇨🇦';
+    case 'COLOMBIA':
+      return '🇨🇴';
+    case 'CZECHREPUBLIC':
+      return '🇨🇿';
+    case 'DENMARK':
+      return '🇩🇰';
+    case 'FRANCE':
+      return '🇫🇷';
+    case 'GERMANY':
+      return '🇩🇪';
+    case 'IRELAND':
+      return '🇮🇪';
+    case 'ITALY':
+      return '🇮🇹';
+    case 'SPAIN':
+      return '🇪🇸';
+    case 'SWEDEN':
+      return '🇸🇪';
+    case 'USA':
+      return '🇺🇸';
+    default:
+      return null;
+  }
+}

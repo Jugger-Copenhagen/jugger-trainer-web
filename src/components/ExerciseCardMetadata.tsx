@@ -1,6 +1,6 @@
-import { numberOfPlayersHumanReadable } from '@/lib/copy';
+import { countryFlag, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/firebase';
-import { Equalizer, People } from '@mui/icons-material';
+import { Equalizer, Language, People } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 type ExerciseCardMetadataProps = {
@@ -8,6 +8,8 @@ type ExerciseCardMetadataProps = {
 };
 
 export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataProps) {
+  const flag = countryFlag(exercise);
+
   return (
     <Stack direction="row" spacing={2} alignItems="center">
       <Stack direction="row" spacing={0.5} alignItems="center">
@@ -18,6 +20,14 @@ export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataP
         <People />
         <Typography component="span">{numberOfPlayersHumanReadable(exercise)}</Typography>
       </Stack>
+      {flag !== null && (
+        <Stack direction="row" spacing={0.5} alignItems="center">
+          <Language />
+          <Typography variant="h6" component="span">
+            {flag}
+          </Typography>
+        </Stack>
+      )}
     </Stack>
   );
 }
