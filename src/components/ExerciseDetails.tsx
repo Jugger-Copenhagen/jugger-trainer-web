@@ -1,21 +1,11 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
+import { numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/firebase';
 import { Box, Grid, Typography } from '@mui/material';
 
 type ExerciseDetailsProps = {
   exercise: Exercise;
 };
-
-function numberOfPlayersHumanReadable(exercise: Exercise) {
-  const { playersMin, playersMax } = exercise;
-  if (playersMin === playersMax) {
-    return playersMin;
-  }
-  if (playersMax === 2147483647) {
-    return `${playersMin}+`;
-  }
-  return `${playersMin}\u2013${playersMax}`;
-}
 
 export default function ExerciseDetails(props: ExerciseDetailsProps) {
   const { exercise } = props;
