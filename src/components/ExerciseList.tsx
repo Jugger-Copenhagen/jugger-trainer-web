@@ -9,8 +9,6 @@ type ExerciseListProps = {
 export default function ExerciseList(props: ExerciseListProps) {
   const { exercises } = props;
 
-  console.log(exercises.map(({ originCountry }) => originCountry));
-
   return (
     <Grid container spacing={2} sx={{ mt: 0 }}>
       {exercises.map((exercise) => (

@@ -40,7 +40,7 @@ function validateTag(data: DocumentData): Tag {
 
 export async function getTags(): Promise<Tag[]> {
   const querySnapshot = await getDocs(collection(db, 'tags'));
-  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
+  return querySnapshot.docs.map((doc) => validateTag(doc.data())).filter((tag) => tag.tag);
 }
 
 export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {

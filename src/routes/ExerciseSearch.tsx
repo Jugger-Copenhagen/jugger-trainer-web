@@ -3,11 +3,11 @@ import ExerciseSearchForm from '@/components/ExerciseSearchForm';
 import { ExerciseSearchParams } from '@/lib/types';
 import { SearchParamsSchema } from '@/lib/validation';
 import { loaderExerciseSearch } from '@/routes/loaders';
-import { Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
 export default function ExerciseSearch() {
-  const exercises = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseSearch>>;
+  const { exercises, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseSearch>>;
   const [searchParams] = useSearchParams();
 
   const resultParams = SearchParamsSchema.safeParse({
@@ -31,7 +31,9 @@ export default function ExerciseSearch() {
 
   return (
     <>
-      <ExerciseSearchForm params={paramsValidated} />
+      <Box marginY={2}>
+        <ExerciseSearchForm params={paramsValidated} tags={tags} />
+      </Box>
       <Divider />
       <Typography component="h2" marginTop={2} variant="h5">
         {exercises.length} exercises

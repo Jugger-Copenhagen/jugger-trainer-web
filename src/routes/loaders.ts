@@ -1,11 +1,16 @@
-import { getExerciseById, searchExercises } from '@/lib/firebase';
+import { getExerciseById, getTags, searchExercises } from '@/lib/firebase';
 import { FirebaseId } from '@/lib/types';
 import { LoaderFunctionArgs } from 'react-router-dom';
 
 export async function loaderExerciseSearch() {
-  return searchExercises({
-    tagIDs: [],
-  });
+  const [exercises, tags] = await Promise.all([
+    searchExercises({
+      tagIDs: [],
+    }),
+    getTags(),
+  ]);
+
+  return { exercises, tags };
 }
 
 export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
