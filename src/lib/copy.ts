@@ -11,6 +11,17 @@ export function numberOfPlayersHumanReadable(exercise: Exercise) {
   return `${playersMin}\u2013${playersMax}`;
 }
 
+export function exertionLevelHumanReadable(exercise: Exercise) {
+  switch (exercise.exertionLevel) {
+    case 'EASY':
+      return 'Easy';
+    case 'MEDIUM':
+      return 'Medium';
+    case 'HARD':
+      return 'Hard';
+  }
+}
+
 // TODO: we should *really* convert these in database to ISO 2-letter country codes
 export function countryFlag(exercise: Exercise): string | null {
   switch (exercise.originCountry?.toUpperCase()) {

@@ -29,6 +29,7 @@ export const auth = getAuth(app);
 // === TAGS === //
 
 export type Tag = {
+  // TODO: we should get rid of associatedExerciseIds in database
   associatedExerciseIds: FirebaseId[];
   tag: string;
   tagID: FirebaseId;

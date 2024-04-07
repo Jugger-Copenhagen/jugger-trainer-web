@@ -1,5 +1,5 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
-import { numberOfPlayersHumanReadable } from '@/lib/copy';
+import { exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/firebase';
 import { Box, Grid, Typography } from '@mui/material';
 
@@ -31,7 +31,7 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
             <Typography style={{ fontWeight: 700 }} component="strong">
               Difficulty:
             </Typography>{' '}
-            <Typography component="span">{exercise.exertionLevel}</Typography>
+            <Typography component="span">{exertionLevelHumanReadable(exercise)}</Typography>
           </Box>
           <Box mt={1}>
             <Typography style={{ fontWeight: 700 }} component="strong">

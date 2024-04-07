@@ -1,4 +1,4 @@
-import { countryFlag, numberOfPlayersHumanReadable } from '@/lib/copy';
+import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/firebase';
 import { Equalizer, Language, People } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
@@ -14,7 +14,7 @@ export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataP
     <Stack direction="row" spacing={2} alignItems="center">
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Equalizer />
-        <Typography component="span">{exercise.exertionLevel}</Typography>
+        <Typography component="span">{exertionLevelHumanReadable(exercise)}</Typography>
       </Stack>
       <Stack direction="row" spacing={0.5} alignItems="center">
         <People />
