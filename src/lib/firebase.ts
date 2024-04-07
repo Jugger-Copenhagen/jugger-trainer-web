@@ -8,6 +8,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -131,7 +132,9 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
     queryConstraints.push(where('playersMax', '<=', searchParams.playersMax));
   }
 
-  const querySnapshot = await getDocs(query(collection(db, 'exercises'), ...queryConstraints));
+  const querySnapshot = await getDocs(
+    query(collection(db, 'exercises'), orderBy('name'), ...queryConstraints)
+  );
 
   return querySnapshot.docs
     .map((doc) => validateExercise(doc.data(), tags, images))
