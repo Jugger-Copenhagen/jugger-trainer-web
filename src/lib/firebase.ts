@@ -40,7 +40,7 @@ function validateTag(data: DocumentData): Tag {
 
 export async function getTags(): Promise<Tag[]> {
   const querySnapshot = await getDocs(collection(db, 'tags'));
-  return querySnapshot.docs.map((doc) => validateTag(doc.data())).filter((tag) => tag.tag);
+  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
 }
 
 export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
@@ -49,32 +49,6 @@ export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
 }
 
 // === EXERCISES === //
-
-export type FirebaseId = string;
-
-export type ExertionLevel = 'EASY' | 'MEDIUM' | 'HARD';
-
-export type ExerciseSearchParams = {
-  name?: string;
-  tagIDs: string[];
-  exertionLevel?: ExertionLevel;
-  playersMin?: number;
-  playersMax?: number;
-};
-
-export type Exercise = {
-  created: number;
-  createdByUID: FirebaseId;
-  eid: FirebaseId;
-  exertionLevel: ExertionLevel;
-  howToPlay: string;
-  name: string;
-  originCountry?: string;
-  playersMin: number;
-  playersMax: number;
-  tags: Tag[];
-  images: string[];
-};
 
 function validateExercise(data: DocumentData, tags: Tag[], images: string[]): Exercise {
   const exercise = data as Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] };
@@ -201,5 +175,3 @@ export async function getAllImages() {
   );
   return allImagesUrls;
 }
-
-export function getImageForExercise(eid: FirebaseId) {}

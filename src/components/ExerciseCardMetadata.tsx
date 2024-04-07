@@ -14,7 +14,9 @@ export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataP
     <Stack direction="row" spacing={2} alignItems="center">
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Equalizer />
-        <Typography component="span">{exertionLevelHumanReadable(exercise)}</Typography>
+        <Typography component="span">
+          {exertionLevelHumanReadable(exercise.exertionLevel)}
+        </Typography>
       </Stack>
       <Stack direction="row" spacing={0.5} alignItems="center">
         <People />

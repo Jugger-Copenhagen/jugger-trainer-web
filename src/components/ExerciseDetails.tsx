@@ -31,7 +31,9 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
             <Typography style={{ fontWeight: 700 }} component="strong">
               Difficulty:
             </Typography>{' '}
-            <Typography component="span">{exertionLevelHumanReadable(exercise)}</Typography>
+            <Typography component="span">
+              {exertionLevelHumanReadable(exercise.exertionLevel)}
+            </Typography>
           </Box>
           <Box mt={1}>
             <Typography style={{ fontWeight: 700 }} component="strong">

@@ -38,4 +38,5 @@ export type Exercise = {
   playersMin: number;
   playersMax: number;
   tags: Tag[];
+  images: string[];
 };

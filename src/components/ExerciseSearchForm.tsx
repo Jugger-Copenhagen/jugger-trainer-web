@@ -1,7 +1,21 @@
-import { ExerciseSearchParams, Tag } from '@/lib/types';
-import { Autocomplete, Button, Grid, TextField } from '@mui/material';
+import { exertionLevelHumanReadable } from '@/lib/copy';
+import { EXERTION_LEVELS, ExerciseSearchParams, Tag } from '@/lib/types';
+import {
+  Autocomplete,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { useState } from 'react';
 import { Form } from 'react-router-dom';
+
+const SELECT_VALUE_ANY = '*';
 
 type ExerciseSearchFormProps = {
   params: ExerciseSearchParams;
@@ -38,12 +52,20 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
   const searchDefaultValue = getSearchDefaultValue(params, tags);
   const [searchValue, setSearchValue] =
     useState<(string | ExerciseSearchOption)[]>(searchDefaultValue);
-
-  const { name, tagIDs, exertionLevel, playersMin, playersMax } = params;
+  const [exertionLevel, setExertionLevel] = useState(params.exertionLevel ?? SELECT_VALUE_ANY);
 
   const searchOptions = tags
     .map(getOptionForTag)
     .toSorted((a, b) => a.label.localeCompare(b.label));
+
+  function handleClearAll() {
+    // TODO: actually clear all
+    alert('TODO: actually clear all');
+  }
+
+  function handleExertionLevelChange(evt: SelectChangeEvent<string>) {
+    setExertionLevel(evt.target.value);
+  }
 
   function handleSearchChange(
     _evt: React.SyntheticEvent,
@@ -55,7 +77,7 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
   return (
     <Form>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <Autocomplete
             defaultValue={searchDefaultValue}
             freeSolo
@@ -75,10 +97,37 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
             return <input key={value.value} name="tagIDs" type="hidden" value={value.value} />;
           })}
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button type="submit" variant="contained">
-            Search
-          </Button>
+        <Grid item xs={12} md={2}>
+          <FormControl fullWidth>
+            <InputLabel id="label_exertion_level">Exertion Level</InputLabel>
+            <Select
+              defaultValue={exertionLevel}
+              fullWidth
+              label="Exertion Level"
+              labelId="label_exertion_level"
+              name={exertionLevel === SELECT_VALUE_ANY ? undefined : 'exertionLevel'}
+              size="small"
+              onChange={handleExertionLevelChange}
+            >
+              <MenuItem value={SELECT_VALUE_ANY}>Any</MenuItem>
+              {EXERTION_LEVELS.map((exertionLevel) => (
+                <MenuItem key={exertionLevel} value={exertionLevel}>
+                  {exertionLevelHumanReadable(exertionLevel)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={2}>
+          <Stack alignItems="center" direction="row" spacing={1}>
+            <Button type="submit" variant="contained">
+              Search
+            </Button>
+
+            <Button variant="outlined" onClick={handleClearAll}>
+              Clear All
+            </Button>
+          </Stack>
         </Grid>
       </Grid>
     </Form>

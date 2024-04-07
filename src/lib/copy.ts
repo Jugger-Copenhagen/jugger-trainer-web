@@ -1,4 +1,4 @@
-import { Exercise } from '@/lib/types';
+import { Exercise, ExertionLevel } from '@/lib/types';
 
 export function numberOfPlayersHumanReadable(exercise: Exercise) {
   const { playersMin, playersMax } = exercise;
@@ -11,8 +11,8 @@ export function numberOfPlayersHumanReadable(exercise: Exercise) {
   return `${playersMin}\u2013${playersMax}`;
 }
 
-export function exertionLevelHumanReadable(exercise: Exercise) {
-  switch (exercise.exertionLevel) {
+export function exertionLevelHumanReadable(exertionLevel: ExertionLevel) {
+  switch (exertionLevel) {
     case 'EASY':
       return 'Easy';
     case 'MEDIUM':
