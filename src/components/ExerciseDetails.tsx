@@ -1,5 +1,5 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
-import { exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
+import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/types';
 import { Box, Grid, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
@@ -10,6 +10,7 @@ type ExerciseDetailsProps = {
 
 export default function ExerciseDetails(props: ExerciseDetailsProps) {
   const { exercise } = props;
+  const flag = countryFlag(exercise);
 
   return (
     <Box mt={2}>
@@ -47,6 +48,16 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
               Skills and Equipment:
             </Typography>{' '}
             <ExerciseTagList component="span" exercise={exercise} />
+          </Box>
+          <Box mt={1}>
+            {flag !== null && (
+              <>
+                <Typography style={{ fontWeight: 700 }} component="strong">
+                  Origin Country:
+                </Typography>{' '}
+                <Typography component="span">{flag}</Typography>
+              </>
+            )}
           </Box>
         </Grid>
         <Grid item xs={12} md={8}>

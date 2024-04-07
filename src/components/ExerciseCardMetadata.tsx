@@ -1,6 +1,6 @@
 import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/types';
-import { Equalizer, Language, People } from '@mui/icons-material';
+import { DirectionsRun, Language, People } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 type ExerciseCardMetadataProps = {
@@ -13,7 +13,7 @@ export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataP
   return (
     <Stack direction="row" spacing={2} alignItems="center">
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <Equalizer />
+        <DirectionsRun />
         <Typography component="span">
           {exertionLevelHumanReadable(exercise.exertionLevel)}
         </Typography>
