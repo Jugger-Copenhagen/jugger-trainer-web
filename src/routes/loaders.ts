@@ -1,4 +1,5 @@
-import { FirebaseId, getExerciseById, searchExercises } from '@/lib/firebase';
+import { getExerciseById, searchExercises } from '@/lib/firebase';
+import { FirebaseId } from '@/lib/types';
 import { LoaderFunctionArgs } from 'react-router-dom';
 
 export async function loaderExerciseSearch() {

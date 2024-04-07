@@ -1,4 +1,4 @@
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 
 export function numberOfPlayersHumanReadable(exercise: Exercise) {
   const { playersMin, playersMax } = exercise;

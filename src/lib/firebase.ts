@@ -1,3 +1,4 @@
+import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import {
@@ -28,13 +29,6 @@ export const auth = getAuth(app);
 
 // === TAGS === //
 
-export type Tag = {
-  // TODO: we should get rid of associatedExerciseIds in database
-  associatedExerciseIds: FirebaseId[];
-  tag: string;
-  tagID: FirebaseId;
-};
-
 function validateTag(data: DocumentData): Tag {
   // TODO: actually validate this in some way
   return data as Tag;
@@ -51,31 +45,6 @@ export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
 }
 
 // === EXERCISES === //
-
-export type FirebaseId = string;
-
-export type ExertionLevel = 'EASY' | 'MEDIUM' | 'HARD';
-
-export type ExerciseSearchParams = {
-  name?: string;
-  tagIDs: string[];
-  exertionLevel?: ExertionLevel;
-  playersMin?: number;
-  playersMax?: number;
-};
-
-export type Exercise = {
-  created: number;
-  createdByUID: FirebaseId;
-  eid: FirebaseId;
-  exertionLevel: ExertionLevel;
-  howToPlay: string;
-  name: string;
-  originCountry?: string;
-  playersMin: number;
-  playersMax: number;
-  tags: Tag[];
-};
 
 function validateExercise(data: DocumentData, tags: Tag[]): Exercise {
   const exercise = data as Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] };
@@ -99,8 +68,44 @@ function validateExercise(data: DocumentData, tags: Tag[]): Exercise {
 export async function searchExercises(searchParams: ExerciseSearchParams): Promise<Exercise[]> {
   const tags = await getTags();
 
-  const querySnapshot = await getDocs(collection(db, 'exercises'));
-  return querySnapshot.docs.map((doc) => validateExercise(doc.data(), tags));
+  /*
+   * Now we build up the Firebase query as a series of query constraints.
+   *
+   * Firebase [does not support full-text search](https://firebase.google.com/docs/firestore/solutions/search?provider=typesense),
+   * so we instead apply the `name` filter client-side.
+   *
+   * All other filters are applied as part of the Firebase query.
+   */
+
+  const queryConstraints = [];
+
+  if (searchParams.tagIDs.length > 0) {
+    queryConstraints.push(where('tagIDs', 'array-contains-any', searchParams.tagIDs));
+  }
+
+  if (searchParams.exertionLevel !== undefined) {
+    queryConstraints.push(where('exertionLevel', '==', searchParams.exertionLevel));
+  }
+
+  if (searchParams.playersMin !== undefined) {
+    queryConstraints.push(where('playersMin', '>=', searchParams.playersMin));
+  }
+
+  if (searchParams.playersMax !== undefined) {
+    queryConstraints.push(where('playersMax', '<=', searchParams.playersMax));
+  }
+
+  const querySnapshot = await getDocs(query(collection(db, 'exercises'), ...queryConstraints));
+
+  return querySnapshot.docs
+    .map((doc) => validateExercise(doc.data(), tags))
+    .filter((exercise) => {
+      if (searchParams.name !== undefined) {
+        return exercise.name.toLowerCase().includes(searchParams.name.toLowerCase());
+      }
+
+      return true;
+    });
 }
 
 export async function getExerciseById(eid: FirebaseId) {
@@ -137,10 +142,10 @@ export async function editExercise(/* type? */) {
 
 // === FAVOURITES === //
 
-export async function favoriteExercise(eid: FirebaseId) {
+export async function favoriteExercise(/* eid: FirebaseId */) {
   // TODO: this
 }
 
-export async function unfavoriteExercise(eid: FirebaseId) {
+export async function unfavoriteExercise(/* eid: FirebaseId */) {
   // TODO: this
 }
