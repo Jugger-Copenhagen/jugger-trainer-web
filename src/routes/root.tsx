@@ -52,6 +52,7 @@ export default function Root() {
       <CssBaseline />
       <AppBar position="sticky" sx={{ width: '100vw' }}>
         <Toolbar>
+          <img src="/src/assets/smolll_logo.png"></img>
           <Typography component="h1" variant="h6" color="inherit" noWrap>
             <Link to="/">Jugger Trainer</Link>
           </Typography>
