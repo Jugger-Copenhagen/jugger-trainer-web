@@ -21,7 +21,7 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
         <Grid item xs={12} md={4}>
           <Box>
             <img
-              src="https://source.unsplash.com/random/800x600"
+              src={exercise.images[0]}
               alt={'Image of ' + exercise.name}
               style={{ width: '100%' }}
             />

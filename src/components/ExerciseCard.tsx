@@ -15,7 +15,7 @@ export default function ExerciseListCard(props: ExerciseListCardProps) {
     <Card>
       <CardMedia
         sx={{ height: 200 }}
-        image="https://source.unsplash.com/random/800x600"
+        image={exercise.images[0]}
         title={'Image of ' + exercise.name}
       />
       <CardContent sx={{ height: 240 }}>
