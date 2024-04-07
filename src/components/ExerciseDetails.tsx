@@ -2,6 +2,7 @@ import ExerciseTagList from '@/components/ExerciseTagList';
 import { exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/types';
 import { Box, Grid, Typography } from '@mui/material';
+import Markdown from 'react-markdown';
 
 type ExerciseDetailsProps = {
   exercise: Exercise;
@@ -49,9 +50,7 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
           </Box>
         </Grid>
         <Grid item xs={12} md={8}>
-          <pre>
-            <code>{JSON.stringify(exercise, null, 2)}</code>
-          </pre>
+          <Markdown>{exercise.howToPlay}</Markdown>
         </Grid>
       </Grid>
     </Box>
