@@ -1,4 +1,4 @@
-import { Tag } from '@/lib/firebase';
+import { Tag } from '@/lib/types';
 import { Chip, ChipProps } from '@mui/material';
 
 type ExerciseTagProps = {

@@ -1,6 +1,6 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
 import { exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 import { Box, Grid, Typography } from '@mui/material';
 
 type ExerciseDetailsProps = {

@@ -1,6 +1,6 @@
 import ExerciseCardMetadata from '@/components/ExerciseCardMetadata';
 import ExerciseTagList from '@/components/ExerciseTagList';
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 

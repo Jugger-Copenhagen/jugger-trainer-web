@@ -1,5 +1,5 @@
 import ExerciseTag from '@/components/ExerciseTag';
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 import { Box, BoxProps } from '@mui/material';
 
 type ExerciseTagListProps = {

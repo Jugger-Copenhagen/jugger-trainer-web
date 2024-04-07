@@ -1,5 +1,5 @@
 import ExerciseCard from '@/components/ExerciseCard';
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 import { Grid } from '@mui/material';
 
 type ExerciseListProps = {

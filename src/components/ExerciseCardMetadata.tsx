@@ -1,5 +1,5 @@
 import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
-import { Exercise } from '@/lib/firebase';
+import { Exercise } from '@/lib/types';
 import { Equalizer, Language, People } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
