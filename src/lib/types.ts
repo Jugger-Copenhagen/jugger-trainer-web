@@ -1,5 +1,7 @@
 // === ALIASES === //
 
+import { z } from 'zod';
+
 export type FirebaseId = string;
 
 // === ENUMS === //
@@ -19,13 +21,15 @@ export type Tag = {
 
 // === EXERCISES === //
 
-export type ExerciseSearchParams = {
-  name?: string;
-  tagIDs: string[];
-  exertionLevel?: ExertionLevel;
-  playersMin?: number;
-  playersMax?: number;
-};
+export const ExerciseSearchParamsSchema = z.object({
+  name: z.string().optional(),
+  tagIDs: z.array(z.string()),
+  exertionLevel: z.enum(EXERTION_LEVELS).optional(),
+  playersMin: z.number().int().positive().optional(),
+  playersMax: z.number().int().positive().optional(),
+});
+
+export type ExerciseSearchParams = z.infer<typeof ExerciseSearchParamsSchema>;
 
 export type Exercise = {
   created: number;

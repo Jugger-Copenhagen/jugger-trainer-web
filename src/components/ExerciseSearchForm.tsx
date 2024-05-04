@@ -101,12 +101,12 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
           <FormControl fullWidth>
             <InputLabel id="label_exertion_level">Exertion Level</InputLabel>
             <Select
-              defaultValue={exertionLevel}
               fullWidth
               label="Exertion Level"
               labelId="label_exertion_level"
               name={exertionLevel === SELECT_VALUE_ANY ? undefined : 'exertionLevel'}
               size="small"
+              value={exertionLevel}
               onChange={handleExertionLevelChange}
             >
               <MenuItem value={SELECT_VALUE_ANY}>Any</MenuItem>

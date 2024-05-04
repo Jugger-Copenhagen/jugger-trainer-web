@@ -1,12 +1,26 @@
 import { getExerciseById, getTags, searchExercises } from '@/lib/firebase';
-import { FirebaseId } from '@/lib/types';
-import { LoaderFunctionArgs } from 'react-router-dom';
+import { ExerciseSearchParamsSchema, FirebaseId } from '@/lib/types';
+import { LoaderFunctionArgs, json } from 'react-router-dom';
 
-export async function loaderExerciseSearch() {
+export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
+  const { searchParams } = new URL(request.url);
+
+  const searchParamsValidated = ExerciseSearchParamsSchema.safeParse({
+    name: searchParams.get('name') ?? undefined,
+    tagIDs: searchParams.getAll('tagIDs'),
+    exertionLevel: searchParams.get('exertionLevel') ?? undefined,
+    playersMin: searchParams.get('playersMin') ?? undefined,
+    playersMax: searchParams.get('playersMax') ?? undefined,
+  });
+
+  if (!searchParamsValidated.success) {
+    throw json(searchParamsValidated.error.flatten(), {
+      status: 400,
+    });
+  }
+
   const [exercises, tags] = await Promise.all([
-    searchExercises({
-      tagIDs: [],
-    }),
+    searchExercises(searchParamsValidated.data),
     getTags(),
   ]);
 

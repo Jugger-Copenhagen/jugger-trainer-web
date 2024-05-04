@@ -8,7 +8,6 @@ import {
   getDoc,
   getDocs,
   getFirestore,
-  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -109,9 +108,7 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
     queryConstraints.push(where('playersMax', '<=', searchParams.playersMax));
   }
 
-  const querySnapshot = await getDocs(
-    query(collection(db, 'exercises'), orderBy('name'), ...queryConstraints)
-  );
+  const querySnapshot = await getDocs(query(collection(db, 'exercises'), ...queryConstraints));
 
   return querySnapshot.docs
     .map((doc) => validateExercise(doc.data(), tags, images))
@@ -121,7 +118,8 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
       }
 
       return true;
-    });
+    })
+    .toSorted((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getExerciseById(eid: FirebaseId) {
