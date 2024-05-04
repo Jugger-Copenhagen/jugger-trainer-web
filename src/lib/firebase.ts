@@ -1,16 +1,8 @@
 import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import {
-  DocumentData,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore';
+import { child, get, getDatabase, ref as realtimeRef } from 'firebase/database';
+import { DocumentData } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -24,7 +16,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getDatabase(app);
 const storage = getStorage();
 const storageRef = ref(storage);
 
@@ -32,19 +24,42 @@ export const auth = getAuth(app);
 
 // === TAGS === //
 
+let tagsPromise: Promise<Tag[]> | null = null;
+
 function validateTag(data: DocumentData): Tag {
   // TODO: actually validate this in some way
   return data as Tag;
 }
 
+async function getTagsImpl(): Promise<Tag[]> {
+  const querySnapshot = await get(child(realtimeRef(db), 'tags'));
+  const queryResult = querySnapshot.val() as Record<FirebaseId, DocumentData>;
+
+  return Object.values(queryResult).map((data) => validateTag(data));
+}
+
 export async function getTags(): Promise<Tag[]> {
-  const querySnapshot = await getDocs(collection(db, 'tags'));
-  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
+  if (tagsPromise !== null) {
+    return tagsPromise;
+  }
+
+  tagsPromise = getTagsImpl();
+  return tagsPromise;
 }
 
 export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
-  const querySnapshot = await getDocs(query(collection(db, 'tags'), where('tagID', 'in', tagIDs)));
-  return querySnapshot.docs.map((doc) => validateTag(doc.data()));
+  const tagsAll = await getTags();
+  const tagsById = new Map(tagsAll.map((tag) => [tag.tagID, tag]));
+
+  const tags = [];
+  for (const tagID of tagIDs) {
+    const tag = tagsById.get(tagID);
+    if (tag !== undefined) {
+      tags.push(tag);
+    }
+  }
+
+  return tags;
 }
 
 // === EXERCISES === //
@@ -81,32 +96,14 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
   const tags = await getTags();
   const images = await getAllImages();
 
+  const querySnapshot = await get(child(realtimeRef(db), 'exercises'));
+  const queryResult = querySnapshot.val() as Record<FirebaseId, DocumentData>;
+
   /*
-   * Now we build up the Firebase query as a series of query constraints.
-   *
-   * Firebase [does not support full-text search](https://firebase.google.com/docs/firestore/solutions/search?provider=typesense),
-   * so we instead apply the `name` filter client-side.
-   *
-   * It _also_ requires composite indexes for queries with range filters, so we apply the `players`
-   * filter client-side as well.
-   *
-   * All other filters are applied as part of the Firebase query.
+   * Now we filter exercises client-side based on the search parameters.
    */
-
-  const queryConstraints = [];
-
-  if (searchParams.tagIDs.length > 0) {
-    queryConstraints.push(where('tagIDs', 'array-contains-any', searchParams.tagIDs));
-  }
-
-  if (searchParams.exertionLevel !== undefined) {
-    queryConstraints.push(where('exertionLevel', '==', searchParams.exertionLevel));
-  }
-
-  const querySnapshot = await getDocs(query(collection(db, 'exercises'), ...queryConstraints));
-
-  return querySnapshot.docs
-    .map((doc) => validateExercise(doc.data(), tags, images))
+  return Object.values(queryResult)
+    .map((data) => validateExercise(data, tags, images))
     .filter((exercise) => {
       if (exercise.name === undefined) {
         /*
@@ -115,6 +112,18 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
          * need this workaround.
          */
         return false;
+      }
+
+      if (searchParams.tagIDs.length > 0) {
+        if (!exercise.tags.some((tag: Tag) => searchParams.tagIDs.includes(tag.tagID))) {
+          return false;
+        }
+      }
+
+      if (searchParams.exertionLevel !== undefined) {
+        if (exercise.exertionLevel !== searchParams.exertionLevel) {
+          return false;
+        }
       }
 
       if (searchParams.name !== undefined) {
@@ -139,18 +148,17 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
 }
 
 export async function getExerciseById(eid: FirebaseId) {
-  const docRef = doc(db, 'exercises', eid);
-  const docSnapshot = await getDoc(docRef);
-  const data = docSnapshot.data();
-
-  if (data === undefined) {
+  const querySnapshot = await get(child(realtimeRef(db), `exercises/${eid}`));
+  if (!querySnapshot.exists()) {
     return null;
   }
 
-  const tags = await getTagsByIds(data.tagIDs);
+  const queryResult = querySnapshot.val() as DocumentData;
+
+  const tags = await getTagsByIds(queryResult.tagIDs);
   const images = await getAllImages();
 
-  return validateExercise(data, tags, images);
+  return validateExercise(queryResult, tags, images);
 }
 
 export async function randomExercise(searchParams: ExerciseSearchParams) {
