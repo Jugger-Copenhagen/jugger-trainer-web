@@ -156,7 +156,7 @@ export async function getExerciseById(eid: FirebaseId) {
 
   const queryResult = querySnapshot.val() as DocumentData;
 
-  const tags = await getTagsByIds(queryResult.tagIDs);
+  const tags = await getTagsByIds(queryResult.tagIDs ?? []);
   const images = await getAllImages();
 
   return validateExercise(queryResult, tags, images);
