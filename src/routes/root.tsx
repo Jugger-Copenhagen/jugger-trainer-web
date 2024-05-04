@@ -1,3 +1,4 @@
+import smolLogoUrl from '@/assets/smolll_logo.png';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import '@/routes/root.css';
@@ -51,7 +52,7 @@ export default function Root() {
       <CssBaseline />
       <AppBar position="sticky" sx={{ width: '100vw' }}>
         <Toolbar>
-          <img src="/src/assets/smolll_logo.png"></img>
+          <img src={smolLogoUrl}></img>
           <Typography component="h1" variant="h6" color="inherit" noWrap>
             <Link to="/">Jugger Trainer</Link>
           </Typography>

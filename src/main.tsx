@@ -8,37 +8,42 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Root />,
+      children: [
+        {
+          path: '',
+          element: <ExerciseSearch />,
+          loader: loaderExerciseSearch,
+        },
+        {
+          path: 'exercises/:eid',
+          element: <ExerciseView />,
+          loader: loaderExerciseView,
+        },
+        {
+          path: 'exercises/favorited',
+          element: <div>Favorited exercises</div>,
+        },
+        {
+          path: 'exercises/random',
+          element: <div>Random exercise</div>,
+        },
+        {
+          path: 'login',
+          element: <Login />,
+          action: actionLogin,
+        },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <Root />,
-    children: [
-      {
-        path: '',
-        element: <ExerciseSearch />,
-        loader: loaderExerciseSearch,
-      },
-      {
-        path: 'exercises/:eid',
-        element: <ExerciseView />,
-        loader: loaderExerciseView,
-      },
-      {
-        path: 'exercises/favorited',
-        element: <div>Favorited exercises</div>,
-      },
-      {
-        path: 'exercises/random',
-        element: <div>Random exercise</div>,
-      },
-      {
-        path: 'login',
-        element: <Login />,
-        action: actionLogin,
-      },
-    ],
-  },
-]);
+    basename: '/jugger-trainer-web',
+  }
+);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
