@@ -5,24 +5,20 @@ import { LoaderFunctionArgs, json } from 'react-router-dom';
 export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
 
-  const searchParamsValidated = ExerciseSearchParamsSchema.safeParse({
+  const resultParams = ExerciseSearchParamsSchema.safeParse({
     name: searchParams.get('name') ?? undefined,
     tagIDs: searchParams.getAll('tagIDs'),
     exertionLevel: searchParams.get('exertionLevel') ?? undefined,
-    playersMin: searchParams.get('playersMin') ?? undefined,
-    playersMax: searchParams.get('playersMax') ?? undefined,
+    players: searchParams.get('players') ?? undefined,
   });
 
-  if (!searchParamsValidated.success) {
-    throw json(searchParamsValidated.error.flatten(), {
+  if (!resultParams.success) {
+    throw json(resultParams.error.flatten(), {
       status: 400,
     });
   }
 
-  const [exercises, tags] = await Promise.all([
-    searchExercises(searchParamsValidated.data),
-    getTags(),
-  ]);
+  const [exercises, tags] = await Promise.all([searchExercises(resultParams.data), getTags()]);
 
   return { exercises, tags };
 }

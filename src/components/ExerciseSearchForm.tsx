@@ -31,29 +31,31 @@ function getOptionForTag({ tag, tagID }: Tag): ExerciseSearchOption {
   return { label: `Tag: ${tag}`, value: tagID };
 }
 
-function getSearchDefaultValue(params: ExerciseSearchParams, tags: Tag[]) {
-  const defaultValue: (string | ExerciseSearchOption)[] = [];
+function getSearchValue(params: ExerciseSearchParams, tags: Tag[]) {
+  const searchValue: (string | ExerciseSearchOption)[] = [];
 
   params.tagIDs.forEach((tagID) => {
     const tag = tags.find((tag) => tag.tagID === tagID);
     if (tag) {
-      defaultValue.push(getOptionForTag(tag));
+      searchValue.push(getOptionForTag(tag));
     }
   });
 
   if (params.name) {
-    defaultValue.push(params.name);
+    searchValue.push(params.name);
   }
 
-  return defaultValue;
+  return searchValue;
 }
 
 export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormProps) {
-  const searchDefaultValue = getSearchDefaultValue(params, tags);
-  const [searchValue, setSearchValue] =
-    useState<(string | ExerciseSearchOption)[]>(searchDefaultValue);
-  const [exertionLevel, setExertionLevel] = useState(params.exertionLevel ?? SELECT_VALUE_ANY);
   const navigate = useNavigate();
+
+  const searchInitialValue = getSearchValue(params, tags);
+  const [searchValue, setSearchValue] =
+    useState<(string | ExerciseSearchOption)[]>(searchInitialValue);
+  const [exertionLevel, setExertionLevel] = useState(params.exertionLevel ?? SELECT_VALUE_ANY);
+  const [players, setPlayers] = useState(params.players ?? '');
 
   const searchOptions = tags
     .map(getOptionForTag)
@@ -67,6 +69,22 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
     setExertionLevel(evt.target.value);
   }
 
+  function handlePlayersChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    setPlayers(evt.target.value);
+  }
+
+  function handlePlayersInput(evt: React.FormEvent<HTMLInputElement>) {
+    const input = evt.target as HTMLInputElement;
+    input.setCustomValidity('');
+  }
+
+  function handlePlayersInvalid(evt: React.FormEvent<HTMLInputElement>) {
+    const input = evt.target as HTMLInputElement;
+    if (input.validity.patternMismatch) {
+      input.setCustomValidity('Please enter the number of players');
+    }
+  }
+
   function handleSearchChange(
     _evt: React.SyntheticEvent,
     value: (string | ExerciseSearchOption)[]
@@ -77,9 +95,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
   return (
     <Form>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6} md={4}>
           <Autocomplete
-            defaultValue={searchDefaultValue}
             freeSolo
             multiple
             options={searchOptions}
@@ -87,6 +104,7 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               <TextField {...inputProps} label="Search" placeholder="Search by name or tags" />
             )}
             size="small"
+            value={searchValue}
             onChange={handleSearchChange}
           />
           {searchValue.map((value) => {
@@ -97,7 +115,7 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
             return <input key={value.value} name="tagIDs" type="hidden" value={value.value} />;
           })}
         </Grid>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} sm={3} md={2}>
           <FormControl fullWidth>
             <InputLabel id="label_exertion_level">Exertion Level</InputLabel>
             <Select
@@ -118,7 +136,24 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} sm={3} md={2}>
+          <FormControl fullWidth>
+            <TextField
+              fullWidth
+              inputMode="numeric"
+              inputProps={{ pattern: '[0-9]*' }}
+              label="Players"
+              name={players === '' ? undefined : 'players'}
+              size="small"
+              title="Number of players"
+              value={players}
+              onChange={handlePlayersChange}
+              onInput={handlePlayersInput}
+              onInvalid={handlePlayersInvalid}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
           <Stack alignItems="center" direction="row" spacing={1}>
             <Button type="submit" variant="contained">
               Search

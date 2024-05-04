@@ -1,7 +1,6 @@
 import ExerciseList from '@/components/ExerciseList';
 import ExerciseSearchForm from '@/components/ExerciseSearchForm';
-import { ExerciseSearchParams } from '@/lib/types';
-import { SearchParamsSchema } from '@/lib/validation';
+import { ExerciseSearchParams, ExerciseSearchParamsSchema } from '@/lib/types';
 import { loaderExerciseSearch } from '@/routes/loaders';
 import { Box, Divider, Typography } from '@mui/material';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
@@ -10,12 +9,11 @@ export default function ExerciseSearch() {
   const { exercises, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseSearch>>;
   const [searchParams] = useSearchParams();
 
-  const resultParams = SearchParamsSchema.safeParse({
+  const resultParams = ExerciseSearchParamsSchema.safeParse({
     name: searchParams.get('name') ?? undefined,
     tagIDs: searchParams.getAll('tagIDs'),
     exertionLevel: searchParams.get('exertionLevel') ?? undefined,
-    playersMin: searchParams.get('playersMin') ?? undefined,
-    playersMax: searchParams.get('playersMax') ?? undefined,
+    players: searchParams.get('players') ?? undefined,
   });
 
   let paramsValidated: ExerciseSearchParams;

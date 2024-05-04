@@ -25,8 +25,7 @@ export const ExerciseSearchParamsSchema = z.object({
   name: z.string().optional(),
   tagIDs: z.array(z.string()),
   exertionLevel: z.enum(EXERTION_LEVELS).optional(),
-  playersMin: z.number().int().positive().optional(),
-  playersMax: z.number().int().positive().optional(),
+  players: z.coerce.number().positive().int().optional(),
 });
 
 export type ExerciseSearchParams = z.infer<typeof ExerciseSearchParamsSchema>;

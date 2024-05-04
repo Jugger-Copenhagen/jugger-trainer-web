@@ -87,6 +87,9 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
    * Firebase [does not support full-text search](https://firebase.google.com/docs/firestore/solutions/search?provider=typesense),
    * so we instead apply the `name` filter client-side.
    *
+   * It _also_ requires composite indexes for queries with range filters, so we apply the `players`
+   * filter client-side as well.
+   *
    * All other filters are applied as part of the Firebase query.
    */
 
@@ -98,14 +101,6 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
 
   if (searchParams.exertionLevel !== undefined) {
     queryConstraints.push(where('exertionLevel', '==', searchParams.exertionLevel));
-  }
-
-  if (searchParams.playersMin !== undefined) {
-    queryConstraints.push(where('playersMin', '>=', searchParams.playersMin));
-  }
-
-  if (searchParams.playersMax !== undefined) {
-    queryConstraints.push(where('playersMax', '<=', searchParams.playersMax));
   }
 
   const querySnapshot = await getDocs(query(collection(db, 'exercises'), ...queryConstraints));
@@ -123,7 +118,19 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
       }
 
       if (searchParams.name !== undefined) {
-        return exercise.name.toLowerCase().includes(searchParams.name.toLowerCase());
+        if (!exercise.name.toLowerCase().includes(searchParams.name.toLowerCase())) {
+          return false;
+        }
+      }
+
+      if (searchParams.players !== undefined) {
+        if (exercise.playersMin > searchParams.players) {
+          return false;
+        }
+
+        if (exercise.playersMax < searchParams.players) {
+          return false;
+        }
       }
 
       return true;
