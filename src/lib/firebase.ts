@@ -54,14 +54,17 @@ function validateExercise(data: DocumentData, tags: Tag[], images: string[]): Ex
   const exercise = data as Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] };
 
   const tagsById = new Map(tags.map((tag) => [tag.tagID, tag]));
-  const { tagIDs = [] } = exercise;
-  const tagsForExercise: Tag[] = [];
+  const tagIDs = new Set<FirebaseId>(exercise.tagIDs ?? []);
+  const tagsForExercise = [];
+
   for (const tagID of tagIDs) {
     const tag = tagsById.get(tagID);
     if (tag !== undefined) {
       tagsForExercise.push(tag);
     }
   }
+
+  tagsForExercise.sort((a, b) => a.tag.localeCompare(b.tag));
 
   const randomImages = [
     images[Math.floor(Math.random() * 11)],
