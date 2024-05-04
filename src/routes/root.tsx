@@ -1,14 +1,11 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import '@/routes/root.css';
-import { Favorite, FavoriteBorder, Login, Logout } from '@mui/icons-material';
 import {
   AppBar,
   Box,
-  Button,
   Container,
   CssBaseline,
-  IconButton,
   List,
   ThemeProvider,
   Toolbar,
@@ -59,25 +56,7 @@ export default function Root() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <List component="nav">
-            <Link to="/exercises/favorited">
-              <IconButton color="inherit" sx={{ mr: 1 }}>
-                {pathname === '/exercises/favorited' ? <Favorite /> : <FavoriteBorder />}
-              </IconButton>
-            </Link>
-
-            {userStore.user === null ? (
-              <Link to="/login">
-                <Button variant="contained">
-                  Sign In <Login sx={{ ml: 0.5 }} />
-                </Button>
-              </Link>
-            ) : (
-              <Button variant="contained" onClick={logout}>
-                Sign Out <Logout sx={{ ml: 0.5 }} />
-              </Button>
-            )}
-          </List>
+          <List component="nav"></List>
         </Toolbar>
       </AppBar>
 
