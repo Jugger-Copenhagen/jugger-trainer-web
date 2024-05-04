@@ -113,6 +113,15 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
   return querySnapshot.docs
     .map((doc) => validateExercise(doc.data(), tags, images))
     .filter((exercise) => {
+      if (exercise.name === undefined) {
+        /*
+         * This shouldn't happen, but: one of the exercises in our existing database appears to
+         * be missing nearly all its fields somehow.  Until we remove that from database, we'll
+         * need this workaround.
+         */
+        return false;
+      }
+
       if (searchParams.name !== undefined) {
         return exercise.name.toLowerCase().includes(searchParams.name.toLowerCase());
       }

@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 const SELECT_VALUE_ANY = '*';
 
@@ -53,14 +53,14 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
   const [searchValue, setSearchValue] =
     useState<(string | ExerciseSearchOption)[]>(searchDefaultValue);
   const [exertionLevel, setExertionLevel] = useState(params.exertionLevel ?? SELECT_VALUE_ANY);
+  const navigate = useNavigate();
 
   const searchOptions = tags
     .map(getOptionForTag)
     .toSorted((a, b) => a.label.localeCompare(b.label));
 
   function handleClearAll() {
-    // TODO: actually clear all
-    alert('TODO: actually clear all');
+    navigate('/');
   }
 
   function handleExertionLevelChange(evt: SelectChangeEvent<string>) {
