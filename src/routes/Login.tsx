@@ -1,6 +1,5 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
-import { FormErrors } from '@/routes/actions';
 import { Google } from '@mui/icons-material';
 import { Box, Button, Grid } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
@@ -11,12 +10,12 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useEffect } from 'react';
-import { useActionData, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 let pendingCredential: OAuthCredential | null = null;
 
 export default function Login() {
-  const actionData = useActionData() as FormErrors | null;
+  // const actionData = useActionData() as FormErrors | null;
   const userStore = useUserStore();
   const navigate = useNavigate();
 

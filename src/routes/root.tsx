@@ -18,10 +18,10 @@ import {
 import { green, pink } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 export default function Root() {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
   const navigate = useNavigate();
   const userStore = useUserStore();
 
