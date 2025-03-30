@@ -65,14 +65,19 @@ export default function Root() {
           <List component="nav">
             {userStore.user === null ? (
               <Link to="/login">
-                <Button variant="contained">
+                <Button color="secondary" variant="contained">
                   Sign In <Login sx={{ ml: 0.5 }} />
                 </Button>
               </Link>
             ) : (
-              <Button variant="contained" onClick={logout}>
-                Sign Out <Logout sx={{ ml: 0.5 }} />
-              </Button>
+              <>
+                <Typography color="white" component="span" variant="body1" sx={{ mr: 2 }}>
+                  {userStore.user.email}
+                </Typography>
+                <Button color="secondary" variant="contained" onClick={logout}>
+                  Sign Out <Logout sx={{ ml: 0.5 }} />
+                </Button>
+              </>
             )}
           </List>
         </Toolbar>

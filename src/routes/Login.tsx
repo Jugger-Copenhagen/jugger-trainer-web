@@ -23,7 +23,6 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<FirebaseError | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userStore.user !== null) {
@@ -37,7 +36,6 @@ export default function Login() {
     }
 
     setError(err);
-    setLoading(false);
   }
 
   function onCloseSnackbar() {
@@ -45,7 +43,6 @@ export default function Login() {
   }
 
   async function signInWithAppUser() {
-    // TODO: validate these
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
 
@@ -62,7 +59,6 @@ export default function Login() {
   }
 
   async function createAppUser() {
-    // TODO: validate these
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
 
