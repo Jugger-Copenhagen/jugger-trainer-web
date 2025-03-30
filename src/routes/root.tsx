@@ -15,7 +15,7 @@ import {
   Typography,
   createTheme,
 } from '@mui/material';
-import { green, pink } from '@mui/material/colors';
+import { green, pink, purple } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
@@ -43,6 +43,9 @@ export default function Root() {
       },
       secondary: {
         main: pink[500],
+      },
+      error: {
+        main: purple[600],
       },
     },
   });

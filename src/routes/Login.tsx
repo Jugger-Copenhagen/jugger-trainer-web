@@ -1,7 +1,7 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import { AppRegistration, Google, Login as IconLogin } from '@mui/icons-material';
-import { Box, Button, Divider, Grid, TextField } from '@mui/material';
+import { Alert, Box, Button, Divider, Grid, Snackbar, TextField } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
 import {
   GoogleAuthProvider,
@@ -22,6 +22,8 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<FirebaseError | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userStore.user !== null) {
@@ -34,8 +36,12 @@ export default function Login() {
       throw err;
     }
 
-    const { code, message } = err;
-    console.error(code, message);
+    setError(err);
+    setLoading(false);
+  }
+
+  function onCloseSnackbar() {
+    setError(null);
   }
 
   async function signInWithAppUser() {
@@ -148,6 +154,12 @@ export default function Login() {
           </Button>
         </Box>
       </Grid>
+
+      <Snackbar open={error !== null} autoHideDuration={6000} onClose={onCloseSnackbar}>
+        <Alert onClose={onCloseSnackbar} severity="error" variant="filled" sx={{ width: '100%' }}>
+          {error?.message ?? 'Unknown error'}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 }
