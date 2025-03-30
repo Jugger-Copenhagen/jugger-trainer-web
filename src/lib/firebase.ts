@@ -1,4 +1,4 @@
-import { FIREBASE_CONFIG_DEV } from '@/lib/firebaseConfig';
+import { FIREBASE_CONFIG_PROD } from '@/lib/firebaseConfig';
 import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -6,7 +6,7 @@ import { child, get, getDatabase, ref as realtimeRef } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 
-const firebaseConfig = FIREBASE_CONFIG_DEV;
+const firebaseConfig = FIREBASE_CONFIG_PROD;
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
