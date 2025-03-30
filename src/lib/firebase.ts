@@ -1,3 +1,4 @@
+import { FIREBASE_CONFIG_DEV } from '@/lib/firebaseConfig';
 import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -5,16 +6,7 @@ import { child, get, getDatabase, ref as realtimeRef } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyBZJmUnbSqufRL64CSzdJMpy3hlRshd-9Q',
-  authDomain: 'juggertrainer.firebaseapp.com',
-  databaseURL: 'https://juggertrainer.firebaseio.com',
-  projectId: 'juggertrainer',
-  storageBucket: 'juggertrainer.appspot.com',
-  messagingSenderId: '103859061629',
-  appId: '1:103859061629:web:eff53ba99a8251f65cc214',
-  measurementId: 'G-KN7W5GRDM4',
-};
+const firebaseConfig = FIREBASE_CONFIG_DEV;
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
