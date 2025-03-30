@@ -2,9 +2,11 @@ import smolLogoUrl from '@/assets/smolll_logo.png';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import '@/routes/root.css';
+import { Login, Logout } from '@mui/icons-material';
 import {
   AppBar,
   Box,
+  Button,
   Container,
   CssBaseline,
   List,
@@ -16,11 +18,11 @@ import {
 import { green, pink } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Root() {
-  // const { pathname } = useLocation();
-  // const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const userStore = useUserStore();
 
   useEffect(() => {
@@ -29,12 +31,10 @@ export default function Root() {
     });
   }, []);
 
-  /*
   async function logout() {
     await auth.signOut();
     navigate('/login');
   }
-  */
 
   const defaultTheme = createTheme({
     palette: {
@@ -59,7 +59,19 @@ export default function Root() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <List component="nav"></List>
+          <List component="nav">
+            {userStore.user === null ? (
+              <Link to="/login">
+                <Button variant="contained">
+                  Sign In <Login sx={{ ml: 0.5 }} />
+                </Button>
+              </Link>
+            ) : (
+              <Button variant="contained" onClick={logout}>
+                Sign Out <Logout sx={{ ml: 0.5 }} />
+              </Button>
+            )}
+          </List>
         </Toolbar>
       </AppBar>
 

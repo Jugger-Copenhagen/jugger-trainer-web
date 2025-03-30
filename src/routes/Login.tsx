@@ -2,7 +2,7 @@ import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import { FormErrors } from '@/routes/actions';
 import { Google } from '@mui/icons-material';
-import { Box, Button, Divider, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
 import {
   GoogleAuthProvider,
@@ -11,7 +11,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Form, Link, useActionData, useNavigate } from 'react-router-dom';
+import { useActionData, useNavigate } from 'react-router-dom';
 
 let pendingCredential: OAuthCredential | null = null;
 
@@ -61,7 +61,7 @@ export default function Login() {
       <Grid item sm={12} md={8} lg={6}>
         <h2>Login</h2>
 
-        <Form method="post">
+        {/* <Form method="post">
           <TextField
             name="email"
             label="Email"
@@ -86,7 +86,9 @@ export default function Login() {
           </Button>
         </Form>
 
-        <Divider sx={{ my: 4 }} />
+        <Divider sx={{ my: 4 }} /> */}
+
+        <p>Register + sign-in with username and password coming soon.</p>
 
         <Box sx={{ mb: 4 }}>
           <Button size="large" variant="outlined" onClick={signInWithGoogle}>
@@ -94,9 +96,9 @@ export default function Login() {
           </Button>
         </Box>
 
-        <p>
+        {/* <p>
           No account yet? <Link to="/register">Register here.</Link>
-        </p>
+        </p>--> */}
       </Grid>
     </Grid>
   );
