@@ -1,8 +1,9 @@
+import ExerciseNew from '@/routes/ExerciseNew';
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
 import Login from '@/routes/Login';
 import { actionLogin } from '@/routes/actions';
-import { loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
+import { loaderExerciseNew, loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -20,9 +21,9 @@ const router = createBrowserRouter(
           loader: loaderExerciseSearch,
         },
         {
-          path: 'exercises/:eid',
-          element: <ExerciseView />,
-          loader: loaderExerciseView,
+          path: 'exercises/new',
+          element: <ExerciseNew />,
+          loader: loaderExerciseNew,
         },
         {
           path: 'exercises/favorited',
@@ -31,6 +32,11 @@ const router = createBrowserRouter(
         {
           path: 'exercises/random',
           element: <div>Random exercise</div>,
+        },
+        {
+          path: 'exercises/:eid',
+          element: <ExerciseView />,
+          loader: loaderExerciseView,
         },
         {
           path: 'login',

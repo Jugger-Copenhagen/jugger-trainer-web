@@ -33,3 +33,7 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 
   return exercise;
 }
+
+export async function loaderExerciseNew() {
+  return null;
+}
