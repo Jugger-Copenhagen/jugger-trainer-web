@@ -8,6 +8,7 @@ import {
   OAuthCredential,
   createUserWithEmailAndPassword,
   linkWithCredential,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -22,6 +23,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<FirebaseError | null>(null);
 
   useEffect(() => {
@@ -29,6 +31,14 @@ export default function Login() {
       navigate('/');
     }
   }, [userStore.user]);
+
+  function handleAuthMessage(message: string) {
+    setMessage(message);
+  }
+
+  function onCloseMessageSnackbar() {
+    setMessage(null);
+  }
 
   function handleAuthError(err: unknown) {
     if (!(err instanceof FirebaseError)) {
@@ -38,7 +48,7 @@ export default function Login() {
     setError(err);
   }
 
-  function onCloseSnackbar() {
+  function onCloseErrorSnackbar() {
     setError(null);
   }
 
@@ -69,6 +79,18 @@ export default function Login() {
       }
 
       userStore.setUser(user);
+    } catch (err) {
+      handleAuthError(err);
+    }
+  }
+
+  async function resetUserPassword() {
+    try {
+      await sendPasswordResetEmail(auth, email);
+
+      handleAuthMessage(
+        'If you have an account with this email, a password reset link has been sent to your email address.'
+      );
     } catch (err) {
       handleAuthError(err);
     }
@@ -140,6 +162,16 @@ export default function Login() {
           >
             Sign Up <AppRegistration sx={{ ml: 1 }} />
           </Button>
+
+          <Button
+            type="button"
+            variant="text"
+            size="large"
+            sx={{ ml: 2, mt: 2 }}
+            onClick={resetUserPassword}
+          >
+            Forgot Password?
+          </Button>
         </Form>
 
         <Divider sx={{ my: 4 }} />
@@ -151,8 +183,24 @@ export default function Login() {
         </Box>
       </Grid>
 
-      <Snackbar open={error !== null} autoHideDuration={6000} onClose={onCloseSnackbar}>
-        <Alert onClose={onCloseSnackbar} severity="error" variant="filled" sx={{ width: '100%' }}>
+      <Snackbar open={message !== null} autoHideDuration={6000} onClose={onCloseMessageSnackbar}>
+        <Alert
+          onClose={onCloseMessageSnackbar}
+          severity="info"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={error !== null} autoHideDuration={6000} onClose={onCloseErrorSnackbar}>
+        <Alert
+          onClose={onCloseErrorSnackbar}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {error?.message ?? 'Unknown error'}
         </Alert>
       </Snackbar>
