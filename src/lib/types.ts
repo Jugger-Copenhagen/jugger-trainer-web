@@ -10,10 +10,40 @@ export const EXERTION_LEVELS = ['EASY', 'MEDIUM', 'HARD'] as const;
 
 export type ExertionLevel = (typeof EXERTION_LEVELS)[number];
 
+export const COUNTRIES = [
+  'CANADA',
+  'USA',
+  'AUSTRALIA',
+  'GERMANY',
+  'SPAIN',
+  'FRANCE',
+  'IRELAND',
+  'NEWZEALAND',
+  'CHILE',
+  'COLOMBIA',
+  'ARGENTINA',
+  'MEXICO',
+  'VENEZUELA',
+  'COSTARICA',
+  'ITALY',
+  'SLOVENIJA',
+  'CZECHREPUBLIC',
+  'AUSTRIA',
+  'LITHUANIA',
+  'SWEDEN',
+  'LATVIA',
+  'NETHERLANDS',
+  'BELGIUM',
+  'ENGLAND',
+  'JAPAN',
+];
+
+export type Country = (typeof COUNTRIES)[number];
+
 // === TAGS === //
 
 export type Tag = {
-  // TODO: we should get rid of associatedExerciseIds in database
+  // TODO (post-android): we should get rid of associatedExerciseIds in database
   associatedExerciseIds: FirebaseId[];
   tag: string;
   tagID: FirebaseId;
@@ -43,3 +73,5 @@ export type Exercise = {
   tags: Tag[];
   images: string[];
 };
+
+export type ExerciseCreate = Omit<Exercise, 'created' | 'createdByUID' | 'eid'>;

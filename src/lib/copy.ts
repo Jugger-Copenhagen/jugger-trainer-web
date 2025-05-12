@@ -1,3 +1,4 @@
+import { PLAYERS_MAX_NOT_SPECIFIED } from '@/lib/exercise';
 import { Exercise, ExertionLevel } from '@/lib/types';
 
 export function numberOfPlayersHumanReadable(exercise: Exercise) {
@@ -5,7 +6,7 @@ export function numberOfPlayersHumanReadable(exercise: Exercise) {
   if (playersMin === playersMax) {
     return playersMin;
   }
-  if (playersMax === 2147483647) {
+  if (playersMax === PLAYERS_MAX_NOT_SPECIFIED) {
     return `${playersMin}+`;
   }
   return `${playersMin}\u2013${playersMax}`;

@@ -35,5 +35,7 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 }
 
 export async function loaderExerciseNew() {
-  return null;
+  const tags = await getTags();
+
+  return { tags };
 }
