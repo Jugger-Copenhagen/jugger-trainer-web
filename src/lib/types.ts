@@ -67,7 +67,7 @@ export type Exercise = {
   exertionLevel: ExertionLevel;
   howToPlay: string;
   name: string;
-  originCountry?: string;
+  originCountry?: Country;
   playersMin: number;
   playersMax: number;
   tags: Tag[];

@@ -1,4 +1,5 @@
 import config from '@/config';
+import { getRandomImages } from '@/lib/exercise';
 import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -71,10 +72,7 @@ function validateExercise(data: DocumentData, tags: Tag[], images: string[]): Ex
 
   tagsForExercise.sort((a, b) => a.tag.localeCompare(b.tag));
 
-  const randomImages = [
-    images[Math.floor(Math.random() * 11)],
-    images[Math.floor(Math.random() * 11)],
-  ];
+  const randomImages = getRandomImages(images);
 
   return {
     ...exercise,

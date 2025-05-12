@@ -1,4 +1,4 @@
-import { getExerciseById, getTags, searchExercises } from '@/lib/firebase';
+import { getAllImages, getExerciseById, getTags, searchExercises } from '@/lib/firebase';
 import { ExerciseSearchParamsSchema, FirebaseId } from '@/lib/types';
 import { LoaderFunctionArgs, json } from 'react-router-dom';
 
@@ -35,7 +35,8 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 }
 
 export async function loaderExerciseNew() {
+  const images = await getAllImages();
   const tags = await getTags();
 
-  return { tags };
+  return { images, tags };
 }

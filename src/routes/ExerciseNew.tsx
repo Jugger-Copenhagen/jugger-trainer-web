@@ -4,9 +4,9 @@ import { loaderExerciseNew } from "@/routes/loaders";
 import { useLoaderData } from "react-router-dom";
 
 export default function ExerciseNew() {
-  const exercise = makeExerciseCreate();
+  const { images, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseNew>>;
 
-  const { tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseNew>>;
+  const exercise = makeExerciseCreate(images);
 
   return <ExerciseForm exercise={exercise} tags={tags} />
 }
