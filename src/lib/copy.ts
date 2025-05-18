@@ -1,5 +1,5 @@
 import { PLAYERS_MAX_NOT_SPECIFIED } from '@/lib/exercise';
-import { Exercise, ExerciseCreate, ExertionLevel } from '@/lib/types';
+import { Country, Exercise, ExerciseCreate, ExertionLevel } from '@/lib/types';
 
 export function numberOfPlayersHumanReadable(exercise: Exercise | ExerciseCreate) {
   const { playersMin, playersMax } = exercise;
@@ -24,8 +24,8 @@ export function exertionLevelHumanReadable(exertionLevel: ExertionLevel) {
 }
 
 // TODO: we should *really* convert these in database to ISO 2-letter country codes
-export function countryFlag(exercise: Exercise | ExerciseCreate): string | null {
-  switch (exercise.originCountry?.toUpperCase()) {
+export function countryFlag(originCountry?: Country): string | null {
+  switch (originCountry?.toUpperCase()) {
     case 'AUSTRALIA':
       return '🇦🇺';
     case 'AUSTRIA':

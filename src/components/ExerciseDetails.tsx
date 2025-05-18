@@ -10,7 +10,7 @@ type ExerciseDetailsProps = {
 
 export default function ExerciseDetails(props: ExerciseDetailsProps) {
   const { exercise } = props;
-  const flag = countryFlag(exercise);
+  const flag = countryFlag(exercise.originCountry);
 
   return (
     <Box mt={2}>

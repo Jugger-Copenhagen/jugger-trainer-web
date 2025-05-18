@@ -8,7 +8,7 @@ type ExerciseCardMetadataProps = {
 };
 
 export default function ExerciseCardMetadata({ exercise }: ExerciseCardMetadataProps) {
-  const flag = countryFlag(exercise);
+  const flag = countryFlag(exercise.originCountry);
 
   return (
     <Stack direction="row" spacing={2} alignItems="center">
