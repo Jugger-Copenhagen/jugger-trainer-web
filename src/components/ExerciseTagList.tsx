@@ -1,10 +1,10 @@
 import ExerciseTag from '@/components/ExerciseTag';
-import { Exercise } from '@/lib/types';
+import { Exercise, ExerciseCreate } from '@/lib/types';
 import { Box, BoxProps } from '@mui/material';
 import React from 'react';
 
 type ExerciseTagListProps = {
-  exercise: Exercise;
+  exercise: Exercise | ExerciseCreate;
 } & BoxProps;
 
 export default function ExerciseTagList(props: ExerciseTagListProps) {
