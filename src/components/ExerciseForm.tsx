@@ -1,3 +1,4 @@
+import ExerciseHowToPlayEditor from '@/components/ExerciseHowToPlayEditor';
 import ExerciseTagList from '@/components/ExerciseTagList';
 import HttpMethod from '@/components/HttpMethod';
 import {
@@ -26,7 +27,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import Markdown from 'react-markdown';
 import { Form } from 'react-router-dom';
 
 type ExerciseFormProps = {
@@ -40,9 +40,6 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
   // TODO: number of players
   // TODO: tags
   const [originCountry, setOriginCountry] = useState(exercise.originCountry);
-  const [howToPlay, setHowToPlay] = useState(exercise.howToPlay);
-
-  const flag = countryFlag(originCountry);
 
   const isEditing = 'eid' in exercise;
 
@@ -119,19 +116,10 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
                   ))}
                 </Select>
               </FormControl>
-
-              {flag !== null && (
-                <>
-                  <Typography style={{ fontWeight: 700 }} component="strong">
-                    Origin Country:
-                  </Typography>{' '}
-                  <Typography component="span">{flag}</Typography>
-                </>
-              )}
             </Box>
           </GridLegacy>
           <GridLegacy item xs={12} md={8}>
-            <Markdown>{exercise.howToPlay}</Markdown>
+            <ExerciseHowToPlayEditor exercise={exercise} />
           </GridLegacy>
         </GridLegacy>
       </Form>
