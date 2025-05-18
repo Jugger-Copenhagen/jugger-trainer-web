@@ -1,7 +1,20 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
 import HttpMethod from '@/components/HttpMethod';
-import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
-import { Exercise, ExerciseCreate, EXERTION_LEVELS, ExertionLevel, Tag } from '@/lib/types';
+import {
+  countryFlag,
+  countryHumanReadable,
+  exertionLevelHumanReadable,
+  numberOfPlayersHumanReadable,
+} from '@/lib/copy';
+import {
+  COUNTRIES,
+  Country,
+  Exercise,
+  ExerciseCreate,
+  EXERTION_LEVELS,
+  ExertionLevel,
+  Tag,
+} from '@/lib/types';
 import {
   Box,
   FormControl,
@@ -26,10 +39,10 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
   // TODO: number of players
   // TODO: tags
-  const [country, setCountry] = useState(exercise.originCountry);
+  const [originCountry, setOriginCountry] = useState(exercise.originCountry);
   const [howToPlay, setHowToPlay] = useState(exercise.howToPlay);
 
-  const flag = countryFlag(country);
+  const flag = countryFlag(originCountry);
 
   const isEditing = 'eid' in exercise;
 
@@ -74,19 +87,39 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
                 </Select>
               </FormControl>
             </Box>
+
             <Box mt={1}>
               <Typography style={{ fontWeight: 700 }} component="strong">
                 Number of Players:
               </Typography>{' '}
               <Typography component="span">{numberOfPlayersHumanReadable(exercise)}</Typography>
             </Box>
+
             <Box mt={1}>
               <Typography style={{ fontWeight: 700 }} component="strong">
                 Skills and Equipment:
               </Typography>{' '}
               <ExerciseTagList component="span" exercise={exercise} />
             </Box>
+
             <Box mt={1}>
+              <FormControl fullWidth>
+                <InputLabel id="label-originCountry">Origin Country</InputLabel>
+                <Select
+                  name="originCountry"
+                  labelId="label-originCountry"
+                  label="Origin Country"
+                  value={originCountry}
+                  onChange={(evt) => setOriginCountry(evt.target.value as Country)}
+                >
+                  {COUNTRIES.map((c) => (
+                    <MenuItem value={c}>
+                      {countryFlag(c)} {countryHumanReadable(c)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               {flag !== null && (
                 <>
                   <Typography style={{ fontWeight: 700 }} component="strong">
