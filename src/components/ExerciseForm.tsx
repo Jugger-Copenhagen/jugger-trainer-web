@@ -18,7 +18,7 @@ import {
 import {
   Box,
   FormControl,
-  Grid,
+  GridLegacy,
   InputLabel,
   MenuItem,
   Select,
@@ -50,8 +50,8 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
     <Box mt={2}>
       <Form method="post">
         {isEditing && <HttpMethod method="put" />}
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <GridLegacy container spacing={2}>
+          <GridLegacy item xs={12}>
             <TextField
               name="name"
               label="Name"
@@ -61,8 +61,8 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
               placeholder="Name of exercise"
               onChange={(evt) => setName(evt.target.value)}
             />
-          </Grid>
-          <Grid item xs={12} md={4}>
+          </GridLegacy>
+          <GridLegacy item xs={12} md={4}>
             <Box>
               <img
                 src={exercise.images[0]}
@@ -129,11 +129,11 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
                 </>
               )}
             </Box>
-          </Grid>
-          <Grid item xs={12} md={8}>
+          </GridLegacy>
+          <GridLegacy item xs={12} md={8}>
             <Markdown>{exercise.howToPlay}</Markdown>
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       </Form>
     </Box>
   );

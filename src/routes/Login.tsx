@@ -1,7 +1,7 @@
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import { AppRegistration, Google, Login as IconLogin } from '@mui/icons-material';
-import { Alert, Box, Button, Divider, Grid, Snackbar, TextField } from '@mui/material';
+import { Alert, Box, Button, Divider, GridLegacy, Snackbar, TextField } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
 import {
   GoogleAuthProvider,
@@ -117,8 +117,8 @@ export default function Login() {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item sm={12} md={8} lg={6}>
+    <GridLegacy container spacing={2}>
+      <GridLegacy item sm={12} md={8} lg={6}>
         <h2>Login</h2>
 
         <Form method="post">
@@ -181,7 +181,7 @@ export default function Login() {
             <Google sx={{ mr: 1 }} /> Sign in with Google
           </Button>
         </Box>
-      </Grid>
+      </GridLegacy>
 
       <Snackbar open={message !== null} autoHideDuration={6000} onClose={onCloseMessageSnackbar}>
         <Alert
@@ -204,6 +204,6 @@ export default function Login() {
           {error?.message ?? 'Unknown error'}
         </Alert>
       </Snackbar>
-    </Grid>
+    </GridLegacy>
   );
 }

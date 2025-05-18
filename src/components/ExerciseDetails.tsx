@@ -1,7 +1,7 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
 import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/types';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, GridLegacy, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
 
 type ExerciseDetailsProps = {
@@ -14,13 +14,13 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
 
   return (
     <Box mt={2}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+      <GridLegacy container spacing={2}>
+        <GridLegacy item xs={12}>
           <Typography variant="h3" component="h2">
             {exercise.name}
           </Typography>
-        </Grid>
-        <Grid item xs={12} md={4}>
+        </GridLegacy>
+        <GridLegacy item xs={12} md={4}>
           <Box>
             <img
               src={exercise.images[0]}
@@ -59,11 +59,11 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
               </>
             )}
           </Box>
-        </Grid>
-        <Grid item xs={12} md={8}>
+        </GridLegacy>
+        <GridLegacy item xs={12} md={8}>
           <Markdown>{exercise.howToPlay}</Markdown>
-        </Grid>
-      </Grid>
+        </GridLegacy>
+      </GridLegacy>
     </Box>
   );
 }

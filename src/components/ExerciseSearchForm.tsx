@@ -4,7 +4,7 @@ import {
   Autocomplete,
   Button,
   FormControl,
-  Grid,
+  GridLegacy,
   InputLabel,
   MenuItem,
   Select,
@@ -94,8 +94,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
 
   return (
     <Form>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4}>
+      <GridLegacy container spacing={2}>
+        <GridLegacy item xs={12} sm={6} md={4}>
           <Autocomplete
             freeSolo
             multiple
@@ -114,8 +114,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
 
             return <input key={value.value} name="tagIDs" type="hidden" value={value.value} />;
           })}
-        </Grid>
-        <Grid item xs={12} sm={3} md={2}>
+        </GridLegacy>
+        <GridLegacy item xs={12} sm={3} md={2}>
           <FormControl fullWidth>
             <InputLabel id="label_exertion_level">Exertion Level</InputLabel>
             <Select
@@ -135,8 +135,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={3} md={2}>
+        </GridLegacy>
+        <GridLegacy item xs={12} sm={3} md={2}>
           <FormControl fullWidth>
             <TextField
               fullWidth
@@ -152,8 +152,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               onInvalid={handlePlayersInvalid}
             />
           </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        </GridLegacy>
+        <GridLegacy item xs={12} sm={6} md={4}>
           <Stack alignItems="center" direction="row" spacing={1}>
             <Button type="submit" variant="contained">
               Search
@@ -163,8 +163,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               Clear All
             </Button>
           </Stack>
-        </Grid>
-      </Grid>
+        </GridLegacy>
+      </GridLegacy>
     </Form>
   );
 }
