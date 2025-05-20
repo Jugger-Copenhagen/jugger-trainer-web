@@ -22,6 +22,7 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
     return json(validatedForm.error.flatten());
   }
 
+  /*
   const {
     exertionLevel,
     howToPlay,
@@ -30,6 +31,7 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
     players,
     tags,
   } = validatedForm.data;
+  */
 
   // TODO: actually build up exercise object, validate tags, etc.
 

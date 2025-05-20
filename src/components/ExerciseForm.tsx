@@ -34,7 +34,7 @@ type ExerciseFormProps = {
   tags: Tag[];
 };
 
-export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
+export default function ExerciseForm({ exercise }: ExerciseFormProps) {
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
   // TODO: number of players
