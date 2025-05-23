@@ -1,5 +1,5 @@
 import ExerciseHowToPlayEditor from '@/components/ExerciseHowToPlayEditor';
-import ExerciseTagList from '@/components/ExerciseTagList';
+import ExerciseTagEditor from '@/components/ExerciseTagEditor';
 import HttpMethod from '@/components/HttpMethod';
 import {
   countryFlag,
@@ -14,7 +14,6 @@ import {
   ExerciseCreate,
   EXERTION_LEVELS,
   ExertionLevel,
-  Tag,
 } from '@/lib/types';
 import {
   Box,
@@ -31,7 +30,6 @@ import { Form } from 'react-router-dom';
 
 type ExerciseFormProps = {
   exercise: ExerciseCreate | Exercise;
-  tags: Tag[];
 };
 
 export default function ExerciseForm({ exercise }: ExerciseFormProps) {
@@ -86,21 +84,18 @@ export default function ExerciseForm({ exercise }: ExerciseFormProps) {
               </FormControl>
             </Box>
 
-            <Box mt={1}>
+            <Box mt={2}>
               <Typography style={{ fontWeight: 700 }} component="strong">
                 Number of Players:
               </Typography>{' '}
               <Typography component="span">{numberOfPlayersHumanReadable(exercise)}</Typography>
             </Box>
 
-            <Box mt={1}>
-              <Typography style={{ fontWeight: 700 }} component="strong">
-                Skills and Equipment:
-              </Typography>{' '}
-              <ExerciseTagList component="span" exercise={exercise} />
+            <Box mt={2}>
+              <ExerciseTagEditor exercise={exercise} />
             </Box>
 
-            <Box mt={1}>
+            <Box mt={2}>
               <FormControl fullWidth>
                 <InputLabel id="label-originCountry">Origin Country</InputLabel>
                 <Select

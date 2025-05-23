@@ -36,7 +36,6 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 
 export async function loaderExerciseNew() {
   const images = await getAllImages();
-  const tags = await getTags();
 
-  return { images, tags };
+  return { images };
 }

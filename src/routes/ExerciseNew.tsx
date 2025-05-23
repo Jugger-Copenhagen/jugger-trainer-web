@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 export default function ExerciseNew() {
-  const { images, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseNew>>;
+  const { images } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseNew>>;
 
   const [open, setOpen] = useState(true);
 
@@ -26,7 +26,7 @@ export default function ExerciseNew() {
 
   return (
     <>
-      <ExerciseForm exercise={exercise} tags={tags} />
+      <ExerciseForm exercise={exercise} />
       <Modal
         open={open}
         onClose={() => setOpen(false)}
