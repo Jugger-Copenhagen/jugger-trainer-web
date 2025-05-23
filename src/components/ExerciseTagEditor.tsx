@@ -1,4 +1,4 @@
-import { Exercise, ExerciseCreate } from '@/lib/types';
+import { Exercise, ExerciseCreate, Tag } from '@/lib/types';
 import { Autocomplete, FormControl, TextField } from '@mui/material';
 import { useState } from 'react';
 
@@ -7,14 +7,17 @@ type ExerciseTagEditorProps = {
 };
 
 export default function ExerciseTagEditor({ exercise }: ExerciseTagEditorProps) {
-  const [tags, setTags] = useState(exercise.tags.map((tag) => `tag:${tag.tagID}`));
+  const [tags, setTags] = useState(exercise.tags);
+  const [options, setOptions] = useState<Tag[]>([]);
 
   return (
     <FormControl fullWidth>
       <Autocomplete
-        freeSolo
+        autoComplete
+        filterOptions={(x) => x}
+        getOptionLabel={(option) => option.tag}
         multiple
-        options={[]}
+        options={options}
         value={tags}
         onChange={(_evt, newValue) => {
           setTags(newValue);
@@ -30,6 +33,7 @@ export default function ExerciseTagEditor({ exercise }: ExerciseTagEditorProps) 
           />
         )}
       />
+      <pre>{JSON.stringify(tags, null, 2)}</pre>
     </FormControl>
   );
 }

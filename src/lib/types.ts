@@ -42,6 +42,12 @@ export type Country = (typeof COUNTRIES)[number];
 
 // === TAGS === //
 
+export const TagsSearchParamsSchema = z.object({
+  tag: z.string(),
+});
+
+export type TagsSearchParams = z.infer<typeof TagsSearchParamsSchema>;
+
 export type Tag = {
   // TODO (post-android): we should get rid of associatedExerciseIds in database
   associatedExerciseIds: FirebaseId[];
