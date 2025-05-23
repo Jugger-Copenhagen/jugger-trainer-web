@@ -7,7 +7,7 @@ import {
   loaderExerciseNew,
   loaderExerciseSearch,
   loaderExerciseView,
-  loaderTagsSearch,
+  loaderTagSearch,
 } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
@@ -51,7 +51,7 @@ const router = createBrowserRouter(
         },
         {
           path: 'tags',
-          loader: loaderTagsSearch,
+          loader: loaderTagSearch,
         },
       ],
     },

@@ -46,7 +46,7 @@ export async function loaderExerciseNew() {
   return { images };
 }
 
-export async function loaderTagsSearch({ request }: LoaderFunctionArgs) {
+export async function loaderTagSearch({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
 
   const resultParams = TagsSearchParamsSchema.safeParse({

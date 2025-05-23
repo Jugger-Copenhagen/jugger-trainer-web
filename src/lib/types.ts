@@ -43,7 +43,7 @@ export type Country = (typeof COUNTRIES)[number];
 // === TAGS === //
 
 export const TagsSearchParamsSchema = z.object({
-  tag: z.string(),
+  tag: z.string().min(1),
 });
 
 export type TagsSearchParams = z.infer<typeof TagsSearchParamsSchema>;
