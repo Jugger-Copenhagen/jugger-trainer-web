@@ -42,10 +42,11 @@ export default function ExerciseForm({ exercise }: ExerciseFormProps) {
   const [originCountry, setOriginCountry] = useState(exercise.originCountry);
 
   const isEditing = 'eid' in exercise;
+  const action = isEditing ? `/exercises/${exercise.eid}` : '/exercises/new';
 
   return (
     <Box mt={2}>
-      <Form method="post">
+      <Form method="post" action={action}>
         {isEditing && <HttpMethod method="put" />}
         <GridLegacy container spacing={2}>
           <GridLegacy item xs={12}>

@@ -2,6 +2,7 @@ import ExerciseNew from '@/routes/ExerciseNew';
 import ExerciseSearch from '@/routes/ExerciseSearch';
 import ExerciseView from '@/routes/ExerciseView';
 import Login from '@/routes/Login';
+import { actionExerciseEdit, actionExerciseNew } from '@/routes/actions';
 import { loaderExerciseNew, loaderExerciseSearch, loaderExerciseView } from '@/routes/loaders';
 import Root from '@/routes/root';
 import React from 'react';
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
           path: 'exercises/new',
           element: <ExerciseNew />,
           loader: loaderExerciseNew,
+          action: actionExerciseNew,
         },
         {
           path: 'exercises/favorited',
@@ -36,6 +38,7 @@ const router = createBrowserRouter(
           path: 'exercises/:eid',
           element: <ExerciseView />,
           loader: loaderExerciseView,
+          action: actionExerciseEdit,
         },
         {
           path: 'login',
