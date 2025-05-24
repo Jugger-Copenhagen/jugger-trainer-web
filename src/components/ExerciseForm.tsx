@@ -14,6 +14,7 @@ import {
   ExerciseCreate,
   EXERTION_LEVELS,
   ExertionLevel,
+  Tag,
 } from '@/lib/types';
 import {
   Box,
@@ -30,9 +31,10 @@ import { Form } from 'react-router-dom';
 
 type ExerciseFormProps = {
   exercise: ExerciseCreate | Exercise;
+  tags: Tag[];
 };
 
-export default function ExerciseForm({ exercise }: ExerciseFormProps) {
+export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
   // TODO: number of players
@@ -92,7 +94,7 @@ export default function ExerciseForm({ exercise }: ExerciseFormProps) {
             </Box>
 
             <Box mt={2}>
-              <ExerciseTagEditor exercise={exercise} />
+              <ExerciseTagEditor exercise={exercise} tags={tags} />
             </Box>
 
             <Box mt={2}>

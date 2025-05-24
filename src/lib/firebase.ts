@@ -1,6 +1,6 @@
 import config from '@/config';
 import { getRandomImages } from '@/lib/exercise';
-import { Exercise, ExerciseSearchParams, FirebaseId, Tag, TagsSearchParams } from '@/lib/types';
+import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { child, get, getDatabase, ref as realtimeRef } from 'firebase/database';
@@ -52,22 +52,6 @@ export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
   }
 
   return tags;
-}
-
-export async function searchTags(searchParams: TagsSearchParams): Promise<Tag[]> {
-  const tags = await getTags();
-
-  return tags
-    .filter((tag) => {
-      if (searchParams.tag !== undefined) {
-        if (!tag.tag.toLowerCase().includes(searchParams.tag.toLowerCase())) {
-          return false;
-        }
-      }
-
-      return true;
-    })
-    .toSorted((a, b) => a.tag.localeCompare(b.tag));
 }
 
 // === EXERCISES === //

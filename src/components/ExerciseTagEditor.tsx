@@ -1,81 +1,41 @@
 import { Exercise, ExerciseCreate, Tag } from '@/lib/types';
-import { Autocomplete, debounce, FormControl, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useFetcher } from 'react-router-dom';
+import { Autocomplete, FormControl, TextField } from '@mui/material';
+import { useState } from 'react';
 
 type ExerciseTagEditorProps = {
   exercise: Exercise | ExerciseCreate;
+  tags: Tag[];
 };
 
-export default function ExerciseTagEditor({ exercise }: ExerciseTagEditorProps) {
-  const fetcherTags = useFetcher<Tag[]>();
+export default function ExerciseTagEditor({ exercise, tags }: ExerciseTagEditorProps) {
+  const [value, setValue] = useState<(string | Tag)[]>(exercise.tags);
 
-  const [tags, setTags] = useState(exercise.tags);
-  const [options, setOptions] = useState<Tag[]>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const fetchTags = debounce(async (inputValue: string) => {
-    setLoading(true);
-
-    const searchParams = new URLSearchParams();
-    searchParams.set('tag', inputValue);
-
-    fetcherTags.load(`/tags?${searchParams.toString()}`);
-  }, 500);
-
-  useEffect(() => {
-    if (!loading) {
-      return;
-    }
-
-    if (inputValue === '') {
-      setOptions([]);
-      return;
-    }
-
-    fetchTags(inputValue);
-  }, [fetchTags, inputValue, loading]);
-
-  useEffect(() => {
-    if (fetcherTags.data === undefined) {
-      return;
-    }
-
-    const tags = fetcherTags.data;
-
-    setOptions(tags);
-    setLoading(false);
-  }, [fetcherTags.data]);
+  const options = tags.toSorted((a, b) => a.tag.localeCompare(b.tag));
 
   return (
     <FormControl fullWidth>
       <Autocomplete
         autoComplete
-        filterOptions={(x) => x}
-        getOptionLabel={(option) => option.tag}
+        freeSolo
+        getOptionLabel={(option) => (typeof option === 'string' ? option : option.tag)}
         multiple
         noOptionsText="No tags found"
         options={options}
-        value={tags}
+        value={value}
         onChange={(_evt, newValue) => {
-          setTags(newValue);
-        }}
-        onInputChange={(_evt, newInputValue) => {
-          setInputValue(newInputValue);
+          setValue(newValue);
         }}
         renderInput={(params) => (
           <TextField
             {...params}
-            name="tags"
+            fullWidth
             label="Skills and Equipment"
+            name="tags"
             placeholder="Type to search or add..."
             variant="outlined"
-            fullWidth
           />
         )}
       />
-      <pre>{JSON.stringify(tags, null, 2)}</pre>
     </FormControl>
   );
 }

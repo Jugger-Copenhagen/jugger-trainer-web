@@ -1,11 +1,5 @@
-import {
-  getAllImages,
-  getExerciseById,
-  getTags,
-  searchExercises,
-  searchTags,
-} from '@/lib/firebase';
-import { ExerciseSearchParamsSchema, FirebaseId, TagsSearchParamsSchema } from '@/lib/types';
+import { getAllImages, getExerciseById, getTags, searchExercises } from '@/lib/firebase';
+import { ExerciseSearchParamsSchema, FirebaseId } from '@/lib/types';
 import { LoaderFunctionArgs, json } from 'react-router-dom';
 
 export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
@@ -42,22 +36,7 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 
 export async function loaderExerciseNew() {
   const images = await getAllImages();
+  const tags = await getTags();
 
-  return { images };
-}
-
-export async function loaderTagSearch({ request }: LoaderFunctionArgs) {
-  const { searchParams } = new URL(request.url);
-
-  const resultParams = TagsSearchParamsSchema.safeParse({
-    tag: searchParams.get('tag') ?? undefined,
-  });
-
-  if (!resultParams.success) {
-    throw json(resultParams.error.flatten(), {
-      status: 400,
-    });
-  }
-
-  return searchTags(resultParams.data);
+  return { images, tags };
 }
