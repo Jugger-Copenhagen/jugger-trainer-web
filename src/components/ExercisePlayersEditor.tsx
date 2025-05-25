@@ -40,20 +40,31 @@ export default function ExercisePlayersEditor({ exercise }: ExercisePlayersEdito
   const playersMin = parsePlayersMin(players);
   const playersMax = parsePlayersMax(players);
 
+  const helperText =
+    isNaN(playersMin) || isNaN(playersMax)
+      ? 'Please enter a valid number of players, e.g. 3, 2-4, 5+'
+      : undefined;
+
+  const error = helperText !== undefined;
+
   return (
     <FormControl fullWidth>
       <TextField
+        error={error}
+        helperText={helperText}
         label="Number of Players"
         placeholder="e.g. 3, 2-4, 5+"
         required
+        slotProps={{
+          htmlInput: {
+            pattern: '^\\d+((-\\d+)?|\\+?)$',
+          },
+        }}
         variant="outlined"
         onChange={(evt) => setPlayers(evt.target.value)}
       />
       <input type="hidden" name="playersMin" value={playersMin} />
       <input type="hidden" name="playersMax" value={playersMax} />
-      <pre>
-        <code>{`playersMin: ${playersMin}, playersMax: ${playersMax}`}</code>
-      </pre>
     </FormControl>
   );
 }
