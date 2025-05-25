@@ -29,6 +29,7 @@ export default function ExerciseHowToPlayEditor({ exercise }: ExerciseHowToPlayE
             multiline
             minRows={5}
             placeholder="Describe your exercise.  You can use Markdown: # heading, _italic_, **bold**"
+            required
             onChange={(evt) => setHowToPlay(evt.target.value)}
           />
           <Typography component="span" variant="body2" mt={1}>

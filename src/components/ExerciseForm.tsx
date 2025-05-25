@@ -1,12 +1,8 @@
 import ExerciseHowToPlayEditor from '@/components/ExerciseHowToPlayEditor';
+import ExercisePlayersEditor from '@/components/ExercisePlayersEditor';
 import ExerciseTagEditor from '@/components/ExerciseTagEditor';
 import HttpMethod from '@/components/HttpMethod';
-import {
-  countryFlag,
-  countryHumanReadable,
-  exertionLevelHumanReadable,
-  numberOfPlayersHumanReadable,
-} from '@/lib/copy';
+import { countryFlag, countryHumanReadable, exertionLevelHumanReadable } from '@/lib/copy';
 import {
   COUNTRIES,
   Country,
@@ -24,7 +20,6 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { Form } from 'react-router-dom';
@@ -87,10 +82,7 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
             </Box>
 
             <Box mt={2}>
-              <Typography style={{ fontWeight: 700 }} component="strong">
-                Number of Players:
-              </Typography>{' '}
-              <Typography component="span">{numberOfPlayersHumanReadable(exercise)}</Typography>
+              <ExercisePlayersEditor exercise={exercise} />
             </Box>
 
             <Box mt={2}>

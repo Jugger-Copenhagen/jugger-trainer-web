@@ -4,7 +4,7 @@ import { Country, Exercise, ExerciseCreate, ExertionLevel } from '@/lib/types';
 export function numberOfPlayersHumanReadable(exercise: Exercise | ExerciseCreate) {
   const { playersMin, playersMax } = exercise;
   if (playersMin === playersMax) {
-    return playersMin;
+    return `${playersMin}`;
   }
   if (playersMax === PLAYERS_MAX_NOT_SPECIFIED) {
     return `${playersMin}+`;

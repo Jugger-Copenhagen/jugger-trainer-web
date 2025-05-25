@@ -126,6 +126,7 @@ export default function Login() {
             type="email"
             name="email"
             label="Email"
+            required
             value={email}
             variant="outlined"
             fullWidth
@@ -135,6 +136,7 @@ export default function Login() {
             type="password"
             name="password"
             label="Password"
+            required
             value={password}
             variant="outlined"
             fullWidth
