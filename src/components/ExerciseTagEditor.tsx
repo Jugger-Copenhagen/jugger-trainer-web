@@ -36,6 +36,14 @@ export default function ExerciseTagEditor({ exercise, tags }: ExerciseTagEditorP
           />
         )}
       />
+      {value.map((tagValue) => {
+        if (typeof tagValue === 'string') {
+          return <input type="hidden" name="tags" value={tagValue} key={tagValue} />;
+        }
+        return (
+          <input type="hidden" name="tags" value={`tag:${tagValue.tagID}`} key={tagValue.tagID} />
+        );
+      })}
     </FormControl>
   );
 }

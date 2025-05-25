@@ -36,8 +36,6 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
 
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
-  // TODO: number of players
-  // TODO: tags
   const [originCountry, setOriginCountry] = useState(exercise.originCountry);
 
   const isEditing = 'eid' in exercise;
@@ -87,7 +85,9 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
                   onChange={(evt) => setExertionLevel(evt.target.value as ExertionLevel)}
                 >
                   {EXERTION_LEVELS.map((level) => (
-                    <MenuItem value={level}>{exertionLevelHumanReadable(level)}</MenuItem>
+                    <MenuItem key={level} value={level}>
+                      {exertionLevelHumanReadable(level)}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -112,7 +112,7 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
                   onChange={(evt) => setOriginCountry(evt.target.value as Country)}
                 >
                   {COUNTRIES.map((c) => (
-                    <MenuItem value={c}>
+                    <MenuItem key={c} value={c}>
                       {countryFlag(c)} {countryHumanReadable(c)}
                     </MenuItem>
                   ))}

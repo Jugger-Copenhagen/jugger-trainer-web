@@ -9,7 +9,8 @@ const ExerciseNewFormSchema = zfd.formData({
   howToPlay: zfd.text(z.string()),
   name: zfd.text(z.string()),
   originCountry: zfd.text(z.enum(COUNTRIES).optional()),
-  players: zfd.text(z.string()),
+  playersMin: zfd.text(z.coerce.number().positive().int()),
+  playersMax: zfd.text(z.coerce.number().positive().int()),
   tags: zfd.repeatableOfType(zfd.text()),
 });
 
@@ -23,18 +24,11 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
     return json(validatedForm.error.flatten());
   }
 
-  /*
-  const {
-    exertionLevel,
-    howToPlay,
-    name,
-    originCountry,
-    players,
-    tags,
-  } = validatedForm.data;
-  */
+  const { exertionLevel, howToPlay, name, originCountry, playersMin, playersMax, tags } =
+    validatedForm.data;
 
   // TODO: actually build up exercise object, validate tags, etc.
+  console.log(validatedForm.data);
 
   return null;
 }

@@ -37,7 +37,7 @@ export default function ExerciseNew() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             🚧 Juggers are friends, not food 🚧
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box id="modal-modal-description" mt={2}>
             <p>
               Hey! We're currently building edit features into the web version of Jugger Trainer.
               Pardon our dust while the work continues.
@@ -50,7 +50,7 @@ export default function ExerciseNew() {
               </strong>
             </p>
             <p style={{ textAlign: 'center' }}>🚧 🚧 🚧 🚧 🚧 🚧 🚧</p>
-          </Typography>
+          </Box>
         </Box>
       </Modal>
     </>
