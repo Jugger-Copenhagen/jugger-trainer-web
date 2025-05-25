@@ -57,10 +57,12 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
           <GridLegacy item xs={12}>
             <TextField
               name="name"
+              autoComplete="off"
+              fullWidth
               label="Name"
+              required
               value={name}
               variant="outlined"
-              fullWidth
               placeholder="Name of exercise"
               onChange={(evt) => setName(evt.target.value)}
             />

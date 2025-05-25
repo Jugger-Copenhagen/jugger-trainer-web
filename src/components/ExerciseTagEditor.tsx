@@ -30,7 +30,6 @@ export default function ExerciseTagEditor({ exercise, tags }: ExerciseTagEditorP
             {...params}
             fullWidth
             label="Skills and Equipment"
-            name="tags"
             placeholder="Type to search or add..."
             variant="outlined"
           />
@@ -38,10 +37,10 @@ export default function ExerciseTagEditor({ exercise, tags }: ExerciseTagEditorP
       />
       {value.map((tagValue) => {
         if (typeof tagValue === 'string') {
-          return <input type="hidden" name="tags" value={tagValue} key={tagValue} />;
+          return <input type="hidden" name="tags" value={`s:${tagValue}`} key={tagValue} />;
         }
         return (
-          <input type="hidden" name="tags" value={`tag:${tagValue.tagID}`} key={tagValue.tagID} />
+          <input type="hidden" name="tags" value={`t:${tagValue.tagID}`} key={tagValue.tagID} />
         );
       })}
     </FormControl>

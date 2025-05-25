@@ -11,7 +11,7 @@ const ExerciseNewFormSchema = zfd.formData({
   originCountry: zfd.text(z.enum(COUNTRIES).optional()),
   playersMin: zfd.text(z.coerce.number().positive().int()),
   playersMax: zfd.text(z.coerce.number().positive().int()),
-  tags: zfd.repeatableOfType(zfd.text()),
+  tags: zfd.repeatableOfType(zfd.text(z.string().regex(/^(s|t):.*$/))),
 });
 
 export type ExerciseNewFormErrors = z.inferFlattenedErrors<typeof ExerciseNewFormSchema>;
@@ -21,6 +21,7 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
 
   const validatedForm = ExerciseNewFormSchema.safeParse(formData);
   if (!validatedForm.success) {
+    console.log(validatedForm.error.flatten());
     return json(validatedForm.error.flatten());
   }
 
