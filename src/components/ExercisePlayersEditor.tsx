@@ -57,9 +57,10 @@ export default function ExercisePlayersEditor({ exercise }: ExercisePlayersEdito
         required
         slotProps={{
           htmlInput: {
-            pattern: '^\\d+((-\\d+)?|\\+?)$',
+            pattern: '\\d+((-\\d+)?|\\+?)',
           },
         }}
+        value={players}
         variant="outlined"
         onChange={(evt) => setPlayers(evt.target.value)}
       />

@@ -14,15 +14,17 @@ import {
 } from '@/lib/types';
 import {
   Box,
+  Button,
   FormControl,
   GridLegacy,
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 type ExerciseFormProps = {
   exercise: ExerciseCreate | Exercise;
@@ -30,6 +32,8 @@ type ExerciseFormProps = {
 };
 
 export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
+  const navigate = useNavigate();
+
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
   // TODO: number of players
@@ -38,6 +42,14 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
 
   const isEditing = 'eid' in exercise;
   const action = isEditing ? `/exercises/${exercise.eid}` : '/exercises/new';
+
+  const onClickCancel = () => {
+    const confirmed = window.confirm('Are you sure you want to cancel? Your changes will be lost.');
+
+    if (confirmed) {
+      navigate('/');
+    }
+  };
 
   return (
     <Box mt={2}>
@@ -110,6 +122,22 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
           </GridLegacy>
           <GridLegacy item xs={12} md={8}>
             <ExerciseHowToPlayEditor exercise={exercise} />
+
+            <Stack mt={4} direction="row" spacing={2} justifyContent="flex-end">
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                size="large"
+                onClick={onClickCancel}
+              >
+                Cancel
+              </Button>
+
+              <Button type="submit" variant="contained" color="primary" size="large">
+                {isEditing ? 'Update' : 'Save'}
+              </Button>
+            </Stack>
           </GridLegacy>
         </GridLegacy>
       </Form>

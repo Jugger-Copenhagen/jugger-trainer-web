@@ -20,7 +20,7 @@ export default function ExerciseHowToPlayEditor({ exercise }: ExerciseHowToPlayE
         <Tab label="Edit" value="edit" />
         <Tab label="Preview" value="preview" />
       </TabList>
-      <TabPanel value="edit">
+      <TabPanel value="edit" sx={{ px: 0 }}>
         <FormControl fullWidth>
           <TextField
             name="howToPlay"
