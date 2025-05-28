@@ -40,15 +40,17 @@ export default function ExerciseSearch() {
         {exercises.length} exercises
       </Typography>
       <ExerciseList exercises={exercises} />
-      {user && <Fab
-        aria-label="Add exercise"
-        color="secondary"
-        component={Link}
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
-        to="/exercises/new"
-      >
-        <Add />
-      </Fab>}
+      {user && (
+        <Fab
+          aria-label="Add exercise"
+          color="secondary"
+          component={Link}
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+          to="/exercises/new"
+        >
+          <Add />
+        </Fab>
+      )}
     </Box>
   );
 }

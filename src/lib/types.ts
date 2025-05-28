@@ -55,6 +55,8 @@ export type Tag = {
   tagID: FirebaseId;
 };
 
+export type TagCreate = Omit<Tag, 'tagID'>;
+
 // === EXERCISES === //
 
 export const ExerciseSearchParamsSchema = z.object({
@@ -68,6 +70,7 @@ export type ExerciseSearchParams = z.infer<typeof ExerciseSearchParamsSchema>;
 
 export type Exercise = {
   created: number;
+  createdByName: string;
   createdByUID: FirebaseId;
   eid: FirebaseId;
   exertionLevel: ExertionLevel;
@@ -80,4 +83,4 @@ export type Exercise = {
   images: string[];
 };
 
-export type ExerciseCreate = Omit<Exercise, 'created' | 'createdByUID' | 'eid'>;
+export type ExerciseCreate = Omit<Exercise, 'created' | 'createdByName' | 'createdByUID' | 'eid'>;

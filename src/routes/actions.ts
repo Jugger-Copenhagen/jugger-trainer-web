@@ -1,6 +1,7 @@
-import { getExerciseById } from '@/lib/firebase';
+import { createExercise, getExerciseById } from '@/lib/firebase';
 import { COUNTRIES, EXERTION_LEVELS, FirebaseId } from '@/lib/types';
-import { ActionFunctionArgs, json } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
@@ -14,24 +15,26 @@ const ExerciseNewFormSchema = zfd.formData({
   tags: zfd.repeatableOfType(zfd.text(z.string().regex(/^(s|t):.*$/))),
 });
 
+export type ExerciseNewFormValidated = z.infer<typeof ExerciseNewFormSchema>;
+
 export type ExerciseNewFormErrors = z.inferFlattenedErrors<typeof ExerciseNewFormSchema>;
 
 export async function actionExerciseNew({ request }: ActionFunctionArgs) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user === null) {
+    throw redirect('/login');
+  }
+
   const formData = await request.formData();
 
   const validatedForm = ExerciseNewFormSchema.safeParse(formData);
   if (!validatedForm.success) {
-    console.log(validatedForm.error.flatten());
-    return json(validatedForm.error.flatten());
+    throw json(validatedForm.error.flatten());
   }
 
-  const { exertionLevel, howToPlay, name, originCountry, playersMin, playersMax, tags } =
-    validatedForm.data;
-
-  // TODO: actually build up exercise object, validate tags, etc.
-  console.log(validatedForm.data);
-
-  return null;
+  return createExercise(user, validatedForm.data);
 }
 
 const ExerciseEditFormSchema = zfd.formData({
@@ -40,8 +43,9 @@ const ExerciseEditFormSchema = zfd.formData({
   howToPlay: zfd.text(z.string()),
   name: zfd.text(z.string()),
   originCountry: zfd.text(z.enum(COUNTRIES).optional()),
-  players: zfd.text(z.string()),
-  tags: zfd.repeatableOfType(zfd.text()),
+  playersMin: zfd.text(z.coerce.number().positive().int()),
+  playersMax: zfd.text(z.coerce.number().positive().int()),
+  tags: zfd.repeatableOfType(zfd.text(z.string().regex(/^(s|t):.*$/))),
 });
 
 export type ExerciseEditFormErrors = z.inferFlattenedErrors<typeof ExerciseEditFormSchema>;
@@ -66,17 +70,6 @@ export async function actionExerciseEdit({ request, params }: ActionFunctionArgs
   if (_method !== 'put') {
     throw json({ error: `Invalid method ${_method}` }, { status: 405 });
   }
-
-  /*
-  const {
-    exertionLevel,
-    howToPlay,
-    name,
-    originCountry,
-    players,
-    tags,
-  } = validatedForm.data;
-  */
 
   // TODO: actually build up exercise object, validate tags, etc.
 

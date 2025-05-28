@@ -1,9 +1,10 @@
 import config from '@/config';
 import { getRandomImages } from '@/lib/exercise';
-import { Exercise, ExerciseSearchParams, FirebaseId, Tag } from '@/lib/types';
+import { Exercise, ExerciseSearchParams, FirebaseId, Tag, TagCreate } from '@/lib/types';
+import { ExerciseNewFormValidated } from '@/routes/actions';
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { child, get, getDatabase, ref as realtimeRef } from 'firebase/database';
+import { getAuth, User } from 'firebase/auth';
+import { child, get, getDatabase, push, ref as realtimeRef, set } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 
@@ -52,6 +53,37 @@ export async function getTagsByIds(tagIDs: FirebaseId[]): Promise<Tag[]> {
   }
 
   return tags;
+}
+
+export async function createTag(tagCreate: TagCreate) {
+  const tagRef = await push(child(realtimeRef(db), 'tags'));
+
+  if (tagRef.key === null) {
+    throw new Error('Failed to create tag: tagRef key is null');
+  }
+
+  const tag: Tag = {
+    tagID: tagRef.key,
+    ...tagCreate,
+  };
+
+  set(tagRef, tag);
+  return tag;
+}
+
+export async function associateTagWithExercise(tag: Tag, exercise: Exercise) {
+  const tagRef = child(realtimeRef(db), `tags/${tag.tagID}`);
+
+  const exerciseIds = new Set<FirebaseId>(tag.associatedExerciseIds);
+  exerciseIds.add(exercise.eid);
+
+  const tagUpdate = {
+    ...tag,
+    associatedExerciseIds: Array.from(exerciseIds),
+  };
+
+  set(tagRef, tagUpdate);
+  return tagUpdate;
 }
 
 // === EXERCISES === //
@@ -160,8 +192,70 @@ export async function randomExercise(searchParams: ExerciseSearchParams) {
   return exercises[i];
 }
 
-export async function createExercise(/* type? */) {
-  // TODO: this
+export async function createExercise(user: User, form: ExerciseNewFormValidated) {
+  const {
+    exertionLevel,
+    howToPlay,
+    name,
+    originCountry,
+    playersMin,
+    playersMax,
+    tags: tagsSubmitted,
+  } = form;
+
+  // 1) Create new tags
+  const tagsToCreate: string[] = [];
+  const tagIDsExisting: FirebaseId[] = [];
+
+  for (const tag of tagsSubmitted) {
+    const [tagType, tagValue] = tag.split(':');
+    if (tagType === 's') {
+      tagsToCreate.push(tagValue);
+    } else if (tagType === 't') {
+      tagIDsExisting.push(tagValue);
+    }
+  }
+
+  const tagsExisting = await getTagsByIds(tagIDsExisting);
+
+  const tagsToCreatePromises = tagsToCreate.map((tag) =>
+    createTag({ tag, associatedExerciseIds: [] })
+  );
+  const tagsCreated = await Promise.all(tagsToCreatePromises);
+
+  const tags = [...tagsExisting, ...tagsCreated];
+  const tagIDs = tags.map((tag) => tag.tagID);
+
+  // 2) create exercise and attach tags to it
+  /*
+  const exerciseRef = await push(child(realtimeRef(db), 'exercises'));
+
+  if (exerciseRef.key === null) {
+    throw new Error('Failed to create exercise: exerciseRef key is null');
+  }
+
+  const exercise: Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] } = {
+    created: new Date().valueOf(),
+    createdByName: user.displayName ?? user.email ?? 'Some jugger',
+    createdByUID: user.uid,
+    eid: exerciseRef.key,
+    exertionLevel,
+    howToPlay,
+    name,
+    originCountry,
+    playersMin,
+    playersMax,
+    tagIDs,
+  };
+
+  set(exerciseRef, {
+    ...exercise,
+  });
+  */
+
+  // TODO: set exercise EID in tags associated exercise IDs
+
+  // TODO: return created exercise
 }
 
 export async function editExercise(/* type? */) {

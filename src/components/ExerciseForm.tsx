@@ -78,11 +78,11 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
 
             <Box mt={2}>
               <FormControl fullWidth>
-                <InputLabel id="label-exertionLevel">Difficulty</InputLabel>
+                <InputLabel id="label-exertionLevel">Difficulty *</InputLabel>
                 <Select
                   name="exertionLevel"
                   labelId="label-exertionLevel"
-                  label="Difficulty"
+                  label="Difficulty *"
                   value={exertionLevel}
                   onChange={(evt) => setExertionLevel(evt.target.value as ExertionLevel)}
                 >
@@ -105,11 +105,11 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
 
             <Box mt={2}>
               <FormControl fullWidth>
-                <InputLabel id="label-originCountry">Origin Country</InputLabel>
+                <InputLabel id="label-originCountry">Origin Country *</InputLabel>
                 <Select
                   name="originCountry"
                   labelId="label-originCountry"
-                  label="Origin Country"
+                  label="Origin Country *"
                   value={originCountry}
                   onChange={(evt) => setOriginCountry(evt.target.value as Country)}
                 >
