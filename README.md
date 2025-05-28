@@ -1,26 +1,20 @@
 # jugger-trainer-web
 
-Web port of the Jugger Trainer Android app
+Jugger Trainer Web is a web port of the Jugger Trainer Android app. It is released under GPLv3.
 
-to run:
-npm run dev
+You can [try out Jugger Trainer Web](https://jugger-copenhagen.github.io/jugger-trainer-web/).
 
-to add signin back in, put this in root.tsx in the nav thing:
+## Development
 
-            <Link to="/exercises/favorited">
-              <IconButton color="inherit" sx={{ mr: 1 }}>
-                {pathname === '/exercises/favorited' ? <Favorite /> : <FavoriteBorder />}
-              </IconButton>
-            </Link>
+This application is a single page application developed using:
 
-            {userStore.user === null ? (
-              <Link to="/login">
-                <Button variant="contained">
-                  Sign In <Login sx={{ ml: 0.5 }} />
-                </Button>
-              </Link>
-            ) : (
-              <Button variant="contained" onClick={logout}>
-                Sign Out <Logout sx={{ ml: 0.5 }} />
-              </Button>
-            )}
+- React Router
+- Material UI
+- Firebase
+
+We use `vite` to build the site. Useful commands:
+
+- `npm run dev`: run local devserver
+- `npm run build`: build for production
+- `npm run lint`: ESLint checker
+- `npm run typecheck`: `tsc` type-checking
