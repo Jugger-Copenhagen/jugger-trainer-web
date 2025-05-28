@@ -34,7 +34,9 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
     throw json(validatedForm.error.flatten());
   }
 
-  return createExercise(user, validatedForm.data);
+  const exercise = await createExercise(user, validatedForm.data);
+
+  return redirect(`/exercises/${exercise.eid}`);
 }
 
 const ExerciseEditFormSchema = zfd.formData({
