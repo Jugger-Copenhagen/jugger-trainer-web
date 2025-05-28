@@ -84,3 +84,9 @@ export type Exercise = {
 };
 
 export type ExerciseCreate = Omit<Exercise, 'created' | 'createdByName' | 'createdByUID' | 'eid'>;
+
+export type ExerciseFirebase = Omit<Exercise, 'tags' | 'images'> & {
+  imageResource: number;
+  imageResourceSmall: number;
+  tagIDs: FirebaseId[];
+};
