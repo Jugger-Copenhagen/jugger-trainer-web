@@ -83,5 +83,5 @@ export async function actionExerciseEdit({ request, params }: ActionFunctionArgs
 
   const updatedExercise = await updateExercise(exercise, validatedForm.data);
 
-  return redirect(`/exercises/${updatedExercise.eid}`);
+  return updatedExercise;
 }

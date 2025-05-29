@@ -8,6 +8,10 @@ type ExercisePlayersEditorProps = {
   exercise: ExerciseCreate | Exercise;
 };
 
+function numberOfPlayersFormValue(exercise: Exercise | ExerciseCreate): string {
+  return numberOfPlayersHumanReadable(exercise).replace('\u2013', '-');
+}
+
 function parsePlayersMin(players: string): number {
   if (players.endsWith('+')) {
     return parseInt(players.slice(0, -1), 10);
@@ -35,7 +39,7 @@ function parsePlayersMax(players: string): number {
 }
 
 export default function ExercisePlayersEditor({ exercise }: ExercisePlayersEditorProps) {
-  const [players, setPlayers] = useState(numberOfPlayersHumanReadable(exercise));
+  const [players, setPlayers] = useState(numberOfPlayersFormValue(exercise));
 
   const playersMin = parsePlayersMin(players);
   const playersMax = parsePlayersMax(players);
@@ -64,8 +68,8 @@ export default function ExercisePlayersEditor({ exercise }: ExercisePlayersEdito
         variant="outlined"
         onChange={(evt) => setPlayers(evt.target.value)}
       />
-      <input type="hidden" name="playersMin" value={playersMin} />
-      <input type="hidden" name="playersMax" value={playersMax} />
+      {!isNaN(playersMin) && <input type="hidden" name="playersMin" value={playersMin} />}
+      {!isNaN(playersMax) && <input type="hidden" name="playersMax" value={playersMax} />}
     </FormControl>
   );
 }

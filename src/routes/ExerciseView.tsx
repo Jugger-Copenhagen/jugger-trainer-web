@@ -1,21 +1,29 @@
 import ExerciseDetails from '@/components/ExerciseDetails';
 import ExerciseForm from '@/components/ExerciseForm';
 import { useUserStore } from '@/lib/store';
+import { Exercise } from '@/lib/types';
 import { loaderExerciseView } from '@/routes/loaders';
 import { Edit } from '@mui/icons-material';
 import { Box, Fab } from '@mui/material';
-import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useActionData, useLoaderData } from 'react-router-dom';
 
 export default function ExerciseView() {
   const { user } = useUserStore();
   const { exercise, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseView>>;
+  const actionData = useActionData() as Exercise | undefined;
 
   const [editMode, setEditMode] = useState(false);
 
   const onCancel = () => {
     setEditMode(false);
   };
+
+  useEffect(() => {
+    if (actionData) {
+      setEditMode(false);
+    }
+  }, [actionData]);
 
   return (
     <Box>
