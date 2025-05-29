@@ -8,12 +8,13 @@ import {
   Tag,
   TagCreate,
 } from '@/lib/types';
-import { ExerciseNewFormValidated } from '@/routes/actions';
+import { ExerciseEditFormValidated, ExerciseNewFormValidated } from '@/routes/actions';
 import { initializeApp } from 'firebase/app';
 import { getAuth, User } from 'firebase/auth';
-import { child, get, getDatabase, push, ref as realtimeRef, set } from 'firebase/database';
+import { child, get, getDatabase, push, ref as realtimeRef, set, update } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
+import { differenceBy } from 'lodash-es';
 
 const app = initializeApp(config.firebase);
 const db = getDatabase(app);
@@ -88,6 +89,21 @@ export async function associateTagWithExercise(tag: Tag, eid: FirebaseId) {
 
   const exerciseIds = new Set<FirebaseId>(tag.associatedExerciseIds);
   exerciseIds.add(eid);
+
+  const tagUpdate = {
+    ...tag,
+    associatedExerciseIds: Array.from(exerciseIds),
+  };
+
+  set(tagRef, tagUpdate);
+  return tagUpdate;
+}
+
+export async function disassociateTagWithExercise(tag: Tag, eid: FirebaseId) {
+  const tagRef = child(realtimeRef(db), `tags/${tag.tagID}`);
+
+  const exerciseIds = new Set<FirebaseId>(tag.associatedExerciseIds);
+  exerciseIds.delete(eid);
 
   const tagUpdate = {
     ...tag,
@@ -281,8 +297,68 @@ export async function createExercise(user: User, form: ExerciseNewFormValidated)
   return exercise;
 }
 
-export async function editExercise(/* type? */) {
-  // TODO: this
+export async function updateExercise(exercise: Exercise, form: ExerciseEditFormValidated) {
+  const { exertionLevel, howToPlay, name, playersMin, playersMax, tags: tagsSubmitted } = form;
+
+  // 1) create new tags
+  const tagsToCreate: string[] = [];
+  const tagIDsExisting: FirebaseId[] = [];
+
+  for (const tag of tagsSubmitted) {
+    const [tagType, tagValue] = tag.split(':');
+    if (tagType === 's') {
+      tagsToCreate.push(tagValue);
+    } else if (tagType === 't') {
+      tagIDsExisting.push(tagValue);
+    }
+  }
+
+  const tagsExisting = await getTagsByIds(tagIDsExisting);
+
+  const tagsToCreatePromises = tagsToCreate.map((tag) =>
+    createTag({ tag, associatedExerciseIds: [] })
+  );
+  const tagsCreated = await Promise.all(tagsToCreatePromises);
+
+  let tags = [...tagsExisting, ...tagsCreated];
+  const tagIDs = tags.map((tag) => tag.tagID);
+
+  // 2) remove exercise EID from tags no longer associated with exercise
+  const tagsToRemove = differenceBy(exercise.tags, tags, (tag) => tag.tagID);
+
+  const tagRemovePromises = tagsToRemove.map((tag) =>
+    disassociateTagWithExercise(tag, exercise.eid)
+  );
+  await Promise.all(tagRemovePromises);
+
+  // 3) update exercise with new fields and tag list
+  const exerciseRef = child(realtimeRef(db), `exercises/${exercise.eid}`);
+
+  update(exerciseRef, {
+    exertionLevel,
+    howToPlay,
+    name,
+    playersMax,
+    playersMin,
+    tagIDs,
+  });
+
+  // 4) set exercise EID in tags associated with exercise
+  const tagAssociatePromises = tags.map((tag) => associateTagWithExercise(tag, exercise.eid));
+  tags = await Promise.all(tagAssociatePromises);
+
+  // 5) return updated exercise
+  const updatedExercise = {
+    ...exercise,
+    exertionLevel,
+    howToPlay,
+    name,
+    playersMax,
+    playersMin,
+    tags,
+  };
+
+  return updatedExercise;
 }
 
 // === FAVOURITES === //

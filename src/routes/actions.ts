@@ -1,4 +1,4 @@
-import { createExercise, getExerciseById } from '@/lib/firebase';
+import { createExercise, getExerciseById, updateExercise } from '@/lib/firebase';
 import { COUNTRIES, EXERTION_LEVELS, FirebaseId } from '@/lib/types';
 import { getAuth } from 'firebase/auth';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
@@ -44,15 +44,23 @@ const ExerciseEditFormSchema = zfd.formData({
   exertionLevel: zfd.text(z.enum(EXERTION_LEVELS)),
   howToPlay: zfd.text(z.string()),
   name: zfd.text(z.string()),
-  originCountry: zfd.text(z.enum(COUNTRIES).optional()),
   playersMin: zfd.text(z.coerce.number().positive().int()),
   playersMax: zfd.text(z.coerce.number().positive().int()),
   tags: zfd.repeatableOfType(zfd.text(z.string().regex(/^(s|t):.*$/))),
 });
 
+export type ExerciseEditFormValidated = z.infer<typeof ExerciseEditFormSchema>;
+
 export type ExerciseEditFormErrors = z.inferFlattenedErrors<typeof ExerciseEditFormSchema>;
 
 export async function actionExerciseEdit({ request, params }: ActionFunctionArgs) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user === null) {
+    throw redirect('/login');
+  }
+
   const { eid } = params as { eid: FirebaseId };
 
   const exercise = await getExerciseById(eid);
@@ -73,7 +81,7 @@ export async function actionExerciseEdit({ request, params }: ActionFunctionArgs
     throw json({ error: `Invalid method ${_method}` }, { status: 405 });
   }
 
-  // TODO: actually build up exercise object, validate tags, etc.
+  const updatedExercise = await updateExercise(exercise, validatedForm.data);
 
-  return null;
+  return redirect(`/exercises/${updatedExercise.eid}`);
 }
