@@ -1,17 +1,10 @@
 import ExerciseHowToPlayEditor from '@/components/ExerciseHowToPlayEditor';
+import ExerciseOriginCountryEditor from '@/components/ExerciseOriginCountryEditor';
 import ExercisePlayersEditor from '@/components/ExercisePlayersEditor';
 import ExerciseTagEditor from '@/components/ExerciseTagEditor';
 import HttpMethod from '@/components/HttpMethod';
-import { countryFlag, countryHumanReadable, exertionLevelHumanReadable } from '@/lib/copy';
-import {
-  COUNTRIES,
-  Country,
-  Exercise,
-  ExerciseCreate,
-  EXERTION_LEVELS,
-  ExertionLevel,
-  Tag,
-} from '@/lib/types';
+import { countryFlag, exertionLevelHumanReadable } from '@/lib/copy';
+import { Exercise, ExerciseCreate, EXERTION_LEVELS, ExertionLevel, Tag } from '@/lib/types';
 import {
   Box,
   Button,
@@ -22,6 +15,7 @@ import {
   Select,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { Form } from 'react-router-dom';
@@ -35,8 +29,8 @@ type ExerciseFormProps = {
 export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormProps) {
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
-  const [originCountry, setOriginCountry] = useState(exercise.originCountry);
 
+  const flag = countryFlag(exercise.originCountry);
   const isEditing = 'eid' in exercise;
   const action = isEditing ? `/exercises/${exercise.eid}` : '/exercises/new';
 
@@ -103,22 +97,16 @@ export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormP
             </Box>
 
             <Box mt={2}>
-              <FormControl fullWidth>
-                <InputLabel id="label-originCountry">Origin Country *</InputLabel>
-                <Select
-                  name="originCountry"
-                  labelId="label-originCountry"
-                  label="Origin Country *"
-                  value={originCountry}
-                  onChange={(evt) => setOriginCountry(evt.target.value as Country)}
-                >
-                  {COUNTRIES.map((c) => (
-                    <MenuItem key={c} value={c}>
-                      {countryFlag(c)} {countryHumanReadable(c)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {isEditing ? (
+                <>
+                  <Typography style={{ fontWeight: 700 }} component="strong">
+                    Origin Country:
+                  </Typography>{' '}
+                  <Typography component="span">{flag}</Typography>
+                </>
+              ) : (
+                <ExerciseOriginCountryEditor exercise={exercise} />
+              )}
             </Box>
           </GridLegacy>
           <GridLegacy item xs={12} md={8}>
