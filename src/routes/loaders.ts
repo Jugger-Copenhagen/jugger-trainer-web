@@ -31,7 +31,9 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
     throw new Error(`Exercise ${eid} not found`);
   }
 
-  return exercise;
+  const tags = await getTags();
+
+  return { exercise, tags };
 }
 
 export async function loaderExerciseNew() {

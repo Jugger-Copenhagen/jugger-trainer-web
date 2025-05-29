@@ -3,9 +3,10 @@ import { makeExerciseCreate } from '@/lib/exercise';
 import { loaderExerciseNew } from '@/routes/loaders';
 import { Box, Modal, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 export default function ExerciseNew() {
+  const navigate = useNavigate();
   const { images, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseNew>>;
 
   const [open, setOpen] = useState(true);
@@ -24,9 +25,13 @@ export default function ExerciseNew() {
     p: 4,
   };
 
+  const onCancel = () => {
+    navigate('/');
+  };
+
   return (
     <>
-      <ExerciseForm exercise={exercise} tags={tags} />
+      <ExerciseForm exercise={exercise} tags={tags} onCancel={onCancel} />
       <Modal
         open={open}
         onClose={() => setOpen(false)}

@@ -24,16 +24,15 @@ import {
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
-import { Form, useNavigate } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 
 type ExerciseFormProps = {
   exercise: ExerciseCreate | Exercise;
   tags: Tag[];
+  onCancel: () => void;
 };
 
-export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
-  const navigate = useNavigate();
-
+export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormProps) {
   const [name, setName] = useState(exercise.name);
   const [exertionLevel, setExertionLevel] = useState(exercise.exertionLevel);
   const [originCountry, setOriginCountry] = useState(exercise.originCountry);
@@ -45,7 +44,7 @@ export default function ExerciseForm({ exercise, tags }: ExerciseFormProps) {
     const confirmed = window.confirm('Are you sure you want to cancel? Your changes will be lost.');
 
     if (confirmed) {
-      navigate('/');
+      onCancel();
     }
   };
 

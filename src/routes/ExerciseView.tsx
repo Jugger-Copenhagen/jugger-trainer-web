@@ -1,24 +1,35 @@
 import ExerciseDetails from '@/components/ExerciseDetails';
+import ExerciseForm from '@/components/ExerciseForm';
 import { useUserStore } from '@/lib/store';
 import { loaderExerciseView } from '@/routes/loaders';
 import { Edit } from '@mui/icons-material';
 import { Box, Fab } from '@mui/material';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 export default function ExerciseView() {
   const { user } = useUserStore();
-  const exercise = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseView>>;
+  const { exercise, tags } = useLoaderData() as Awaited<ReturnType<typeof loaderExerciseView>>;
+
+  const [editMode, setEditMode] = useState(false);
+
+  const onCancel = () => {
+    setEditMode(false);
+  };
 
   return (
     <Box>
-      <ExerciseDetails exercise={exercise} />
-      {user && (
+      {editMode ? (
+        <ExerciseForm exercise={exercise} tags={tags} onCancel={onCancel} />
+      ) : (
+        <ExerciseDetails exercise={exercise} />
+      )}
+      {user && !editMode && (
         <Fab
           aria-label={`Edit exercise: ${exercise.name}`}
           color="secondary"
-          component={Link}
           sx={{ position: 'fixed', bottom: 16, right: 16 }}
-          to={`/exercises/edit/${exercise.eid}`}
+          onClick={() => setEditMode(true)}
         >
           <Edit />
         </Fab>
