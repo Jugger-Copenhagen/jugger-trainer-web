@@ -43,5 +43,8 @@
     "vite": "^5.1.6"
   },
   "author": "Jugger Copenhagen",
-  "license": "GPL-3.0-only"
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": "24"
+  }
 }
