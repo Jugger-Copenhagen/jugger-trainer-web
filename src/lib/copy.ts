@@ -23,61 +23,60 @@ export function exertionLevelHumanReadable(exertionLevel: ExertionLevel) {
   }
 }
 
-// TODO: we should *really* convert these in database to ISO 2-letter country codes
 export function countryFlag(originCountry?: Country): string | null {
-  switch (originCountry?.toUpperCase()) {
-    case 'AUSTRALIA':
-      return '🇦🇺';
-    case 'AUSTRIA':
-      return '🇦🇹';
-    case 'CANADA':
-      return '🇨🇦';
-    case 'COLOMBIA':
-      return '🇨🇴';
-    case 'CZECHREPUBLIC':
-      return '🇨🇿';
-    case 'DENMARK':
-      return '🇩🇰';
-    case 'FRANCE':
-      return '🇫🇷';
-    case 'GERMANY':
-      return '🇩🇪';
-    case 'IRELAND':
-      return '🇮🇪';
-    case 'ITALY':
-      return '🇮🇹';
-    case 'SPAIN':
-      return '🇪🇸';
-    case 'SWEDEN':
-      return '🇸🇪';
-    case 'USA':
-      return '🇺🇸';
-    case 'NEWZEALAND':
-      return '🇳🇿';
-    case 'CHILE':
-      return '🇨🇱';
-    case 'ARGENTINA':
+  switch (originCountry) {
+    case 'AR':
       return '🇦🇷';
-    case 'MEXICO':
-      return '🇲🇽';
-    case 'VENEZUELA':
-      return '🇻🇪';
-    case 'COSTARICA':
-      return '🇨🇷';
-    case 'SLOVENIJA':
-      return '🇸🇮';
-    case 'LITHUANIA':
-      return '🇱🇹';
-    case 'LATVIA':
-      return '🇱🇻';
-    case 'NETHERLANDS':
-      return '🇳🇱';
-    case 'BELGIUM':
+    case 'AT':
+      return '🇦🇹';
+    case 'AU':
+      return '🇦🇺';
+    case 'BE':
       return '🇧🇪';
-    case 'ENGLAND':
+    case 'CA':
+      return '🇨🇦';
+    case 'CL':
+      return '🇨🇱';
+    case 'CO':
+      return '🇨🇴';
+    case 'CR':
+      return '🇨🇷';
+    case 'CZ':
+      return '🇨🇿';
+    case 'DE':
+      return '🇩🇪';
+    case 'DK':
+      return '🇩🇰';
+    case 'ES':
+      return '🇪🇸';
+    case 'FR':
+      return '🇫🇷';
+    case 'GB':
       return '🏴󠁧󠁢󠁥󠁮󠁧󠁿';
-    case 'JAPAN':
+    case 'IE':
+      return '🇮🇪';
+    case 'IT':
+      return '🇮🇹';
+    case 'JP':
       return '🇯🇵';
+    case 'LT':
+      return '🇱🇹';
+    case 'LV':
+      return '🇱🇻';
+    case 'MX':
+      return '🇲🇽';
+    case 'NL':
+      return '🇳🇱';
+    case 'NZ':
+      return '🇳🇿';
+    case 'SE':
+      return '🇸🇪';
+    case 'SI':
+      return '🇸🇮';
+    case 'US':
+      return '🇺🇸';
+    case 'VE':
+      return '🇻🇪';
     default:
       return null;
   }
@@ -85,38 +84,58 @@ export function countryFlag(originCountry?: Country): string | null {
 
 export function countryHumanReadable(originCountry?: Country): string | null {
   switch (originCountry) {
-    case 'ARGENTINA':
-    case 'AUSTRALIA':
-    case 'AUSTRIA':
-    case 'BELGIUM':
-    case 'CANADA':
-    case 'CHILE':
-    case 'COLOMBIA':
-    case 'ENGLAND':
-    case 'FRANCE':
-    case 'GERMANY':
-    case 'IRELAND':
-    case 'ITALY':
-    case 'JAPAN':
-    case 'LATVIA':
-    case 'LITHUANIA':
-    case 'MEXICO':
-    case 'SPAIN':
-    case 'SWEDEN':
-    case 'VENEZUELA':
-      return originCountry.slice(0, 1) + originCountry.slice(1).toLowerCase();
-    case 'COSTARICA':
+    case 'AR':
+      return 'Argentina';
+    case 'AT':
+      return 'Austria';
+    case 'AU':
+      return 'Australia';
+    case 'BE':
+      return 'Belgium';
+    case 'CA':
+      return 'Canada';
+    case 'CL':
+      return 'Chile';
+    case 'CO':
+      return 'Colombia';
+    case 'CR':
       return 'Costa Rica';
-    case 'CZECHREPUBLIC':
+    case 'CZ':
       return 'Czechia';
-    case 'NETHERLANDS':
+    case 'DE':
+      return 'Germany';
+    case 'DK':
+      return 'Denmark';
+    case 'ES':
+      return 'Spain';
+    case 'FR':
+      return 'France';
+    case 'GB':
+      return 'England';
+    case 'IE':
+      return 'Ireland';
+    case 'IT':
+      return 'Italy';
+    case 'JP':
+      return 'Japan';
+    case 'LT':
+      return 'Lithuania';
+    case 'LV':
+      return 'Latvia';
+    case 'MX':
+      return 'Mexico';
+    case 'NL':
       return 'The Netherlands';
-    case 'NEWZEALAND':
+    case 'NZ':
       return 'New Zealand';
-    case 'SLOVENIJA':
+    case 'SE':
+      return 'Sweden';
+    case 'SI':
       return 'Slovenia';
-    case 'USA':
+    case 'US':
       return 'United States';
+    case 'VE':
+      return 'Venezuela';
     default:
       return null;
   }

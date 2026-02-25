@@ -16,7 +16,7 @@ export function makeExerciseCreate(images: string[]): ExerciseCreate {
     exertionLevel: 'EASY',
     howToPlay: '',
     name: '',
-    originCountry: 'CANADA',
+    originCountry: 'CA',
     playersMin: 2,
     playersMax: PLAYERS_MAX_NOT_SPECIFIED,
     tags: [],
