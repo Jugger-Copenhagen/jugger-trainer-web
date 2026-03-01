@@ -1,6 +1,7 @@
 import { getAllImages, getExerciseById, getTags, searchExercises } from '@/lib/firebase';
+import { useToastStore, useUserStore } from '@/lib/store';
 import { ExerciseSearchParamsSchema, FirebaseId } from '@/lib/types';
-import { LoaderFunctionArgs, json } from 'react-router-dom';
+import { LoaderFunctionArgs, json, redirect } from 'react-router-dom';
 
 export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
@@ -41,4 +42,15 @@ export async function loaderExerciseNew() {
   const tags = await getTags();
 
   return { images, tags };
+}
+
+export function loaderAdmin() {
+  const { profile } = useUserStore.getState();
+
+  if (profile?.role !== 'admin') {
+    useToastStore.getState().setToast('You are not authorized to access that page.', 'error');
+    throw redirect('/');
+  }
+
+  return null;
 }
