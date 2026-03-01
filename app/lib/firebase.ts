@@ -9,7 +9,7 @@ import {
   TagCreate,
   UserProfile,
 } from '@/lib/types';
-import { ExerciseEditFormValidated, ExerciseNewFormValidated } from '@/routes/actions';
+import { ExerciseEditFormValidated, ExerciseNewFormValidated } from '@/lib/validation';
 import { initializeApp } from 'firebase/app';
 import { getAuth, User } from 'firebase/auth';
 import { child, get, getDatabase, push, ref as realtimeRef, set, update } from 'firebase/database';
