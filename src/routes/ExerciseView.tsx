@@ -6,7 +6,7 @@ import { loaderExerciseView } from '@/routes/loaders';
 import { Edit } from '@mui/icons-material';
 import { Box, Fab } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useActionData, useLoaderData } from 'react-router-dom';
+import { useActionData, useLoaderData } from 'react-router';
 
 export default function ExerciseView() {
   const { user } = useUserStore();

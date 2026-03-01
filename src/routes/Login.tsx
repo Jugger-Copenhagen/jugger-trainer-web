@@ -13,7 +13,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Form, useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router';
 
 const pendingCredential: OAuthCredential | null = null;
 

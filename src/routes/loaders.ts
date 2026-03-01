@@ -1,7 +1,7 @@
 import { getAllImages, getExerciseById, getTags, searchExercises } from '@/lib/firebase';
 import { useToastStore, useUserStore } from '@/lib/store';
 import { ExerciseSearchParamsSchema, FirebaseId } from '@/lib/types';
-import { LoaderFunctionArgs, json, redirect } from 'react-router-dom';
+import { data, LoaderFunctionArgs, redirect } from 'react-router';
 
 export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
@@ -14,7 +14,7 @@ export async function loaderExerciseSearch({ request }: LoaderFunctionArgs) {
   });
 
   if (!resultParams.success) {
-    throw json(resultParams.error.flatten(), {
+    throw data(resultParams.error.flatten(), {
       status: 400,
     });
   }
@@ -29,7 +29,7 @@ export async function loaderExerciseView({ params }: LoaderFunctionArgs) {
 
   const exercise = await getExerciseById(eid);
   if (exercise === null) {
-    throw new Error(`Exercise ${eid} not found`);
+    throw data({ error: `Exercise ${eid} not found` }, { status: 404 });
   }
 
   const tags = await getTags();

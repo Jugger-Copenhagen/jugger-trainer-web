@@ -5,7 +5,7 @@ import { ExerciseSearchParams, ExerciseSearchParamsSchema } from '@/lib/types';
 import { loaderExerciseSearch } from '@/routes/loaders';
 import { Add } from '@mui/icons-material';
 import { Box, Divider, Fab, Typography } from '@mui/material';
-import { Link, useLoaderData, useSearchParams } from 'react-router-dom';
+import { Link, useLoaderData, useSearchParams } from 'react-router';
 
 export default function ExerciseSearch() {
   const { user } = useUserStore();

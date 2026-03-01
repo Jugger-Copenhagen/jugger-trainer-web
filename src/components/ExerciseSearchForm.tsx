@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
-import { Form, useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router';
 
 const SELECT_VALUE_ANY = '*';
 

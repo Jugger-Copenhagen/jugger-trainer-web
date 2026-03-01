@@ -1,7 +1,7 @@
 import { createExercise, getExerciseById, updateExercise } from '@/lib/firebase';
 import { COUNTRIES, EXERTION_LEVELS, FirebaseId } from '@/lib/types';
 import { getAuth } from 'firebase/auth';
-import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
+import { ActionFunctionArgs, data, redirect } from 'react-router';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
@@ -31,7 +31,7 @@ export async function actionExerciseNew({ request }: ActionFunctionArgs) {
 
   const validatedForm = ExerciseNewFormSchema.safeParse(formData);
   if (!validatedForm.success) {
-    throw json(validatedForm.error.flatten());
+    throw validatedForm.error.flatten();
   }
 
   const exercise = await createExercise(user, validatedForm.data);
@@ -66,19 +66,19 @@ export async function actionExerciseEdit({ request, params }: ActionFunctionArgs
   const exercise = await getExerciseById(eid);
 
   if (exercise === null) {
-    throw json({ error: `Exercise ${eid} not found` }, { status: 404 });
+    throw data({ error: `Exercise ${eid} not found` }, { status: 404 });
   }
 
   const formData = await request.formData();
 
   const validatedForm = ExerciseEditFormSchema.safeParse(formData);
   if (!validatedForm.success) {
-    return json(validatedForm.error.flatten());
+    return validatedForm.error.flatten();
   }
 
   const { _method } = validatedForm.data;
   if (_method !== 'put') {
-    throw json({ error: `Invalid method ${_method}` }, { status: 405 });
+    throw data({ error: `Invalid method ${_method}` }, { status: 405 });
   }
 
   const updatedExercise = await updateExercise(exercise, validatedForm.data);

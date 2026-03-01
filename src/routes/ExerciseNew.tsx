@@ -1,7 +1,7 @@
 import ExerciseForm from '@/components/ExerciseForm';
 import { makeExerciseCreate } from '@/lib/exercise';
 import { loaderExerciseNew } from '@/routes/loaders';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router';
 
 export default function ExerciseNew() {
   const navigate = useNavigate();

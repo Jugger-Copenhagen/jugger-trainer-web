@@ -3,7 +3,6 @@ import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import { AdminPanelSettings, ArrowDropDown, Login, Logout } from '@mui/icons-material';
 import {
-  AppBar as MuiAppBar,
   Box,
   Button,
   List,
@@ -11,11 +10,12 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  AppBar as MuiAppBar,
   Toolbar,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
 export default function AppBar() {
   const navigate = useNavigate();

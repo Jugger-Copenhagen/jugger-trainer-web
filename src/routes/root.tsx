@@ -2,11 +2,19 @@ import AppBar from '@/components/AppBar';
 import { auth } from '@/lib/firebase';
 import { useToastStore, useUserStore } from '@/lib/store';
 import '@/routes/root.css';
-import { Alert, Box, Container, CssBaseline, Snackbar, ThemeProvider, createTheme } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Container,
+  CssBaseline,
+  Snackbar,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
 import { green, pink, purple } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 export default function Root() {
   const userStore = useUserStore();
@@ -44,7 +52,12 @@ export default function Root() {
       </Box>
 
       <Snackbar open={toast.message !== null} autoHideDuration={6000} onClose={toast.clearToast}>
-        <Alert onClose={toast.clearToast} severity={toast.severity} variant="filled" sx={{ width: '100%' }}>
+        <Alert
+          onClose={toast.clearToast}
+          severity={toast.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {toast.message}
         </Alert>
       </Snackbar>

@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { Form } from 'react-router-dom';
+import { Form } from 'react-router';
 
 type ExerciseFormProps = {
   exercise: ExerciseCreate | Exercise;
