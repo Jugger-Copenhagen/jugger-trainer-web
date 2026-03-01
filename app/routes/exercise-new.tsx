@@ -6,14 +6,14 @@ import { getAuth } from 'firebase/auth';
 import { redirect, useNavigate } from 'react-router';
 import type { Route } from './+types/exercise-new';
 
-export async function loader() {
+export async function clientLoader() {
   const images = await getAllImages();
   const tags = await getTags();
 
   return { images, tags };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const auth = getAuth();
   const user = auth.currentUser;
 

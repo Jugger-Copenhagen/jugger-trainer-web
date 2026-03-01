@@ -17,16 +17,16 @@ jobs:
         run: npm ci --audit=false
 
       - name: Jam variables into files
-        run: echo "${{ vars.FIREBASE_CONFIG }}" > src/config.ts
+        run: echo "${{ vars.FIREBASE_CONFIG }}" > app/config.ts
 
       - name: Build site
         run: npm run build
 
       - name: Create 404 page
-        run: cp ./dist/index.html ./dist/404.html
+        run: cp ./build/client/index.html ./build/client/404.html
 
       - name: Deploy site
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./build/client

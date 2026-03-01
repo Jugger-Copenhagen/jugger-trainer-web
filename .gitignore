@@ -10,7 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+build
 *.local
+
+# React Router framework generated types
+.react-router/
 
 # Editor directories and files
 .idea
@@ -22,7 +26,7 @@ dist-ssr
 *.sw?
 
 # config
-src/config.ts
+app/config.ts
 
 # Claude
 .claude/

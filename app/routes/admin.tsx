@@ -2,7 +2,7 @@ import { useToastStore, useUserStore } from '@/lib/store';
 import { Typography } from '@mui/material';
 import { redirect } from 'react-router';
 
-export function loader() {
+export function clientLoader() {
   const { profile } = useUserStore.getState();
 
   if (profile?.role !== 'admin') {

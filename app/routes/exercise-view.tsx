@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { data, redirect } from 'react-router';
 import type { Route } from './+types/exercise-view';
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const { eid } = params;
 
   const exercise = await getExerciseById(eid);
@@ -23,7 +23,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { exercise, tags };
 }
 
-export async function action({ request, params }: Route.ActionArgs) {
+export async function clientAction({ request, params }: Route.ClientActionArgs) {
   const auth = getAuth();
   const user = auth.currentUser;
 

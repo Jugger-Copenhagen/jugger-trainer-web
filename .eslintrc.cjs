@@ -6,10 +6,29 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', 'build', '.eslintrc.cjs', '.react-router'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react-refresh/only-export-components': [
+      'warn',
+      {
+        allowConstantExport: true,
+        allowExportNames: [
+          'meta',
+          'links',
+          'headers',
+          'loader',
+          'clientLoader',
+          'action',
+          'clientAction',
+          'ErrorBoundary',
+          'HydrateFallback',
+          'Layout',
+          'handle',
+          'shouldRevalidate',
+        ],
+      },
+    ],
   },
 };

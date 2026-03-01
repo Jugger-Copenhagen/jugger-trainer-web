@@ -5,11 +5,11 @@
   "description": "Web port of the Jugger Trainer Android app",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "react-router dev",
+    "build": "react-router build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "typecheck": "tsc",
+    "typecheck": "react-router typegen && tsc",
     "prepare": "husky"
   },
   "dependencies": {
@@ -18,7 +18,9 @@
     "@mui/icons-material": "^7.1.0",
     "@mui/lab": "^7.0.0-beta.12",
     "@mui/material": "^7.1.0",
+    "@react-router/node": "^7.13.1",
     "firebase": "^10.9.0",
+    "isbot": "^5.1.35",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

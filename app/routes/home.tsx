@@ -8,7 +8,7 @@ import { Box, Divider, Fab, Typography } from '@mui/material';
 import { data, Link, useSearchParams } from 'react-router';
 import type { Route } from './+types/home';
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const { searchParams } = new URL(request.url);
 
   const resultParams = ExerciseSearchParamsSchema.safeParse({
