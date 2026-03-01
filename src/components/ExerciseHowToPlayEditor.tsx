@@ -10,9 +10,27 @@ type ExerciseHowToPlayEditorProps = {
 
 type ActiveTab = 'edit' | 'preview';
 
+const EXERCISE_HOW_TO_PLAY_TEMPLATE = `
+# Setup
+
+How do you set up for this exercise? How large of a field do you need? Do you need cones or other equipment? Where do players stand?
+
+# How to Play
+
+What do players do? What is their goal in the game?
+
+# Coaching Notes
+
+What should the coach watch for or try to help players practice? What is the learning goal for this exercise?
+
+# Variants
+
+Are there other ways you can run this exercise? For example, with more or fewer players, or different rules?
+`.trim();
+
 export default function ExerciseHowToPlayEditor({ exercise }: ExerciseHowToPlayEditorProps) {
   const [activeTab, setActiveTab] = useState<ActiveTab>('edit');
-  const [howToPlay, setHowToPlay] = useState(exercise.howToPlay);
+  const [howToPlay, setHowToPlay] = useState(exercise.howToPlay || EXERCISE_HOW_TO_PLAY_TEMPLATE);
 
   return (
     <TabContext value={activeTab}>
@@ -28,7 +46,6 @@ export default function ExerciseHowToPlayEditor({ exercise }: ExerciseHowToPlayE
             value={howToPlay}
             multiline
             minRows={5}
-            placeholder="Describe your exercise.  You can use Markdown: # heading, _italic_, **bold**"
             required
             onChange={(evt) => setHowToPlay(evt.target.value)}
           />
