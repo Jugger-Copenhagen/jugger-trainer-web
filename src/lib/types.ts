@@ -41,6 +41,14 @@ export const COUNTRIES = [
 
 export type Country = (typeof COUNTRIES)[number];
 
+// === USER PROFILES === //
+
+export const USER_ROLES = ['admin', 'user'] as const;
+export type UserRole = (typeof USER_ROLES)[number];
+export type UserProfile = {
+  role: UserRole;
+};
+
 // === TAGS === //
 
 export const TagsSearchParamsSchema = z.object({

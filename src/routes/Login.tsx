@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
 
-let pendingCredential: OAuthCredential | null = null;
+const pendingCredential: OAuthCredential | null = null;
 
 export default function Login() {
   const userStore = useUserStore();
@@ -30,7 +30,7 @@ export default function Login() {
     if (userStore.user !== null) {
       navigate('/');
     }
-  }, [userStore.user]);
+  }, [userStore.user, navigate]);
 
   function handleAuthMessage(message: string) {
     setMessage(message);
@@ -62,7 +62,7 @@ export default function Login() {
         user = credentialLinked.user;
       }
 
-      userStore.setUser(user);
+      await userStore.setUser(user);
     } catch (err) {
       handleAuthError(err);
     }
@@ -78,7 +78,7 @@ export default function Login() {
         user = credentialLinked.user;
       }
 
-      userStore.setUser(user);
+      await userStore.setUser(user);
     } catch (err) {
       handleAuthError(err);
     }
@@ -110,7 +110,7 @@ export default function Login() {
         user = credentialLinked.user;
       }
 
-      userStore.setUser(user);
+      await userStore.setUser(user);
     } catch (err) {
       handleAuthError(err);
     }

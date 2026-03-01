@@ -27,9 +27,9 @@ export default function Root() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user: User | null) => {
-      userStore.setUser(user);
+      void userStore.setUser(user);
     });
-  }, []);
+  }, [userStore]);
 
   async function logout() {
     await auth.signOut();

@@ -43,3 +43,9 @@ React 18 + TypeScript SPA built with Vite, deployed to GitHub Pages.
 - 2-space indentation, single quotes, trailing commas (es5), 100-char line limit
 - ESLint enforces zero warnings; imports auto-organized on save
 - No test framework is configured. For now, manually test by running `npm run dev` and interacting with the UI.
+
+## Scripts
+
+- Migration scripts live in `scripts/migrations/` and are run with `node --experimental-strip-types scripts/migrations/<name>.ts`
+- All scripts **must** support a `--dry-run` flag that logs intended changes without writing to the database
+- Scripts authenticate via `FIREBASE_EMAIL` / `FIREBASE_PASSWORD` env vars (or interactive prompt)

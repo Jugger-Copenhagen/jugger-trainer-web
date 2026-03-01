@@ -7,6 +7,7 @@ import {
   FirebaseId,
   Tag,
   TagCreate,
+  UserProfile,
 } from '@/lib/types';
 import { ExerciseEditFormValidated, ExerciseNewFormValidated } from '@/routes/actions';
 import { initializeApp } from 'firebase/app';
@@ -359,6 +360,20 @@ export async function updateExercise(exercise: Exercise, form: ExerciseEditFormV
   };
 
   return updatedExercise;
+}
+
+// === USER PROFILES === //
+
+const DEFAULT_USER_PROFILE: UserProfile = { role: 'user' };
+
+export async function upsertUserProfile(uid: string): Promise<UserProfile> {
+  const profileRef = child(realtimeRef(db), `users/${uid}`);
+  const snapshot = await get(profileRef);
+  if (snapshot.exists()) {
+    return snapshot.val() as UserProfile;
+  }
+  await set(profileRef, DEFAULT_USER_PROFILE);
+  return DEFAULT_USER_PROFILE;
 }
 
 // === FAVOURITES === //

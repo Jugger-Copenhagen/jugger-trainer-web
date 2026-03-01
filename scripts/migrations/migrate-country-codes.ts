@@ -2,7 +2,7 @@ import { createInterface } from 'readline';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { get, getDatabase, ref, update } from 'firebase/database';
-import config from '../src/config.ts';
+import config from '../../src/config.ts';
 
 function prompt(question: string): Promise<string> {
   const rl = createInterface({ input: process.stdin, output: process.stderr });
