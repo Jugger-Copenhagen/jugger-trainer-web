@@ -28,7 +28,7 @@ export function links() {
 
 export function meta() {
   return [
-    { charSet: 'utf-8' },
+    { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
     { name: 'msapplication-TileColor', content: '#603cba' },
     { name: 'theme-color', content: '#ffffff' },
@@ -54,6 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta name="emotion-insertion-point" content="" />
         <Meta />
         <Links />
       </head>
