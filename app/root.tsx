@@ -1,7 +1,6 @@
 import AppBar from '@/components/AppBar';
 import { auth } from '@/lib/firebase';
 import { useToastStore, useUserStore } from '@/lib/store';
-import './root.css';
 import {
   Alert,
   Box,
@@ -15,6 +14,7 @@ import { green, pink, purple } from '@mui/material/colors';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import './root.css';
 
 export function links() {
   return [
@@ -63,6 +63,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <AppBar />
+      <Box component="main">
+        <Container maxWidth={false}>
+          <p>Loading...</p>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
 
