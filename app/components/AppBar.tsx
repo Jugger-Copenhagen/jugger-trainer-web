@@ -61,7 +61,11 @@ export default function AppBar() {
             </Link>
           ) : (
             <>
-              <Button color="inherit" onClick={handleMenuOpen} endIcon={<ArrowDropDown />}>
+              <Button
+                sx={{ color: '#ffffff' }}
+                onClick={handleMenuOpen}
+                endIcon={<ArrowDropDown />}
+              >
                 {user.email}
               </Button>
               <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>

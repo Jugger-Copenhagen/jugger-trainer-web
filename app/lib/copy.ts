@@ -1,6 +1,12 @@
 import { PLAYERS_MAX_NOT_SPECIFIED } from '@/lib/exercise';
 import { Country, Exercise, ExerciseCreate, ExertionLevel } from '@/lib/types';
 
+const APP_NAME = 'Jugger Trainer';
+
+export function pageTitle(title?: string) {
+  return title ? `${title} | ${APP_NAME}` : APP_NAME;
+}
+
 export function numberOfPlayersHumanReadable(exercise: Exercise | ExerciseCreate) {
   const { playersMin, playersMax } = exercise;
   if (playersMin === playersMax) {

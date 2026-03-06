@@ -1,4 +1,5 @@
 import AppBar from '@/components/AppBar';
+import { pageTitle } from '@/lib/copy';
 import { auth } from '@/lib/firebase';
 import { useToastStore, useUserStore } from '@/lib/store';
 import {
@@ -32,7 +33,8 @@ export function meta() {
     { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
     { name: 'msapplication-TileColor', content: '#603cba' },
     { name: 'theme-color', content: '#ffffff' },
-    { title: 'Jugger Trainer' },
+    { title: pageTitle() },
+    { name: 'description', content: 'Find jugger exercises and plan your training sessions' },
   ];
 }
 

@@ -1,5 +1,6 @@
 import ExerciseDetails from '@/components/ExerciseDetails';
 import ExerciseForm from '@/components/ExerciseForm';
+import { pageTitle } from '@/lib/copy';
 import { getExerciseById, getTags, updateExercise } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
 import { ExerciseEditFormSchema } from '@/lib/validation';
@@ -9,6 +10,11 @@ import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { data, redirect } from 'react-router';
 import type { Route } from './+types/exercise-view';
+
+export function meta({ loaderData }: Route.MetaArgs) {
+  const { exercise } = loaderData;
+  return [{ title: pageTitle(exercise.name) }];
+}
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const { eid } = params;
