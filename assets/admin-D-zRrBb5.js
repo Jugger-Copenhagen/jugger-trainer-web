@@ -1,0 +1,2 @@
+import{w as o,A as r,o as e}from"./chunk-LFPYN7LY-42L3dXPP.js";import{u as a,a as n}from"./store-D6tmRAjg.js";import{T as s}from"./Typography-BVCizE4L.js";import"./createSimplePaletteValueFilter-C-rVefkh.js";function c(){const{profile:t}=a.getState();if((t==null?void 0:t.role)!=="admin")throw n.getState().setToast("You are not authorized to access that page.","error"),r("/");return null}const d=o(function(){return e.jsx(s,{component:"h2",variant:"h4",sx:{mt:2},children:"Admin"})});export{c as clientLoader,d as default};
+//# sourceMappingURL=admin-D-zRrBb5.js.map
