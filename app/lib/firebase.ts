@@ -194,7 +194,8 @@ export async function searchExercises(searchParams: ExerciseSearchParams): Promi
 
       return true;
     })
-    .toSorted((a, b) => a.name.localeCompare(b.name));
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getExerciseById(eid: FirebaseId) {

@@ -59,7 +59,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
 
   const searchOptions = tags
     .map(getOptionForTag)
-    .toSorted((a, b) => a.label.localeCompare(b.label));
+    .slice()
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   function handleClearAll() {
     navigate('/');

@@ -10,7 +10,7 @@ type ExerciseTagEditorProps = {
 export default function ExerciseTagEditor({ exercise, tags }: ExerciseTagEditorProps) {
   const [value, setValue] = useState<(string | Tag)[]>(exercise.tags);
 
-  const options = tags.toSorted((a, b) => a.tag.localeCompare(b.tag));
+  const options = tags.slice().sort((a, b) => a.tag.localeCompare(b.tag));
 
   return (
     <FormControl fullWidth>
