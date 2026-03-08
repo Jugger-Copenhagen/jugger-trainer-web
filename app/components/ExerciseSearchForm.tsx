@@ -74,12 +74,12 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
     setPlayers(evt.target.value);
   }
 
-  function handlePlayersInput(evt: React.FormEvent<HTMLElement>) {
+  function handlePlayersInput(evt: React.InputEvent<HTMLElement>) {
     const input = evt.target as HTMLInputElement;
     input.setCustomValidity('');
   }
 
-  function handlePlayersInvalid(evt: React.FormEvent<HTMLInputElement>) {
+  function handlePlayersInvalid(evt: React.SyntheticEvent<HTMLInputElement>) {
     const input = evt.target as HTMLInputElement;
     if (input.validity.patternMismatch) {
       input.setCustomValidity('Please enter the number of players');
@@ -142,7 +142,7 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
             <TextField
               fullWidth
               inputMode="numeric"
-              inputProps={{ pattern: '[0-9]*' }}
+              slotProps={{ htmlInput: { pattern: '[0-9]*' } }}
               label="Players"
               name={players === '' ? undefined : 'players'}
               size="small"
