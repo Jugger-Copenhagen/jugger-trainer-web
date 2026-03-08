@@ -4,7 +4,7 @@ import {
   Autocomplete,
   Button,
   FormControl,
-  GridLegacy,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -95,8 +95,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
 
   return (
     <Form>
-      <GridLegacy container spacing={2}>
-        <GridLegacy item xs={12} sm={6} md={4}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <Autocomplete
             freeSolo
             multiple
@@ -115,8 +115,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
 
             return <input key={value.value} name="tagIDs" type="hidden" value={value.value} />;
           })}
-        </GridLegacy>
-        <GridLegacy item xs={12} sm={3} md={2}>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <FormControl fullWidth>
             <InputLabel id="label_exertion_level">Exertion Level</InputLabel>
             <Select
@@ -136,8 +136,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               ))}
             </Select>
           </FormControl>
-        </GridLegacy>
-        <GridLegacy item xs={12} sm={3} md={2}>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <FormControl fullWidth>
             <TextField
               fullWidth
@@ -153,8 +153,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               onInvalid={handlePlayersInvalid}
             />
           </FormControl>
-        </GridLegacy>
-        <GridLegacy item xs={12} sm={6} md={4}>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <Stack alignItems="center" direction="row" spacing={1}>
             <Button type="submit" variant="contained">
               Search
@@ -164,8 +164,8 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
               Clear All
             </Button>
           </Stack>
-        </GridLegacy>
-      </GridLegacy>
+        </Grid>
+      </Grid>
     </Form>
   );
 }

@@ -9,7 +9,7 @@ import {
   Box,
   Button,
   FormControl,
-  GridLegacy,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -46,8 +46,8 @@ export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormP
     <Box mt={2}>
       <Form method="post" action={action}>
         {isEditing && <HttpMethod method="put" />}
-        <GridLegacy container spacing={2}>
-          <GridLegacy item xs={12}>
+        <Grid container spacing={2}>
+          <Grid size={12}>
             <TextField
               name="name"
               autoComplete="off"
@@ -59,8 +59,8 @@ export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormP
               placeholder="Name of exercise"
               onChange={(evt) => setName(evt.target.value)}
             />
-          </GridLegacy>
-          <GridLegacy item xs={12} md={4}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Box>
               <img
                 src={exercise.images[0]}
@@ -108,8 +108,8 @@ export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormP
                 <ExerciseOriginCountryEditor exercise={exercise} />
               )}
             </Box>
-          </GridLegacy>
-          <GridLegacy item xs={12} md={8}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 8 }}>
             <ExerciseHowToPlayEditor exercise={exercise} />
 
             <Stack mt={4} direction="row" spacing={2} justifyContent="flex-end">
@@ -127,8 +127,8 @@ export default function ExerciseForm({ exercise, tags, onCancel }: ExerciseFormP
                 {isEditing ? 'Update' : 'Save'}
               </Button>
             </Stack>
-          </GridLegacy>
-        </GridLegacy>
+          </Grid>
+        </Grid>
       </Form>
     </Box>
   );
