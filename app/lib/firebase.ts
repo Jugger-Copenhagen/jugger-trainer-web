@@ -14,13 +14,10 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, User } from 'firebase/auth';
 import { child, get, getDatabase, push, ref as realtimeRef, set, update } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
-import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import { differenceBy } from 'lodash-es';
 
 const app = initializeApp(config.firebase);
 const db = getDatabase(app);
-const storage = getStorage();
-const storageRef = ref(storage);
 
 export const auth = getAuth(app);
 
@@ -389,12 +386,12 @@ export async function unfavoriteExercise(/* eid: FirebaseId */) {
 
 // === IMAGES === //
 
+const { BASE_URL } = import.meta.env;
+
+const SAMPLE_IMAGES = Array.from({ length: 11 }, (_, i) =>
+  `${BASE_URL}images/samples/sample${i}.jpg`
+);
+
 export async function getAllImages() {
-  // someday, this would do something else
-  const sampleImageFolderRef = ref(storageRef, 'samples/');
-  const allThaShit = await listAll(sampleImageFolderRef);
-  const allImagesUrls = await Promise.all(
-    allThaShit.items.map((itemRef) => getDownloadURL(itemRef))
-  );
-  return allImagesUrls;
+  return SAMPLE_IMAGES;
 }

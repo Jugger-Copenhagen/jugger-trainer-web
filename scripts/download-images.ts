@@ -46,7 +46,7 @@ async function main() {
       .toBuffer();
 
     const outPath = join(OUTPUT_DIR, itemRef.name);
-    await writeFile(outPath, optimized);
+    await writeFile(outPath, new Uint8Array(optimized.buffer, optimized.byteOffset, optimized.byteLength));
     console.log(`  ${itemRef.name} (${buffer.length} -> ${optimized.length} bytes)`);
   }
 
