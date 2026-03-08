@@ -86,14 +86,17 @@ export function HydrateFallback() {
 }
 
 export default function Root() {
-  const userStore = useUserStore();
-  const toast = useToastStore();
+  const setUser = useUserStore((s) => s.setUser);
+  const toastMessage = useToastStore((s) => s.message);
+  const toastSeverity = useToastStore((s) => s.severity);
+  const clearToast = useToastStore((s) => s.clearToast);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user: User | null) => {
-      void userStore.setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+      void setUser(user);
     });
-  }, [userStore]);
+    return unsubscribe;
+  }, [setUser]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -106,14 +109,14 @@ export default function Root() {
         </Container>
       </Box>
 
-      <Snackbar open={toast.message !== null} autoHideDuration={6000} onClose={toast.clearToast}>
+      <Snackbar open={toastMessage !== null} autoHideDuration={6000} onClose={clearToast}>
         <Alert
-          onClose={toast.clearToast}
-          severity={toast.severity}
+          onClose={clearToast}
+          severity={toastSeverity}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          {toast.message}
+          {toastMessage}
         </Alert>
       </Snackbar>
     </ThemeProvider>
