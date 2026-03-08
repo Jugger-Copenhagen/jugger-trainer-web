@@ -58,7 +58,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <meta name="emotion-insertion-point" content="" />
         <Meta />
         <Links />
       </head>

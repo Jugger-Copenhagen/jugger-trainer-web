@@ -74,7 +74,7 @@ export default function ExerciseSearchForm({ params, tags }: ExerciseSearchFormP
     setPlayers(evt.target.value);
   }
 
-  function handlePlayersInput(evt: React.FormEvent<HTMLInputElement>) {
+  function handlePlayersInput(evt: React.FormEvent<HTMLElement>) {
     const input = evt.target as HTMLInputElement;
     input.setCustomValidity('');
   }

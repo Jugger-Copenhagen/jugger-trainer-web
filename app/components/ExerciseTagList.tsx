@@ -1,7 +1,7 @@
 import ExerciseTag from '@/components/ExerciseTag';
 import { Exercise, ExerciseCreate } from '@/lib/types';
 import { Box, BoxProps } from '@mui/material';
-import React from 'react';
+import { Fragment } from 'react';
 
 type ExerciseTagListProps = {
   exercise: Exercise | ExerciseCreate;
@@ -13,9 +13,9 @@ export default function ExerciseTagList(props: ExerciseTagListProps) {
   return (
     <Box {...rest}>
       {exercise.tags.map((tag) => (
-        <React.Fragment key={tag.tagID}>
+        <Fragment key={tag.tagID}>
           <ExerciseTag tag={tag} component="span" />{' '}
-        </React.Fragment>
+        </Fragment>
       ))}
     </Box>
   );
