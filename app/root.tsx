@@ -17,13 +17,15 @@ import { useEffect } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import './root.css';
 
+const { BASE_URL } = import.meta.env;
+
 export function links() {
   return [
-    { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
-    { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
-    { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
-    { rel: 'manifest', href: '/site.webmanifest' },
-    { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#5bbad5' },
+    { rel: 'apple-touch-icon', sizes: '180x180', href: `${BASE_URL}apple-touch-icon.png` },
+    { rel: 'icon', type: 'image/png', sizes: '32x32', href: `${BASE_URL}favicon-32x32.png` },
+    { rel: 'icon', type: 'image/png', sizes: '16x16', href: `${BASE_URL}favicon-16x16.png` },
+    { rel: 'manifest', href: `${BASE_URL}site.webmanifest` },
+    { rel: 'mask-icon', href: `${BASE_URL}safari-pinned-tab.svg`, color: '#5bbad5' },
   ];
 }
 
