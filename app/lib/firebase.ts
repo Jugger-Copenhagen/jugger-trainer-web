@@ -112,7 +112,77 @@ export async function disassociateTagWithExercise(tag: Tag, eid: FirebaseId) {
   return tagUpdate;
 }
 
+export function invalidateTagCache() {
+  tagsPromise = null;
+}
+
+export async function deleteTag(
+  tagID: FirebaseId,
+  exercisesRaw: ExerciseFirebase[],
+): Promise<void> {
+  const updates: Record<string, unknown> = {
+    [`tags/${tagID}`]: null,
+  };
+
+  for (const exercise of exercisesRaw) {
+    const tagIDs = exercise.tagIDs ?? [];
+    if (tagIDs.includes(tagID)) {
+      updates[`exercises/${exercise.eid}/tagIDs`] = tagIDs.filter((id) => id !== tagID);
+    }
+  }
+
+  await update(realtimeRef(db), updates);
+  invalidateTagCache();
+}
+
+export async function mergeTags(
+  sourceTagID: FirebaseId,
+  targetTagID: FirebaseId,
+): Promise<void> {
+  const [tags, exercisesRaw] = await Promise.all([getTags(), getExercisesRaw()]);
+
+  const sourceTag = tags.find((t) => t.tagID === sourceTagID);
+  const targetTag = tags.find((t) => t.tagID === targetTagID);
+  if (!sourceTag || !targetTag) {
+    throw new Error('Source or target tag not found');
+  }
+
+  const updates: Record<string, unknown> = {};
+
+  // Update exercises: replace sourceTagID with targetTagID
+  for (const exercise of exercisesRaw) {
+    const tagIDs = exercise.tagIDs ?? [];
+    if (tagIDs.includes(sourceTagID)) {
+      const newTagIDs = tagIDs.filter((id) => id !== sourceTagID);
+      if (!newTagIDs.includes(targetTagID)) {
+        newTagIDs.push(targetTagID);
+      }
+      updates[`exercises/${exercise.eid}/tagIDs`] = newTagIDs;
+    }
+  }
+
+  // Update target tag's associatedExerciseIds to union of both
+  const unionExerciseIds = Array.from(
+    new Set([...targetTag.associatedExerciseIds, ...sourceTag.associatedExerciseIds]),
+  );
+  updates[`tags/${targetTagID}/associatedExerciseIds`] = unionExerciseIds;
+
+  // Delete source tag
+  updates[`tags/${sourceTagID}`] = null;
+
+  await update(realtimeRef(db), updates);
+  invalidateTagCache();
+}
+
 // === EXERCISES === //
+
+export async function getExercisesRaw(): Promise<ExerciseFirebase[]> {
+  const querySnapshot = await get(child(realtimeRef(db), 'exercises'));
+  const queryResult = querySnapshot.val() as Record<FirebaseId, DocumentData>;
+  return Object.values(queryResult).filter(
+    (ex) => (ex as ExerciseFirebase).name !== undefined,
+  ) as ExerciseFirebase[];
+}
 
 function validateExercise(data: DocumentData, tags: Tag[], images: string[]): Exercise {
   const exercise = data as Omit<Exercise, 'tags'> & { tagIDs: FirebaseId[] };
