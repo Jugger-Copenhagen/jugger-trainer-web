@@ -1,4 +1,4 @@
-import { index, route, type RouteConfig } from '@react-router/dev/routes';
+import { index, layout, route, type RouteConfig } from '@react-router/dev/routes';
 
 export default [
   index('routes/home.tsx'),
@@ -7,5 +7,8 @@ export default [
   route('exercises/random', 'routes/exercise-random.tsx'),
   route('exercises/:eid', 'routes/exercise-view.tsx'),
   route('login', 'routes/login.tsx'),
-  route('admin', 'routes/admin.tsx'),
+  layout('routes/admin-layout.tsx', [
+    route('admin', 'routes/admin.tsx'),
+    route('admin/tags', 'routes/admin-tags.tsx'),
+  ]),
 ] satisfies RouteConfig;
