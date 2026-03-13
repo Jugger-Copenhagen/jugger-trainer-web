@@ -1,1 +1,0 @@
-{"version":3,"file":"exercise-random-BGfcSoGk.js","sources":["../../../app/routes/exercise-random.tsx"],"sourcesContent":["export default function ExerciseRandom() {\n  return <div>Random exercise</div>;\n}\n"],"names":["exerciseRandom","_UNSAFE_withComponentProps","jsx","children"],"mappings":"mDAAA,MAAAA,EAAAC,EAAA,UAAyC,CAChC,OAAAC,EAAAA,IAAC,OAAIC,SAAe,iBAAA,CAAA,CAC7B,CAAA"}
