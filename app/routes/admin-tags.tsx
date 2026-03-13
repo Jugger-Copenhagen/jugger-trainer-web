@@ -1,3 +1,4 @@
+import { getMergeOptions, TagMergeOption } from '@/lib/admin/tags';
 import { deleteTag, getExercisesRaw, getTags, mergeTags } from '@/lib/firebase';
 import { useToastStore } from '@/lib/store';
 import { Tag } from '@/lib/types';
@@ -70,6 +71,134 @@ function sortTags(tags: Tag[], sortField: SortField, sortDir: SortDir): Tag[] {
   });
 }
 
+function AdminTagActionMenu({
+  tag,
+  tags,
+  fetcher,
+}: {
+  tag: Tag;
+  tags: Tag[];
+  fetcher: ReturnType<typeof useFetcher>;
+}) {
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
+  const [mergeTarget, setMergeTarget] = useState<TagMergeOption | null>(null);
+
+  const isSubmitting = fetcher.state !== 'idle';
+  const mergeOptions = getMergeOptions(tag, tags);
+
+  function handleDeleteConfirm() {
+    fetcher.submit(
+      { _action: 'delete', tagID: tag.tagID },
+      { method: 'post' },
+    );
+    setDeleteDialogOpen(false);
+  }
+
+  function handleMergeConfirm() {
+    if (mergeTarget) {
+      fetcher.submit(
+        {
+          _action: 'merge',
+          sourceTagID: tag.tagID,
+          targetTagID: mergeTarget.tagID,
+        },
+        { method: 'post' },
+      );
+    }
+    setMergeDialogOpen(false);
+    setMergeTarget(null);
+  }
+
+  return (
+    <>
+      <IconButton
+        size="small"
+        onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+        disabled={isSubmitting}
+      >
+        <MoreVert fontSize="small" />
+      </IconButton>
+
+      <Menu
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
+        onClose={() => setMenuAnchorEl(null)}
+      >
+        <MenuItem
+          onClick={() => {
+            setMenuAnchorEl(null);
+            setDeleteDialogOpen(true);
+          }}
+        >
+          Delete
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setMenuAnchorEl(null);
+            setMergeTarget(null);
+            setMergeDialogOpen(true);
+          }}
+        >
+          Merge into&hellip;
+        </MenuItem>
+      </Menu>
+
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+      >
+        <DialogTitle>Delete tag</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Delete tag &ldquo;{tag.tag}&rdquo;? This will remove it from{' '}
+            {tag.associatedExerciseIds.length} exercises.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="error" disabled={isSubmitting}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={mergeDialogOpen}
+        onClose={() => setMergeDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Merge &ldquo;{tag.tag}&rdquo; into&hellip;</DialogTitle>
+        <DialogContent>
+          <Autocomplete
+            options={mergeOptions}
+            getOptionLabel={(option) => option.tag}
+            groupBy={(option) => option._group}
+            value={mergeTarget}
+            onChange={(_evt, newValue) => setMergeTarget(newValue)}
+            renderInput={(params) => (
+              <TextField {...params} label="Target tag" fullWidth sx={{ mt: 1 }} />
+            )}
+            isOptionEqualToValue={(option, value) => option.tagID === value.tagID}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setMergeDialogOpen(false)}>Cancel</Button>
+          <Button
+            onClick={handleMergeConfirm}
+            color="primary"
+            disabled={isSubmitting || !mergeTarget}
+          >
+            Merge
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
 export default function AdminTags({ loaderData }: Route.ComponentProps) {
   const { tags } = loaderData;
   const fetcher = useFetcher();
@@ -77,21 +206,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
   const [sortField, setSortField] = useState<SortField>('tag');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
-  // Actions menu state
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
-  const [menuTag, setMenuTag] = useState<Tag | null>(null);
-
-  // Delete dialog state
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<Tag | null>(null);
-
-  // Merge dialog state
-  const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
-  const [mergeSource, setMergeSource] = useState<Tag | null>(null);
-  const [mergeTarget, setMergeTarget] = useState<Tag | null>(null);
-
   const sortedTags = sortTags(tags, sortField, sortDir);
-  const isSubmitting = fetcher.state !== 'idle';
 
   function handleSort(field: SortField) {
     if (sortField === field) {
@@ -101,60 +216,6 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
       setSortDir('asc');
     }
   }
-
-  function handleMenuOpen(event: React.MouseEvent<HTMLElement>, tag: Tag) {
-    setMenuAnchorEl(event.currentTarget);
-    setMenuTag(tag);
-  }
-
-  function handleMenuClose() {
-    setMenuAnchorEl(null);
-    setMenuTag(null);
-  }
-
-  function handleDeleteClick() {
-    setDeleteTarget(menuTag);
-    setDeleteDialogOpen(true);
-    handleMenuClose();
-  }
-
-  function handleDeleteConfirm() {
-    if (deleteTarget) {
-      fetcher.submit(
-        { _action: 'delete', tagID: deleteTarget.tagID },
-        { method: 'post' },
-      );
-    }
-    setDeleteDialogOpen(false);
-    setDeleteTarget(null);
-  }
-
-  function handleMergeClick() {
-    setMergeSource(menuTag);
-    setMergeTarget(null);
-    setMergeDialogOpen(true);
-    handleMenuClose();
-  }
-
-  function handleMergeConfirm() {
-    if (mergeSource && mergeTarget) {
-      fetcher.submit(
-        {
-          _action: 'merge',
-          sourceTagID: mergeSource.tagID,
-          targetTagID: mergeTarget.tagID,
-        },
-        { method: 'post' },
-      );
-    }
-    setMergeDialogOpen(false);
-    setMergeSource(null);
-    setMergeTarget(null);
-  }
-
-  const mergeOptions = mergeSource
-    ? tags.filter((t) => t.tagID !== mergeSource.tagID)
-    : [];
 
   return (
     <Box>
@@ -189,78 +250,13 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
                 <TableCell>{tag.tag}</TableCell>
                 <TableCell align="right">{tag.associatedExerciseIds.length}</TableCell>
                 <TableCell align="right">
-                  <IconButton
-                    size="small"
-                    onClick={(e) => handleMenuOpen(e, tag)}
-                    disabled={isSubmitting}
-                  >
-                    <MoreVert fontSize="small" />
-                  </IconButton>
+                  <AdminTagActionMenu tag={tag} tags={tags} fetcher={fetcher} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Menu
-        anchorEl={menuAnchorEl}
-        open={Boolean(menuAnchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
-        <MenuItem onClick={handleMergeClick}>Merge into&hellip;</MenuItem>
-      </Menu>
-
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-      >
-        <DialogTitle>Delete tag</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Delete tag &ldquo;{deleteTarget?.tag}&rdquo;? This will remove it from{' '}
-            {deleteTarget?.associatedExerciseIds.length ?? 0} exercises.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" disabled={isSubmitting}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={mergeDialogOpen}
-        onClose={() => setMergeDialogOpen(false)}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Merge &ldquo;{mergeSource?.tag}&rdquo; into&hellip;</DialogTitle>
-        <DialogContent>
-          <Autocomplete
-            options={mergeOptions}
-            getOptionLabel={(option) => option.tag}
-            value={mergeTarget}
-            onChange={(_evt, newValue) => setMergeTarget(newValue)}
-            renderInput={(params) => (
-              <TextField {...params} label="Target tag" fullWidth sx={{ mt: 1 }} />
-            )}
-            isOptionEqualToValue={(option, value) => option.tagID === value.tagID}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setMergeDialogOpen(false)}>Cancel</Button>
-          <Button
-            onClick={handleMergeConfirm}
-            color="primary"
-            disabled={isSubmitting || !mergeTarget}
-          >
-            Merge
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 }

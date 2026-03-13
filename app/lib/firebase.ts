@@ -118,16 +118,17 @@ export function invalidateTagCache() {
 
 export async function deleteTag(
   tagID: FirebaseId,
-  exercisesRaw: ExerciseFirebase[],
+  exercisesRaw: ExerciseFirebase[]
 ): Promise<void> {
   const updates: Record<string, unknown> = {
     [`tags/${tagID}`]: null,
   };
 
   for (const exercise of exercisesRaw) {
-    const tagIDs = exercise.tagIDs ?? [];
-    if (tagIDs.includes(tagID)) {
-      updates[`exercises/${exercise.eid}/tagIDs`] = tagIDs.filter((id) => id !== tagID);
+    const tagIDs = new Set(exercise.tagIDs ?? []);
+    if (tagIDs.has(tagID)) {
+      tagIDs.delete(tagID);
+      updates[`exercises/${exercise.eid}/tagIDs`] = Array.from(tagIDs);
     }
   }
 
@@ -135,10 +136,7 @@ export async function deleteTag(
   invalidateTagCache();
 }
 
-export async function mergeTags(
-  sourceTagID: FirebaseId,
-  targetTagID: FirebaseId,
-): Promise<void> {
+export async function mergeTags(sourceTagID: FirebaseId, targetTagID: FirebaseId): Promise<void> {
   const [tags, exercisesRaw] = await Promise.all([getTags(), getExercisesRaw()]);
 
   const sourceTag = tags.find((t) => t.tagID === sourceTagID);
@@ -151,19 +149,17 @@ export async function mergeTags(
 
   // Update exercises: replace sourceTagID with targetTagID
   for (const exercise of exercisesRaw) {
-    const tagIDs = exercise.tagIDs ?? [];
-    if (tagIDs.includes(sourceTagID)) {
-      const newTagIDs = tagIDs.filter((id) => id !== sourceTagID);
-      if (!newTagIDs.includes(targetTagID)) {
-        newTagIDs.push(targetTagID);
-      }
-      updates[`exercises/${exercise.eid}/tagIDs`] = newTagIDs;
+    const tagIDs = new Set(exercise.tagIDs ?? []);
+    if (tagIDs.has(sourceTagID)) {
+      tagIDs.delete(sourceTagID);
+      tagIDs.add(targetTagID);
+      updates[`exercises/${exercise.eid}/tagIDs`] = Array.from(tagIDs);
     }
   }
 
   // Update target tag's associatedExerciseIds to union of both
   const unionExerciseIds = Array.from(
-    new Set([...targetTag.associatedExerciseIds, ...sourceTag.associatedExerciseIds]),
+    new Set([...targetTag.associatedExerciseIds, ...sourceTag.associatedExerciseIds])
   );
   updates[`tags/${targetTagID}/associatedExerciseIds`] = unionExerciseIds;
 
@@ -180,7 +176,7 @@ export async function getExercisesRaw(): Promise<ExerciseFirebase[]> {
   const querySnapshot = await get(child(realtimeRef(db), 'exercises'));
   const queryResult = querySnapshot.val() as Record<FirebaseId, DocumentData>;
   return Object.values(queryResult).filter(
-    (ex) => (ex as ExerciseFirebase).name !== undefined,
+    (ex) => (ex as ExerciseFirebase).name !== undefined
   ) as ExerciseFirebase[];
 }
 
@@ -458,8 +454,9 @@ export async function unfavoriteExercise(/* eid: FirebaseId */) {
 
 const { BASE_URL } = import.meta.env;
 
-const SAMPLE_IMAGES = Array.from({ length: 11 }, (_, i) =>
-  `${BASE_URL}images/samples/sample${i}.jpg`
+const SAMPLE_IMAGES = Array.from(
+  { length: 11 },
+  (_, i) => `${BASE_URL}images/samples/sample${i}.jpg`
 );
 
 export async function getAllImages() {
