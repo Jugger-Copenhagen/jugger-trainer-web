@@ -5,7 +5,7 @@ import { useUserStore } from '@/lib/store';
 import { ExerciseSearchParams, ExerciseSearchParamsSchema } from '@/lib/types';
 import { Add } from '@mui/icons-material';
 import { Box, Divider, Fab, Typography } from '@mui/material';
-import { data, Link, useSearchParams } from 'react-router';
+import { data, Link, LinkProps, useSearchParams } from 'react-router';
 import type { Route } from './+types/home';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
@@ -27,6 +27,10 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const [exercises, tags] = await Promise.all([searchExercises(resultParams.data), getTags()]);
 
   return { exercises, tags };
+}
+
+function ExerciseSearchFabLink(linkProps: LinkProps) {
+  return <Link style={{ color: 'white' }} {...linkProps} />;
 }
 
 export default function ExerciseSearch({ loaderData }: Route.ComponentProps) {
@@ -66,7 +70,7 @@ export default function ExerciseSearch({ loaderData }: Route.ComponentProps) {
         <Fab
           aria-label="Add exercise"
           color="secondary"
-          component={Link}
+          component={ExerciseSearchFabLink}
           sx={{ position: 'fixed', bottom: 16, right: 16 }}
           to="/exercises/new"
         >
