@@ -1,5 +1,6 @@
 import ExerciseCardMetadata from '@/components/ExerciseCardMetadata';
 import ExerciseTagList from '@/components/ExerciseTagList';
+import FavoriteButton from '@/components/FavoriteButton';
 import { Exercise } from '@/lib/types';
 import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router';
@@ -12,7 +13,17 @@ export default function ExerciseListCard(props: ExerciseListCardProps) {
   const { exercise } = props;
 
   return (
-    <Card>
+    <Card sx={{ position: 'relative' }}>
+      <FavoriteButton
+        eid={exercise.eid}
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.95)' },
+        }}
+      />
       <CardMedia
         sx={{ height: 200 }}
         image={exercise.images[0]}

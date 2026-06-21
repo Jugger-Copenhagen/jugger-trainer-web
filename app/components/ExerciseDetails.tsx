@@ -1,7 +1,8 @@
 import ExerciseTagList from '@/components/ExerciseTagList';
+import FavoriteButton from '@/components/FavoriteButton';
 import { countryFlag, exertionLevelHumanReadable, numberOfPlayersHumanReadable } from '@/lib/copy';
 import { Exercise } from '@/lib/types';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
 
 type ExerciseDetailsProps = {
@@ -16,9 +17,12 @@ export default function ExerciseDetails(props: ExerciseDetailsProps) {
     <Box mt={2}>
       <Grid container spacing={2}>
         <Grid size={12}>
-          <Typography variant="h3" component="h2">
-            {exercise.name}
-          </Typography>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Typography variant="h3" component="h2">
+              {exercise.name}
+            </Typography>
+            <FavoriteButton eid={exercise.eid} size="large" />
+          </Stack>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <Box>

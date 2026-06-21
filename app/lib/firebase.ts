@@ -442,12 +442,53 @@ export async function upsertUserProfile(uid: string): Promise<UserProfile> {
 
 // === FAVOURITES === //
 
-export async function favoriteExercise(/* eid: FirebaseId */) {
-  // TODO: this
+export async function getFavoriteExerciseIds(uid: string): Promise<FirebaseId[]> {
+  const favoritesRef = child(realtimeRef(db), `users/${uid}/favorites`);
+  const snapshot = await get(favoritesRef);
+  if (!snapshot.exists()) {
+    return [];
+  }
+  const favorites = snapshot.val() as Record<FirebaseId, true>;
+  return Object.keys(favorites);
 }
 
-export async function unfavoriteExercise(/* eid: FirebaseId */) {
-  // TODO: this
+export async function getFavoriteExercises(uid: string): Promise<Exercise[]> {
+  const favoriteIds = await getFavoriteExerciseIds(uid);
+  if (favoriteIds.length === 0) {
+    return [];
+  }
+
+  const favoriteIdSet = new Set(favoriteIds);
+  const tags = await getTags();
+  const images = await getAllImages();
+
+  const querySnapshot = await get(child(realtimeRef(db), 'exercises'));
+  if (!querySnapshot.exists()) {
+    return [];
+  }
+  const queryResult = querySnapshot.val() as Record<FirebaseId, DocumentData>;
+
+  return Object.values(queryResult)
+    .map((data) => validateExercise(data, tags, images))
+    .filter((exercise) => exercise.name !== undefined && favoriteIdSet.has(exercise.eid))
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function favoriteExercise(eid: FirebaseId) {
+  const user = auth.currentUser;
+  if (user === null) {
+    throw new Error('Must be signed in to favorite an exercise.');
+  }
+  await set(child(realtimeRef(db), `users/${user.uid}/favorites/${eid}`), true);
+}
+
+export async function unfavoriteExercise(eid: FirebaseId) {
+  const user = auth.currentUser;
+  if (user === null) {
+    throw new Error('Must be signed in to unfavorite an exercise.');
+  }
+  await set(child(realtimeRef(db), `users/${user.uid}/favorites/${eid}`), null);
 }
 
 // === IMAGES === //

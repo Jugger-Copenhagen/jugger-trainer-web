@@ -1,7 +1,7 @@
 import smolLogoUrl from '@/assets/smolll_logo.png';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/lib/store';
-import { AdminPanelSettings, ArrowDropDown, Login, Logout } from '@mui/icons-material';
+import { AdminPanelSettings, ArrowDropDown, Favorite, Login, Logout } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -42,6 +42,11 @@ export default function AppBar() {
     navigate('/admin');
   }
 
+  function goToFavorites() {
+    handleMenuClose();
+    navigate('/exercises/favorited');
+  }
+
   return (
     <MuiAppBar position="sticky" sx={{ width: '100vw' }}>
       <Toolbar>
@@ -69,6 +74,12 @@ export default function AppBar() {
                 {user.email}
               </Button>
               <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
+                <MenuItem onClick={goToFavorites}>
+                  <ListItemIcon>
+                    <Favorite fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Favorites</ListItemText>
+                </MenuItem>
                 {profile?.role === 'admin' && (
                   <MenuItem onClick={goToAdmin}>
                     <ListItemIcon>

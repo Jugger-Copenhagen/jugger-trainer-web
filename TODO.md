@@ -1,4 +1,4 @@
-- [ ] save your favorite exercises
+- [x] save your favorite exercises
 - [ ] add simple movement diagram editor to exercise details (circles + arrows)
 - [ ] training plan editor (drag and drop exercises into training plan; reorder exercises within training plan)
 - [ ] clean up `associatedExerciseIds` in database and codebase
