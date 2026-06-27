@@ -1,2 +1,0 @@
-import{a9 as r,aa as a,a8 as p}from"./Box-CjjwUo3Q.js";const c=r();function m(n){const{theme:e,name:o,props:s}=n;return!e||!e.components||!e.components[o]||!e.components[o].defaultProps?s:a(e.components[o].defaultProps,s)}function f({props:n,name:e,defaultTheme:o,themeId:s}){let t=p(o);return s&&(t=t[s]||t),m({theme:t,name:e,props:n})}export{c as s,f as u};
-//# sourceMappingURL=useThemeProps-Cxjn36Ig.js.map

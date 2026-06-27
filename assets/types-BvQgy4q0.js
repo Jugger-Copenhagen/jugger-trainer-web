@@ -1,0 +1,2 @@
+import{z as e}from"./index-BZs4w3XN.js";const t=["EASY","MEDIUM","HARD"],o=["AR","AT","AU","BE","CA","CL","CO","CR","CZ","DE","DK","ES","FR","GB","IE","IT","JP","LT","LV","MX","NL","NZ","SE","SI","US","VE"];e.object({tag:e.string().min(1)});const n=e.object({name:e.string().optional(),tagIDs:e.array(e.string()),exertionLevel:e.enum(t).optional(),players:e.coerce.number().positive().int().optional()});export{o as C,t as E,n as a};
+//# sourceMappingURL=types-BvQgy4q0.js.map

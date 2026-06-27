@@ -1,0 +1,2 @@
+import{r as e}from"./chunk-LFPYN7LY-B7CfRXkv.js";function m(o){const{controlled:n,default:r,name:u,state:t="value"}=o,{current:l}=e.useRef(n!==void 0),[s,a]=e.useState(r),f=l?n:s,c=e.useCallback(d=>{l||a(d)},[]);return[f,c]}function v({props:o,states:n,muiFormControl:r}){return n.reduce((u,t)=>(u[t]=o[t],r&&typeof o[t]>"u"&&(u[t]=r[t]),u),{})}const i=e.createContext(void 0),C=i;function p(){return e.useContext(C)}export{C as F,p as a,v as f,m as u};
+//# sourceMappingURL=useFormControl-Cz9ZLFcv.js.map
