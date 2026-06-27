@@ -2,6 +2,7 @@ import { index, layout, route, type RouteConfig } from '@react-router/dev/routes
 
 export default [
   index('routes/home.tsx'),
+  route('diagram', 'routes/diagram.tsx'),
   route('exercises/new', 'routes/exercise-new.tsx'),
   route('exercises/favorited', 'routes/exercise-favorited.tsx'),
   route('exercises/random', 'routes/exercise-random.tsx'),
