@@ -42,6 +42,11 @@ export default function AppBar() {
     navigate('/admin');
   }
 
+  function goToDiagram() {
+    handleMenuClose();
+    navigate('/diagram');
+  }
+
   function goToFavorites() {
     handleMenuClose();
     navigate('/exercises/favorited');
@@ -81,12 +86,20 @@ export default function AppBar() {
                   <ListItemText>Favorites</ListItemText>
                 </MenuItem>
                 {profile?.role === 'admin' && (
-                  <MenuItem onClick={goToAdmin}>
-                    <ListItemIcon>
-                      <AdminPanelSettings fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Admin</ListItemText>
-                  </MenuItem>
+                  <>
+                    <MenuItem onClick={goToAdmin}>
+                      <ListItemIcon>
+                        <AdminPanelSettings fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Admin</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={goToDiagram}>
+                      <ListItemIcon>
+                        <AdminPanelSettings fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Diagram</ListItemText>
+                    </MenuItem>
+                  </>
                 )}
                 <MenuItem onClick={logout}>
                   <ListItemIcon>
