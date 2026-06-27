@@ -1,5 +1,5 @@
-import { useDroppable } from '@dnd-kit/core';
 import { type Diagram, octagonPoints } from '@/lib/diagram';
+import { useDroppable } from '@dnd-kit/core';
 import { Box } from '@mui/material';
 import { useRef } from 'react';
 import DiagramArrowLayer from './DiagramArrowLayer';
@@ -35,7 +35,8 @@ export default function DiagramField({
   const { setNodeRef, isOver } = useDroppable({ id: FIELD_DROPPABLE_ID });
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const fieldShape = diagram.field === 'octagon' ? octagonPoints(FIELD_VIEWBOX_W, FIELD_VIEWBOX_H) : null;
+  const fieldShape =
+    diagram.field === 'octagon' ? octagonPoints(FIELD_VIEWBOX_W, FIELD_VIEWBOX_H) : null;
 
   return (
     <Box
@@ -60,14 +61,7 @@ export default function DiagramField({
       >
         <defs>
           {/* Arrowhead marker */}
-          <marker
-            id="arrowhead"
-            markerWidth="4"
-            markerHeight="4"
-            refX="3"
-            refY="2"
-            orient="auto"
-          >
+          <marker id="arrowhead" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto">
             <path d="M0,0 L0,4 L4,2 z" fill="#333" />
           </marker>
           {/* Clip to field shape */}
@@ -80,9 +74,22 @@ export default function DiagramField({
 
         {/* Field background */}
         {fieldShape ? (
-          <polygon points={fieldShape} fill="#4caf50" opacity={0.25} stroke="#388e3c" strokeWidth={0.15} />
+          <polygon
+            points={fieldShape}
+            fill="#4caf50"
+            opacity={0.25}
+            stroke="#388e3c"
+            strokeWidth={0.15}
+          />
         ) : (
-          <rect x={0} y={0} width={FIELD_VIEWBOX_W} height={FIELD_VIEWBOX_H} fill="#4caf50" opacity={0.15} />
+          <rect
+            x={0}
+            y={0}
+            width={FIELD_VIEWBOX_W}
+            height={FIELD_VIEWBOX_H}
+            fill="#4caf50"
+            opacity={0.25}
+          />
         )}
 
         {/* Centre line */}
