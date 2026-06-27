@@ -1,13 +1,12 @@
-import { useDraggable } from '@dnd-kit/core';
 import {
   POSITION_LABELS,
-  POSITION_TYPES,
-  TEAM_COLORS,
+  TEAMS,
   TEAM_IDS,
   positionIconUrl,
   type PositionType,
   type TeamId,
 } from '@/lib/diagram';
+import { useDraggable } from '@dnd-kit/core';
 import { Box, Tooltip, Typography } from '@mui/material';
 
 interface PaletteItemProps {
@@ -21,9 +20,9 @@ function PaletteItem({ position, team }: PaletteItemProps) {
     data: { type: 'palette-item', position, team },
   });
 
-  const colors = TEAM_COLORS[team];
+  const teamConfig = TEAMS[team];
   const iconUrl = positionIconUrl(position);
-  const label = `${POSITION_LABELS[position]} (${colors.label})`;
+  const label = `${POSITION_LABELS[position]} - ${teamConfig.label}`;
 
   return (
     <Tooltip title={label} placement="top" arrow>
@@ -35,9 +34,9 @@ function PaletteItem({ position, team }: PaletteItemProps) {
           width: 36,
           height: 36,
           borderRadius: '50%',
-          bgcolor: colors.bg,
+          bgcolor: teamConfig.bg,
           border: '2px solid',
-          borderColor: colors.fg,
+          borderColor: teamConfig.fg,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -72,10 +71,10 @@ export default function PositionPalette() {
       {TEAM_IDS.map((team) => (
         <Box key={team}>
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
-            {TEAM_COLORS[team].label}
+            {TEAMS[team].label}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-            {POSITION_TYPES.map((position) => (
+            {TEAMS[team].positions.map((position) => (
               <PaletteItem key={`${position}-${team}`} position={position} team={team} />
             ))}
           </Box>

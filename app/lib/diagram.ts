@@ -9,31 +9,25 @@ export const FIELD_HEIGHT_M = 20;
 // The cut length along each axis is 5m (i.e. the diagonal cut spans 5m × 5m).
 export const FIELD_CORNER_CUT_M = 5;
 
-// === TEAMS === //
-
-export const TEAM_IDS = ['team1', 'team2'] as const;
-export type TeamId = (typeof TEAM_IDS)[number];
-
-// WCAG AA compliant against white text (contrast ≥ 4.5:1)
-export const TEAM_COLORS: Record<TeamId, { bg: string; fg: string; label: string }> = {
-  team1: { bg: '#20BCBA', fg: '#29221F', label: 'Blue' }, // MUI blue[800] — contrast 7.0:1
-  team2: { bg: '#EF3B4F', fg: '#29221F', label: 'Red' }, // MUI deepOrange[900] — contrast 4.6:1
-};
-
 // === POSITIONS === //
 
-export const POSITION_TYPES = [
+export const PLAYER_POSITION_TYPES = [
   'antichain',
   'chain',
   'longsword',
   'qtip',
   'qwik',
-  'ref-goal',
-  'ref-head',
-  'ref-line',
   'shield',
   'staff',
 ] as const;
+
+export type PlayerPositionType = (typeof PLAYER_POSITION_TYPES)[number];
+
+export const REF_POSITION_TYPES = ['ref-goal', 'ref-head', 'ref-line'] as const;
+
+export type RefPositionType = (typeof REF_POSITION_TYPES)[number];
+
+export const POSITION_TYPES = [...PLAYER_POSITION_TYPES, ...REF_POSITION_TYPES] as const;
 
 export type PositionType = (typeof POSITION_TYPES)[number];
 
@@ -48,6 +42,36 @@ export const POSITION_LABELS: Record<PositionType, string> = {
   'ref-line': 'Ref (line)',
   shield: 'Shield',
   staff: 'Staff',
+};
+
+// === TEAMS === //
+
+export const TEAM_IDS = ['team1', 'team2', 'ref'] as const;
+export type TeamId = (typeof TEAM_IDS)[number];
+
+// WCAG AA compliant against white text (contrast ≥ 4.5:1)
+export const TEAMS: Record<
+  TeamId,
+  { bg: string; fg: string; label: string; positions: PositionType[] }
+> = {
+  team1: {
+    bg: '#20BCBA',
+    fg: '#29221F',
+    label: 'Team 1 (blue)',
+    positions: [...PLAYER_POSITION_TYPES],
+  },
+  team2: {
+    bg: '#EF3B4F',
+    fg: '#29221F',
+    label: 'Team 2 (red)',
+    positions: [...PLAYER_POSITION_TYPES],
+  },
+  ref: {
+    bg: '#29221F',
+    fg: '#29221F',
+    label: 'Refs',
+    positions: [...REF_POSITION_TYPES],
+  },
 };
 
 export function positionIconUrl(position: PositionType): string {

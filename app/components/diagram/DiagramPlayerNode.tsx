@@ -1,5 +1,5 @@
+import { TEAMS, positionIconUrl, type DiagramPlayer } from '@/lib/diagram';
 import { useDraggable } from '@dnd-kit/core';
-import { TEAM_COLORS, positionIconUrl, type DiagramPlayer } from '@/lib/diagram';
 import type { RefObject } from 'react';
 import type { ToolMode } from './types';
 
@@ -25,7 +25,13 @@ export default function DiagramPlayerNode({
   onSelect,
   onRemove,
 }: Props) {
-  const { attributes, listeners, setNodeRef: setDraggableRef, transform, isDragging } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef: setDraggableRef,
+    transform,
+    isDragging,
+  } = useDraggable({
     id: player.id,
     data: { type: 'placed-player', playerId: player.id },
     disabled: tool !== 'select',
@@ -35,7 +41,7 @@ export default function DiagramPlayerNode({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setNodeRef = setDraggableRef as (node: any) => void;
 
-  const colors = TEAM_COLORS[player.team];
+  const teamConfig = TEAMS[player.team];
   const iconUrl = positionIconUrl(player.position);
 
   // Apply drag transform: convert pixel delta to viewBox metres using the SVG's current scale
@@ -76,16 +82,11 @@ export default function DiagramPlayerNode({
     >
       {/* Selection ring */}
       {isSelected && (
-        <circle
-          r={PLAYER_RADIUS + 0.25}
-          fill="none"
-          stroke="#FFD700"
-          strokeWidth={0.2}
-        />
+        <circle r={PLAYER_RADIUS + 0.25} fill="none" stroke="#FFD700" strokeWidth={0.2} />
       )}
 
       {/* Team-colored disc */}
-      <circle r={PLAYER_RADIUS} fill={colors.bg} stroke={colors.fg} strokeWidth={0.1} />
+      <circle r={PLAYER_RADIUS} fill={teamConfig.bg} stroke={teamConfig.fg} strokeWidth={0.1} />
 
       {/* Position icon via SVG image */}
       <image
@@ -102,7 +103,10 @@ export default function DiagramPlayerNode({
       {isSelected && tool === 'select' && (
         <g
           transform={`translate(${PLAYER_RADIUS * 0.75}, ${-PLAYER_RADIUS * 0.75})`}
-          onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           style={{ cursor: 'pointer' }}
         >
           <circle r={0.4} fill="#d32f2f" />
