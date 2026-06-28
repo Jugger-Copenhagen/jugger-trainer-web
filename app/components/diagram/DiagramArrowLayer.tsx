@@ -1,6 +1,12 @@
-import type { DiagramArrow, DiagramPoint } from '@/lib/diagram';
+import {
+  FIELD_HEIGHT_M,
+  FIELD_MARGIN_M,
+  FIELD_WIDTH_M,
+  type DiagramArrow,
+  type DiagramPoint,
+} from '@/lib/diagram';
 import { getStroke } from 'perfect-freehand';
-import { type PointerEvent, type RefObject, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, type PointerEvent, type RefObject } from 'react';
 import type { ToolMode } from './types';
 
 // perfect-freehand options for arrow strokes
@@ -138,7 +144,15 @@ export default function DiagramArrowLayer({ arrows, tool, svgRef, onStrokeComple
       // Transparent full-field rect to capture pointer events when pen tool is active
       style={{ pointerEvents: tool === 'pen' ? 'all' : 'none' }}
     >
-      {tool === 'pen' && <rect x={0} y={0} width={40} height={20} fill="transparent" />}
+      {tool === 'pen' && (
+        <rect
+          x={-FIELD_MARGIN_M}
+          y={-FIELD_MARGIN_M}
+          width={FIELD_WIDTH_M + 2 * FIELD_MARGIN_M}
+          height={FIELD_HEIGHT_M + 2 * FIELD_MARGIN_M}
+          fill="transparent"
+        />
+      )}
       {arrows.map(renderArrow)}
       {renderActive()}
     </g>

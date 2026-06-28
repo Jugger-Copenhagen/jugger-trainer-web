@@ -23,10 +23,10 @@ Thoughts on that:
 - [x] "erase" tool is a pencil!? also it doesn't work. also we don't need it, this should just be
       selection + delete
 - overflow in X / Y direction: we should fit the field to the screen
-- field could use space around it for refs to stand (~1-2m)
-- when disabling field, also hide center line
+- [x] field could use space around it for refs to stand (~1-2m)
+- [x] when disabling field, also hide center line
 - [x] add generic "enforcer", generic "ref" to palette
-- get icons for "enforcer", "ref" added
+- [x] get icons for "enforcer", "ref" added
 - [x] palette labels are too small, and have no visual hierarchy
 - [x] could we shorten the hover labels? (e.g. remove colors from team names)
 - contrast between Team 1 + Team 2 colors is low; could we use a different color for Team 2?

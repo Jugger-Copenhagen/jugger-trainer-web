@@ -70,12 +70,6 @@ export default function DiagramField({
           <marker id="arrowhead" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto">
             <path d="M0,0 L0,4 L4,2 z" fill="#333" />
           </marker>
-          {/* Clip to field shape */}
-          {fieldShape && (
-            <clipPath id="field-clip">
-              <polygon points={fieldShape} />
-            </clipPath>
-          )}
         </defs>
 
         {/* Field background */}
@@ -88,14 +82,7 @@ export default function DiagramField({
             strokeWidth={0.15}
           />
         ) : (
-          <rect
-            x={xMin}
-            y={yMin}
-            width={xMax - xMin}
-            height={yMax - yMin}
-            fill="#4caf50"
-            opacity={0.25}
-          />
+          <rect x={xMin} y={yMin} width={w} height={h} fill="#4caf50" opacity={0.25} />
         )}
 
         {/* Centre line */}
