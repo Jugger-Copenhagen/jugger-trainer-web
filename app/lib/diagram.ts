@@ -2,12 +2,14 @@ import { z } from 'zod';
 
 // === FIELD DIMENSIONS === //
 
-export const FIELD_WIDTH_M = 40;
-export const FIELD_HEIGHT_M = 20;
+export const FIELD_WIDTH_M = 40.0;
+export const FIELD_HEIGHT_M = 20.0;
 
 // The jugger pitch is a 40x20m octagon. The corners are cut at 45°.
 // The cut length along each axis is 5m (i.e. the diagonal cut spans 5m × 5m).
-export const FIELD_CORNER_CUT_M = 5;
+export const FIELD_CORNER_CUT_M = 5.0;
+
+export const FIELD_MARGIN_M = 1.0; // extra margin around the field for refs, etc.
 
 // === POSITIONS === //
 
@@ -163,13 +165,12 @@ export function clampToField(x: number, y: number): DiagramPoint {
  * Returns an SVG polygon `points` string for the 40×20m octagon,
  * scaled to the given pixel dimensions.
  */
-export function octagonPoints(svgWidth: number, svgHeight: number): string {
-  const scaleX = svgWidth / FIELD_WIDTH_M;
-  const scaleY = svgHeight / FIELD_HEIGHT_M;
-  const cx = FIELD_CORNER_CUT_M * scaleX;
-  const cy = FIELD_CORNER_CUT_M * scaleY;
-  const w = svgWidth;
-  const h = svgHeight;
+export function octagonPoints(): string {
+  const cx = FIELD_CORNER_CUT_M;
+  const cy = FIELD_CORNER_CUT_M;
+  const w = FIELD_WIDTH_M;
+  const h = FIELD_HEIGHT_M;
+
   return [
     [cx, 0],
     [w - cx, 0],

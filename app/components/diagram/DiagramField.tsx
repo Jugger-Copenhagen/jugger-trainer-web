@@ -1,15 +1,16 @@
-import { type Diagram, octagonPoints } from '@/lib/diagram';
+import {
+  type Diagram,
+  FIELD_HEIGHT_M,
+  FIELD_MARGIN_M,
+  FIELD_WIDTH_M,
+  octagonPoints,
+} from '@/lib/diagram';
 import { useDroppable } from '@dnd-kit/core';
 import { Box } from '@mui/material';
 import { useRef } from 'react';
 import DiagramArrowLayer from './DiagramArrowLayer';
 import DiagramPlayerNode from './DiagramPlayerNode';
 import type { ToolMode } from './types';
-
-// The field renders at a fixed aspect ratio: 40:20 = 2:1.
-// We use a viewBox matching field metres so all coordinates are in metres.
-export const FIELD_VIEWBOX_W = 40;
-export const FIELD_VIEWBOX_H = 20;
 
 export const FIELD_DROPPABLE_ID = 'diagram-field';
 
@@ -35,8 +36,13 @@ export default function DiagramField({
   const { setNodeRef, isOver } = useDroppable({ id: FIELD_DROPPABLE_ID });
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const fieldShape =
-    diagram.field === 'octagon' ? octagonPoints(FIELD_VIEWBOX_W, FIELD_VIEWBOX_H) : null;
+  const xMin = -FIELD_MARGIN_M;
+  const yMin = -FIELD_MARGIN_M;
+  const xMax = FIELD_WIDTH_M + FIELD_MARGIN_M;
+  const yMax = FIELD_HEIGHT_M + FIELD_MARGIN_M;
+  const w = xMax - xMin;
+  const h = yMax - yMin;
+  const fieldShape = diagram.field === 'octagon' ? octagonPoints() : null;
 
   return (
     <Box
@@ -55,7 +61,7 @@ export default function DiagramField({
     >
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${FIELD_VIEWBOX_W} ${FIELD_VIEWBOX_H}`}
+        viewBox={`${xMin} ${yMin} ${w} ${h}`}
         style={{ width: '100%', height: '100%', display: 'block' }}
         preserveAspectRatio="xMidYMid meet"
       >
@@ -83,34 +89,36 @@ export default function DiagramField({
           />
         ) : (
           <rect
-            x={0}
-            y={0}
-            width={FIELD_VIEWBOX_W}
-            height={FIELD_VIEWBOX_H}
+            x={xMin}
+            y={yMin}
+            width={xMax - xMin}
+            height={yMax - yMin}
             fill="#4caf50"
             opacity={0.25}
           />
         )}
 
         {/* Centre line */}
-        <line
-          x1={FIELD_VIEWBOX_W / 2}
-          y1={0}
-          x2={FIELD_VIEWBOX_W / 2}
-          y2={FIELD_VIEWBOX_H}
-          stroke="#388e3c"
-          strokeWidth={0.1}
-          strokeDasharray="0.5 0.5"
-          opacity={0.6}
-        />
+        {diagram.field === 'octagon' && (
+          <line
+            x1={FIELD_WIDTH_M / 2}
+            y1={0}
+            x2={FIELD_WIDTH_M / 2}
+            y2={FIELD_HEIGHT_M}
+            stroke="#388e3c"
+            strokeWidth={0.1}
+            strokeDasharray="0.35 0.35"
+            opacity={0.6}
+          />
+        )}
 
         {/* Arrows */}
         <DiagramArrowLayer
           arrows={diagram.arrows}
           tool={tool}
           svgRef={svgRef}
-          viewboxW={FIELD_VIEWBOX_W}
-          viewboxH={FIELD_VIEWBOX_H}
+          viewboxW={FIELD_WIDTH_M + 2 * FIELD_MARGIN_M}
+          viewboxH={FIELD_HEIGHT_M + 2 * FIELD_MARGIN_M}
           onStrokeComplete={onStrokeComplete}
           onRemoveArrow={onRemoveArrow}
         />
@@ -123,8 +131,8 @@ export default function DiagramField({
             isSelected={selectedPlayerId === player.id}
             tool={tool}
             svgRef={svgRef}
-            viewboxW={FIELD_VIEWBOX_W}
-            viewboxH={FIELD_VIEWBOX_H}
+            viewboxW={FIELD_WIDTH_M + 2 * FIELD_MARGIN_M}
+            viewboxH={FIELD_HEIGHT_M + 2 * FIELD_MARGIN_M}
             onSelect={() => onSelectPlayer(player.id)}
             onRemove={() => onRemovePlayer(player.id)}
           />
