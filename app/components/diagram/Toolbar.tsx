@@ -1,4 +1,4 @@
-import { Delete, Edit, GestureOutlined, TouchApp } from '@mui/icons-material';
+import { Delete, GestureOutlined, TouchApp } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -45,11 +45,6 @@ export default function Toolbar({
         <ToggleButton value="pen" aria-label="Draw arrow">
           <Tooltip title="Draw arrow (freehand)">
             <GestureOutlined fontSize="small" />
-          </Tooltip>
-        </ToggleButton>
-        <ToggleButton value="erase" aria-label="Erase">
-          <Tooltip title="Erase players or arrows">
-            <Edit fontSize="small" />
           </Tooltip>
         </ToggleButton>
       </ToggleButtonGroup>

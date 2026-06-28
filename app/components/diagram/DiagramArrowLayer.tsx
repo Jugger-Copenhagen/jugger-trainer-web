@@ -5,7 +5,7 @@ import type { ToolMode } from './types';
 
 // perfect-freehand options for arrow strokes
 const STROKE_OPTIONS = {
-  size: 0.4,       // stroke width in field metres
+  size: 0.4, // stroke width in field metres
   thinning: 0.5,
   smoothing: 0.5,
   streamline: 0.5,
@@ -25,11 +25,7 @@ function outlineToPath(outline: number[][]): string {
 }
 
 /** Convert SVG client coords to viewBox coords. */
-function clientToViewBox(
-  svg: SVGSVGElement,
-  clientX: number,
-  clientY: number,
-): DiagramPoint {
+function clientToViewBox(svg: SVGSVGElement, clientX: number, clientY: number): DiagramPoint {
   const pt = svg.createSVGPoint();
   pt.x = clientX;
   pt.y = clientY;
@@ -47,13 +43,7 @@ interface Props {
   onRemoveArrow: (id: string) => void;
 }
 
-export default function DiagramArrowLayer({
-  arrows,
-  tool,
-  svgRef,
-  onStrokeComplete,
-  onRemoveArrow,
-}: Props) {
+export default function DiagramArrowLayer({ arrows, tool, svgRef, onStrokeComplete }: Props) {
   const [activePoints, setActivePoints] = useState<DiagramPoint[]>([]);
   const isDrawing = useRef(false);
 
@@ -68,7 +58,7 @@ export default function DiagramArrowLayer({
       const pt = clientToViewBox(svg, e.clientX, e.clientY);
       setActivePoints([pt]);
     },
-    [tool, svgRef],
+    [tool, svgRef]
   );
 
   const handlePointerMove = useCallback(
@@ -80,7 +70,7 @@ export default function DiagramArrowLayer({
       const pt = clientToViewBox(svg, e.clientX, e.clientY);
       setActivePoints((prev) => [...prev, pt]);
     },
-    [tool, svgRef],
+    [tool, svgRef]
   );
 
   const handlePointerUp = useCallback(
@@ -95,7 +85,7 @@ export default function DiagramArrowLayer({
         return [];
       });
     },
-    [tool, onStrokeComplete],
+    [tool, onStrokeComplete]
   );
 
   // Render a completed arrow: freehand stroke body + arrowhead line at the end
@@ -115,16 +105,8 @@ export default function DiagramArrowLayer({
     const tipY = last.y + (dy / len) * 0.6;
 
     return (
-      <g
-        key={arrow.id}
-        onClick={tool === 'erase' ? () => onRemoveArrow(arrow.id) : undefined}
-        style={{ cursor: tool === 'erase' ? 'pointer' : 'default' }}
-      >
+      <g key={arrow.id}>
         <path d={d} fill="#333" opacity={0.85} />
-        {/* Invisible wider hit area for erase */}
-        {tool === 'erase' && (
-          <path d={d} fill="transparent" stroke="transparent" strokeWidth={1} />
-        )}
         {/* Arrowhead */}
         <line
           x1={last.x}
@@ -156,9 +138,7 @@ export default function DiagramArrowLayer({
       // Transparent full-field rect to capture pointer events when pen tool is active
       style={{ pointerEvents: tool === 'pen' ? 'all' : 'none' }}
     >
-      {tool === 'pen' && (
-        <rect x={0} y={0} width={40} height={20} fill="transparent" />
-      )}
+      {tool === 'pen' && <rect x={0} y={0} width={40} height={20} fill="transparent" />}
       {arrows.map(renderArrow)}
       {renderActive()}
     </g>

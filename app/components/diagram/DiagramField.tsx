@@ -50,7 +50,7 @@ export default function DiagramField({
         overflow: 'hidden',
         position: 'relative',
         bgcolor: 'grey.100',
-        cursor: tool === 'pen' ? 'crosshair' : tool === 'erase' ? 'cell' : 'default',
+        cursor: tool === 'pen' ? 'pointer' : 'default',
       }}
     >
       <svg

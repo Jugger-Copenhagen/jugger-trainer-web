@@ -61,9 +61,7 @@ export default function DiagramPlayerNode({
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (tool === 'erase') {
-      onRemove();
-    } else if (tool === 'select') {
+    if (tool === 'select') {
       onSelect();
     }
   };
@@ -74,7 +72,7 @@ export default function DiagramPlayerNode({
       transform={`translate(${cx}, ${cy})`}
       onClick={handleClick}
       style={{
-        cursor: tool === 'erase' ? 'pointer' : tool === 'select' ? 'grab' : 'default',
+        cursor: tool === 'select' ? 'grab' : 'default',
         opacity: isDragging ? 0.5 : 1,
         pointerEvents: tool === 'pen' ? 'none' : 'all',
       }}

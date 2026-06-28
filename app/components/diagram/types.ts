@@ -1,1 +1,1 @@
-export type ToolMode = 'select' | 'pen' | 'erase';
+export type ToolMode = 'select' | 'pen';
