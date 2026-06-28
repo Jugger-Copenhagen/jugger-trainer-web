@@ -14,16 +14,17 @@ export const FIELD_CORNER_CUT_M = 5;
 export const PLAYER_POSITION_TYPES = [
   'antichain',
   'chain',
+  'qwik',
+  'enforcer',
+  'shield',
   'longsword',
   'qtip',
-  'qwik',
-  'shield',
   'staff',
 ] as const;
 
 export type PlayerPositionType = (typeof PLAYER_POSITION_TYPES)[number];
 
-export const REF_POSITION_TYPES = ['ref-head', 'ref-line', 'ref-goal'] as const;
+export const REF_POSITION_TYPES = ['ref', 'ref-head', 'ref-line', 'ref-goal'] as const;
 
 export type RefPositionType = (typeof REF_POSITION_TYPES)[number];
 
@@ -34,12 +35,14 @@ export type PositionType = (typeof POSITION_TYPES)[number];
 export const POSITION_LABELS: Record<PositionType, string> = {
   antichain: 'Antichain',
   chain: 'Chain',
+  enforcer: 'Enforcer',
   longsword: 'Longsword',
   qtip: 'Q-tip',
   qwik: 'Qwik',
+  ref: 'Ref',
+  'ref-goal': 'Ref (goal)',
   'ref-head': 'Ref (head)',
   'ref-line': 'Ref (line)',
-  'ref-goal': 'Ref (goal)',
   shield: 'Shield',
   staff: 'Staff',
 };
