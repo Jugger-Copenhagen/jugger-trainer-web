@@ -1,0 +1,2 @@
+import{X as r,I as p,W as m}from"./Box-Ch8KbU_S.js";const c=r();function u(n){const{theme:e,name:o,props:s}=n;return!e||!e.components||!e.components[o]||!e.components[o].defaultProps?s:p(e.components[o].defaultProps,s)}function f({props:n,name:e,defaultTheme:o,themeId:s}){let t=m(o);return s&&(t=t[s]||t),u({theme:t,name:e,props:n})}export{c as s,f as u};
+//# sourceMappingURL=useThemeProps-BwT8WDZw.js.map
