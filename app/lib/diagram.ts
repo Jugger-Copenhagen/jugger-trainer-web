@@ -23,7 +23,7 @@ export const PLAYER_POSITION_TYPES = [
 
 export type PlayerPositionType = (typeof PLAYER_POSITION_TYPES)[number];
 
-export const REF_POSITION_TYPES = ['ref-goal', 'ref-head', 'ref-line'] as const;
+export const REF_POSITION_TYPES = ['ref-head', 'ref-line', 'ref-goal'] as const;
 
 export type RefPositionType = (typeof REF_POSITION_TYPES)[number];
 
@@ -37,9 +37,9 @@ export const POSITION_LABELS: Record<PositionType, string> = {
   longsword: 'Longsword',
   qtip: 'Q-tip',
   qwik: 'Qwik',
-  'ref-goal': 'Ref (goal)',
   'ref-head': 'Ref (head)',
   'ref-line': 'Ref (line)',
+  'ref-goal': 'Ref (goal)',
   shield: 'Shield',
   staff: 'Staff',
 };
@@ -57,13 +57,13 @@ export const TEAMS: Record<
   team1: {
     bg: '#20BCBA',
     fg: '#29221F',
-    label: 'Team 1 (blue)',
+    label: 'Team 1',
     positions: [...PLAYER_POSITION_TYPES],
   },
   team2: {
     bg: '#EF3B4F',
     fg: '#29221F',
-    label: 'Team 2 (red)',
+    label: 'Team 2',
     positions: [...PLAYER_POSITION_TYPES],
   },
   ref: {

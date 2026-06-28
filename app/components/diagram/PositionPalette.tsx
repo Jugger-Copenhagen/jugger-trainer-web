@@ -70,7 +70,7 @@ export default function PositionPalette() {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       {TEAM_IDS.map((team) => (
         <Box key={team}>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
             {TEAMS[team].label}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>

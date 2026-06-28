@@ -1,13 +1,4 @@
 import {
-  DndContext,
-  DragEndEvent,
-  MouseSensor,
-  PointerSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import {
   FIELD_HEIGHT_M,
   FIELD_WIDTH_M,
   clampToField,
@@ -18,15 +9,17 @@ import {
   type PositionType,
   type TeamId,
 } from '@/lib/diagram';
-import { ContentCopy } from '@mui/icons-material';
 import {
-  Box,
-  Collapse,
-  IconButton,
-  Paper,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+  DndContext,
+  DragEndEvent,
+  MouseSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import { ContentCopy } from '@mui/icons-material';
+import { Box, Collapse, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import DiagramField, { FIELD_DROPPABLE_ID } from './DiagramField';
 import PositionPalette from './PositionPalette';
@@ -69,7 +62,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         diagram: {
           ...state.diagram,
           players: state.diagram.players.map((p) =>
-            p.id === action.id ? { ...p, x: action.x, y: action.y } : p,
+            p.id === action.id ? { ...p, x: action.x, y: action.y } : p
           ),
         },
       };
@@ -98,7 +91,11 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         },
       };
     case 'CLEAR_ALL':
-      return { ...state, selectedPlayerId: null, diagram: { ...state.diagram, players: [], arrows: [] } };
+      return {
+        ...state,
+        selectedPlayerId: null,
+        diagram: { ...state.diagram, players: [], arrows: [] },
+      };
     default:
       return state;
   }
@@ -141,7 +138,7 @@ export default function DiagramEditor() {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } })
   );
 
   // We need the SVG's current dimensions to convert pixel drag deltas to field coords.
@@ -201,7 +198,7 @@ export default function DiagramEditor() {
         dispatch({ type: 'MOVE_PLAYER', id: activeData.playerId, x: clamped.x, y: clamped.y });
       }
     },
-    [diagram.players],
+    [diagram.players]
   );
 
   const handleStrokeComplete = useCallback((points: { x: number; y: number }[]) => {
@@ -231,7 +228,7 @@ export default function DiagramEditor() {
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', flexWrap: 'wrap' }}>
           {/* Palette */}
           <Paper variant="outlined" sx={{ p: 1.5, flexShrink: 0, minWidth: 200 }}>
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
+            <Typography variant="h6" color="text.primary" sx={{ display: 'block', mb: 1 }}>
               Drag onto field
             </Typography>
             <PositionPalette />
@@ -254,7 +251,9 @@ export default function DiagramEditor() {
         {/* JSON debug panel */}
         <Collapse in>
           <Paper variant="outlined" sx={{ p: 1.5 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}
+            >
               <Typography variant="caption" color="text.secondary">
                 Diagram JSON
               </Typography>

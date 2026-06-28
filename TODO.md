@@ -20,11 +20,11 @@ Thoughts on that:
 ### Things to fix
 
 - [x] remove the icon next to "octagon field", rename to "show field"
-- "erase" tool is a pencil!? also it doesn't work. also we don't need it, this should just be
-  selection + delete
+- [x] "erase" tool is a pencil!? also it doesn't work. also we don't need it, this should just be
+      selection + delete
 - overflow in X / Y direction: we should fit the field to the screen
-- palette labels are too small, and have no visual hierarchy
-- could we shorten the hover labels? (e.g. remove colors from team names)
+- [x] palette labels are too small, and have no visual hierarchy
+- [x] could we shorten the hover labels? (e.g. remove colors from team names)
 - contrast between Team 1 + Team 2 colors is low; could we use a different color for Team 2?
 - fg color doesn't seem to apply to lines within the icon, just the outside
 - drag-and-drop isn't quite working properly:
