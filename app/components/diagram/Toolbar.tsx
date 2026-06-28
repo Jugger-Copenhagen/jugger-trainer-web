@@ -1,11 +1,4 @@
-import {
-  CropSquare,
-  Delete,
-  Edit,
-  GestureOutlined,
-  Hexagon,
-  TouchApp,
-} from '@mui/icons-material';
+import { Delete, Edit, GestureOutlined, TouchApp } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -71,16 +64,7 @@ export default function Toolbar({
             size="small"
           />
         }
-        label={
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            {fieldShape === 'octagon' ? (
-              <Hexagon fontSize="small" />
-            ) : (
-              <CropSquare fontSize="small" />
-            )}
-            Octagon field
-          </Box>
-        }
+        label="Show field"
       />
 
       <Divider orientation="vertical" flexItem />
